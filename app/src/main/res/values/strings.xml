@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Maintainer</string>
+    <string name="back">back</string>
+    <string name="menu">menu</string>
 </resources>
