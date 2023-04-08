@@ -38,7 +38,7 @@ fun MaintainerAppBar(
                 Text(
                     text = title,
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.h6,
                     color = MaterialTheme.colors.onPrimary
                 )
             }
