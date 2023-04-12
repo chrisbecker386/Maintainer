@@ -1,10 +1,7 @@
-package de.chrisbecker386.maintainer.ui.composable
+package de.chrisbecker386.maintainer.navigation
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -34,14 +31,12 @@ fun MaintainerAppBar(
     TopAppBar(
         modifier = modifier.fillMaxWidth(),
         title = {
-            Row(Modifier.fillMaxWidth(), Arrangement.Center) {
-                Text(
+                Text(modifier = Modifier.padding(start = 8.dp, end = 8.dp),
                     text = title,
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.h6,
+                    textAlign = TextAlign.Start,
+                    style = MaterialTheme.typography.h5,
                     color = MaterialTheme.colors.onPrimary
                 )
-            }
         },
         backgroundColor = MaterialTheme.colors.primary,
         navigationIcon = {
@@ -73,12 +68,12 @@ private fun PreviewMaintainerAppBar() {
     MaintainerTheme {
         MaintainerAppBar(
             "Preview",
-            true,
+            false,
             true,
             {},
             {},
             Modifier
-                .height(40.dp)
+                .height(56.dp)
                 .fillMaxWidth()
         )
     }

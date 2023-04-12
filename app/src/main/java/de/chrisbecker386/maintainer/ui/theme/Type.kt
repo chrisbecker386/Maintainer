@@ -70,7 +70,7 @@ val Typography = Typography(
     ),
     h5 = TextStyle(
         fontFamily = nunitoSansFont,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Bold,
         fontSize = 26.sp,
         letterSpacing = 0.sp
     ),
