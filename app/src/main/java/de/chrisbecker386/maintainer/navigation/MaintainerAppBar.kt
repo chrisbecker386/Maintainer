@@ -31,12 +31,13 @@ fun MaintainerAppBar(
     TopAppBar(
         modifier = modifier.fillMaxWidth(),
         title = {
-                Text(modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-                    text = title,
-                    textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.h5,
-                    color = MaterialTheme.colors.onPrimary
-                )
+            Text(
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                text = title,
+                textAlign = TextAlign.Start,
+                style = MaterialTheme.typography.h5,
+                color = MaterialTheme.colors.onPrimary
+            )
         },
         backgroundColor = MaterialTheme.colors.primary,
         navigationIcon = {
