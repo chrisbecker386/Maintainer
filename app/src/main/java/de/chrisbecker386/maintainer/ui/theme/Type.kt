@@ -124,11 +124,11 @@ val Typography = Typography(
     )
 )
 
-@Preview (showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun PreviewTyping() {
     MaintainerTheme {
-        Column(Modifier.width(intrinsicSize =IntrinsicSize.Max).height(intrinsicSize = IntrinsicSize.Max)) {
+        Column(Modifier.width(intrinsicSize = IntrinsicSize.Max).height(intrinsicSize = IntrinsicSize.Max)) {
             val typeLevel = listOf<String>(
                 "h1",
                 "h2",
@@ -161,7 +161,7 @@ fun PreviewTyping() {
                     "overline" -> MaterialTheme.typography.overline
                     else -> MaterialTheme.typography.h6
                 }
-                Text(text = "$type: Nunito Sans ", style = style,  maxLines = 1,modifier = Modifier.padding(8.dp))
+                Text(text = "$type: Nunito Sans ", style = style, maxLines = 1, modifier = Modifier.padding(8.dp))
             }
         }
     }

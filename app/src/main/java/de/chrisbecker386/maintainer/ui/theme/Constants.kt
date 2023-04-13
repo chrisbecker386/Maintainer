@@ -14,5 +14,3 @@ const val TAB_FADE_OUT_DURATION = 100
 
 // opacity
 const val TAB_INACTIVE_OPACITY = 0.6f
-
-

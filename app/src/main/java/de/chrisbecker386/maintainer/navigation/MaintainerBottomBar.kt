@@ -5,13 +5,23 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material.*
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QuestionMark
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.primarySurface
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,7 +36,12 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import de.chrisbecker386.maintainer.ui.theme.*
+import de.chrisbecker386.maintainer.ui.theme.BOTTOM_BAR_HEIGHT
+import de.chrisbecker386.maintainer.ui.theme.TAB_FADE_IN_DELAY_DURATION
+import de.chrisbecker386.maintainer.ui.theme.TAB_FADE_IN_DURATION
+import de.chrisbecker386.maintainer.ui.theme.TAB_FADE_OUT_DURATION
+import de.chrisbecker386.maintainer.ui.theme.TAB_ICON_SIZE
+import de.chrisbecker386.maintainer.ui.theme.TAB_INACTIVE_OPACITY
 import java.util.Locale
 
 @Composable
@@ -39,12 +54,12 @@ fun MaintainerBottomBar(
     BottomNavigation(
         modifier = modifier,
         backgroundColor = MaterialTheme.colors.primarySurface,
-        contentColor = MaterialTheme.colors.onPrimary,
+        contentColor = MaterialTheme.colors.onPrimary
     ) {
         MaintainerTabRow(
             allScreens = allTabScreens,
             currentScreen = currentTab,
-            onTabSelected = onSelected,
+            onTabSelected = onSelected
         )
     }
 }
@@ -53,7 +68,7 @@ fun MaintainerBottomBar(
 fun MaintainerTabRow(
     allScreens: List<Screen>,
     currentScreen: Screen,
-    onTabSelected: (Screen) -> Unit,
+    onTabSelected: (Screen) -> Unit
 ) {
     Surface(
         Modifier
@@ -61,7 +76,8 @@ fun MaintainerTabRow(
             .fillMaxWidth()
     ) {
         Row(
-            Modifier.selectableGroup(), horizontalArrangement = Arrangement.SpaceAround
+            Modifier.selectableGroup(),
+            horizontalArrangement = Arrangement.SpaceAround
         ) {
             allScreens.forEach { screen ->
                 MaintainerTab(
@@ -102,7 +118,8 @@ private fun MaintainerTab(
         animationSpec = animSpec
     )
 
-    Column(verticalArrangement = Arrangement.Center,
+    Column(
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .padding(top = 4.dp, bottom = 4.dp)
@@ -119,7 +136,8 @@ private fun MaintainerTab(
             )
             .animateContentSize()
             .height(BOTTOM_BAR_HEIGHT)
-            .clearAndSetSemantics { contentDescription = text }) {
+            .clearAndSetSemantics { contentDescription = text }
+    ) {
         Icon(
             imageVector = icon,
             contentDescription = text,
