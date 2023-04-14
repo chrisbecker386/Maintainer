@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 13/04/2023, 17:40
+ * Created by Christopher Becker on 19/04/2023, 10:56
  * Copyright (c) 2023. All rights reserved.
- * Last modified 13/04/2023, 17:40
+ * Last modified 19/04/2023, 10:56
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,23 +19,9 @@
 
 package de.chrisbecker386.maintainer.data.model
 
-import androidx.annotation.DrawableRes
-import java.time.LocalDate
-
-data class TaskObject(
-    val id: Int,
-    val title: String,
-    val performedDates: List<LocalDate>? = emptyList(),
-    val repeatCycle: RepeatCycle = RepeatCycle(RepeatFrequency.WEEKLY, 1),
-    @DrawableRes
-    val graphic: Int? = null,
-    val steps: List<StepObject> = emptyList()
-)
-
-fun TaskObject.getLastPerformedDate(): LocalDate {
-    return if (performedDates.isNullOrEmpty()) {
-        repeatCycle.getLastCycleStartCalculated(LocalDate.now())
-    } else {
-        performedDates.last()
-    }
+enum class RepeatFrequency {
+    DAILY,
+    WEEKLY,
+    MONTHLY,
+    YEARLY
 }

@@ -30,12 +30,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import de.chrisbecker386.maintainer.navigation.MaintainerBottomBar
-import de.chrisbecker386.maintainer.navigation.MaintainerAppBar
-import de.chrisbecker386.maintainer.navigation.navigateWithPopUp
-import de.chrisbecker386.maintainer.navigation.MaintainerNavGraph
 import de.chrisbecker386.maintainer.navigation.APP_TABS
+import de.chrisbecker386.maintainer.navigation.MaintainerAppBar
+import de.chrisbecker386.maintainer.navigation.MaintainerBottomBar
+import de.chrisbecker386.maintainer.navigation.MaintainerNavGraph
 import de.chrisbecker386.maintainer.navigation.Screen
+import de.chrisbecker386.maintainer.navigation.navigateWithPopUp
 import de.chrisbecker386.maintainer.ui.theme.APP_BAR_HEIGHT
 import de.chrisbecker386.maintainer.ui.theme.BOTTOM_BAR_HEIGHT
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
