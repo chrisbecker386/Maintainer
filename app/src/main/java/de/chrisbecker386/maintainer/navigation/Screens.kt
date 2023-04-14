@@ -17,7 +17,6 @@
  *
  */
 
-
 package de.chrisbecker386.maintainer.navigation
 
 import androidx.compose.material.icons.Icons

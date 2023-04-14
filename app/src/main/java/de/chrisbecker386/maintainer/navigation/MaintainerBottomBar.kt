@@ -56,10 +56,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import de.chrisbecker386.maintainer.ui.theme.BOTTOM_BAR_HEIGHT
+import de.chrisbecker386.maintainer.ui.theme.DIM_L
 import de.chrisbecker386.maintainer.ui.theme.TAB_FADE_IN_DELAY_DURATION
 import de.chrisbecker386.maintainer.ui.theme.TAB_FADE_IN_DURATION
 import de.chrisbecker386.maintainer.ui.theme.TAB_FADE_OUT_DURATION
-import de.chrisbecker386.maintainer.ui.theme.TAB_ICON_SIZE
 import de.chrisbecker386.maintainer.ui.theme.TAB_INACTIVE_OPACITY
 import java.util.Locale
 
@@ -161,7 +161,7 @@ private fun MaintainerTab(
             imageVector = icon,
             contentDescription = text,
             tint = iconTintColor,
-            modifier = Modifier.size(TAB_ICON_SIZE)
+            modifier = Modifier.size(DIM_L)
         )
 
         Text(
