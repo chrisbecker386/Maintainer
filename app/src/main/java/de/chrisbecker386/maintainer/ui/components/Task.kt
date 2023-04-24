@@ -20,32 +20,22 @@
 package de.chrisbecker386.maintainer.ui.components
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import de.chrisbecker386.maintainer.data.model.TaskObject
 import de.chrisbecker386.maintainer.data.model.dummy.dummyTasks
-import de.chrisbecker386.maintainer.data.model.getMaintainStats
-import de.chrisbecker386.maintainer.ui.theme.BOTTOM_BAR_HEIGHT
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXS
@@ -58,7 +48,7 @@ fun Task(modifier: Modifier = Modifier, data: TaskObject) {
             modifier = Modifier.fillMaxWidth(),
             elevation = DIM_XXXS,
             shape = RoundedCornerShape(DIM_S),
-            backgroundColor = MaterialTheme.colors.primaryVariant,
+            backgroundColor = MaterialTheme.colors.primaryVariant
         ) {
             Column {
                 Text(

@@ -60,11 +60,11 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import de.chrisbecker386.maintainer.data.model.StepObject
 import de.chrisbecker386.maintainer.data.model.dummy.dummySteps
 import de.chrisbecker386.maintainer.ui.theme.ACCORDION_ANIMATION_DURATION
+import de.chrisbecker386.maintainer.ui.theme.DIM_L_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_M
 import de.chrisbecker386.maintainer.ui.theme.DIM_M_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
-import de.chrisbecker386.maintainer.ui.theme.LIST_ITEM_TITLE_HEIGHT
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
@@ -94,7 +94,7 @@ fun StepWithDetails(modifier: Modifier, data: StepObject) {
                     ConstraintLayout(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(LIST_ITEM_TITLE_HEIGHT)
+                            .height(DIM_L_PLUS)
                     ) {
                         val (imageRef, labelRef, iconRef) = createRefs()
 
@@ -109,7 +109,7 @@ fun StepWithDetails(modifier: Modifier, data: StepObject) {
                                         top.linkTo(parent.top)
                                         bottom.linkTo(parent.bottom)
                                     }
-                                    .size(LIST_ITEM_TITLE_HEIGHT)
+                                    .size(DIM_L_PLUS)
                                     .clip(CircleShape)
                             )
                         } ?: Box(
@@ -119,7 +119,7 @@ fun StepWithDetails(modifier: Modifier, data: StepObject) {
                                     top.linkTo(parent.top)
                                     bottom.linkTo(parent.bottom)
                                 }
-                                .size(LIST_ITEM_TITLE_HEIGHT)
+                                .size(DIM_L_PLUS)
                                 .background(
                                     color = MaterialTheme.colors.primaryVariant,
                                     shape = RoundedCornerShape(DIM_M)

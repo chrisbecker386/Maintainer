@@ -55,8 +55,8 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import de.chrisbecker386.maintainer.ui.theme.BOTTOM_BAR_HEIGHT
 import de.chrisbecker386.maintainer.ui.theme.DIM_L
+import de.chrisbecker386.maintainer.ui.theme.DIM_XXXL
 import de.chrisbecker386.maintainer.ui.theme.TAB_FADE_IN_DELAY_DURATION
 import de.chrisbecker386.maintainer.ui.theme.TAB_FADE_IN_DURATION
 import de.chrisbecker386.maintainer.ui.theme.TAB_FADE_OUT_DURATION
@@ -91,7 +91,7 @@ fun MaintainerTabRow(
 ) {
     Surface(
         Modifier
-            .height(BOTTOM_BAR_HEIGHT)
+            .height(DIM_XXXL)
             .fillMaxWidth()
     ) {
         Row(
@@ -154,7 +154,7 @@ private fun MaintainerTab(
                 )
             )
             .animateContentSize()
-            .height(BOTTOM_BAR_HEIGHT)
+            .height(DIM_XXXL)
             .clearAndSetSemantics { contentDescription = text }
     ) {
         Icon(
