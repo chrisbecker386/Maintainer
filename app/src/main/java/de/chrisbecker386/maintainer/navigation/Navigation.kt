@@ -26,6 +26,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import de.chrisbecker386.maintainer.ui.home.HomeScreen
+import de.chrisbecker386.maintainer.ui.home.SingleMachineScreen
 import de.chrisbecker386.maintainer.ui.info.InfoScreen
 import de.chrisbecker386.maintainer.ui.settings.SettingsScreen
 
@@ -36,26 +37,42 @@ fun MaintainerNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route,
+        startDestination = Home.route,
         modifier = modifier
     ) {
-        composable(route = Screen.Home.route) {
-            HomeScreen()
+        composable(route = Home.route) {
+            HomeScreen(onMachineClick = { machineType ->
+                navController.navigateToSingleMachine(machineType)
+            })
         }
-        composable(route = Screen.Info.route) {
+        composable(route = Info.route) {
             InfoScreen()
         }
-        composable(route = Screen.Settings.route) {
+        composable(route = Settings.route) {
             SettingsScreen()
+        }
+        composable(
+            route = SingleMachine.routeWithArgs,
+            arguments = SingleMachine.arguments
+        ) { navBackStackEntry ->
+            val machineType = navBackStackEntry.arguments?.getString(SingleMachine.machineTypeArg)
+            SingleMachineScreen(machineType)
         }
     }
 }
 
-fun NavHostController.navigateWithPopUp(route: String) =
+fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) {
-        this@navigateWithPopUp.graph.findStartDestination().id
-        popUpTo(route) {
+        popUpTo(
+            this@navigateSingleTopTo.graph.findStartDestination().id
+        ) {
             saveState = true
         }
         launchSingleTop = true
+        restoreState = true
+
     }
+
+private fun NavHostController.navigateToSingleMachine(machineType: String) {
+    this.navigateSingleTopTo("${SingleMachine.route}/$machineType")
+}
