@@ -20,11 +20,12 @@
 package de.chrisbecker386.maintainer.data.model
 
 import androidx.annotation.DrawableRes
+import de.chrisbecker386.maintainer.data.model.interfaces.ItemObject
 
 data class CareObject(
-    val id: Int,
-    val title: String,
+    override val id: Int,
+    override val title: String,
     @DrawableRes
-    val graphic: Int? = null,
-    val maintainObjects: List<MaintainObject> = emptyList()
-)
+    override val graphic: Int? = null,
+    override val list: List<MachineObject> = emptyList()
+): ItemObject

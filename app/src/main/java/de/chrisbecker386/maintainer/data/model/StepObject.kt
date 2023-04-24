@@ -20,12 +20,14 @@
 package de.chrisbecker386.maintainer.data.model
 
 import androidx.annotation.DrawableRes
+import de.chrisbecker386.maintainer.data.model.interfaces.ItemObject
 
 data class StepObject(
-    val id: Int,
-    val orderNumber: Int,
-    val title: String,
-    val description: String? = null,
+    override val id: Int,
+    override val title: String,
     @DrawableRes
-    val graphic: Int? = null
-)
+    override val graphic: Int? = null,
+    override val list: List<ItemObject>?= null,
+    val orderNumber: Int,
+    val description: String? = null,
+) : ItemObject

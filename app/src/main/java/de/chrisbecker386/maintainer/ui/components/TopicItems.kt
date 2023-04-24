@@ -21,28 +21,34 @@ package de.chrisbecker386.maintainer.ui.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import de.chrisbecker386.maintainer.data.model.TaskObject
 import de.chrisbecker386.maintainer.data.model.dummy.dummyTasks
+import de.chrisbecker386.maintainer.data.model.interfaces.ItemObject
+import de.chrisbecker386.maintainer.ui.theme.DIM_M
+import de.chrisbecker386.maintainer.ui.theme.DIM_M_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
-fun Task(modifier: Modifier = Modifier, data: TaskObject) {
+fun TopicWithItems(modifier: Modifier = Modifier, data: ItemObject) {
     Box(modifier = modifier) {
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -69,8 +75,12 @@ fun Task(modifier: Modifier = Modifier, data: TaskObject) {
                 ) {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Column(Modifier.fillMaxWidth()) {
-                            data.steps.forEach { step ->
-                                Step(modifier = Modifier.padding(bottom = DIM_XS), data = step)
+                            data.list?.forEachIndexed { index, item ->
+                                ItemNoDetails(
+                                    modifier = Modifier.padding(bottom = DIM_XS),
+                                    data = item,
+                                    number = index+1
+                                )
                             }
                         }
                     }
@@ -80,18 +90,50 @@ fun Task(modifier: Modifier = Modifier, data: TaskObject) {
     }
 }
 
+@Composable
+fun ItemNoDetails(modifier: Modifier, data: ItemObject, number: Int?) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(DIM_M_PLUS)
+                .background(
+                    color = MaterialTheme.colors.primaryVariant,
+                    shape = RoundedCornerShape(DIM_M)
+                ),
+            Alignment.Center
+        ) {
+            Text(
+                text = number?.toString() ?: "",
+                style = MaterialTheme.typography.subtitle1,
+                color = MaterialTheme.colors.background,
+                textAlign = TextAlign.Center
+            )
+        }
+        Text(
+            modifier = Modifier.padding(start = DIM_XS),
+            text = data.title,
+            style = MaterialTheme.typography.body1,
+            color = MaterialTheme.colors.onBackground
+        )
+    }
+}
+
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewTask() {
     MaintainerTheme {
         Column {
-            Task(
+            TopicWithItems(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
                 data = dummyTasks[0]
             )
-            Task(
+            TopicWithItems(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),

@@ -48,7 +48,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import de.chrisbecker386.maintainer.R
-import de.chrisbecker386.maintainer.data.model.MaintainObject
+import de.chrisbecker386.maintainer.data.model.CareObject
+import de.chrisbecker386.maintainer.data.model.MachineObject
 import de.chrisbecker386.maintainer.data.model.TaskObject
 import de.chrisbecker386.maintainer.data.model.dummy.dummyMaintains
 import de.chrisbecker386.maintainer.data.model.getMaintainStats
@@ -62,27 +63,27 @@ import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 //TODO status Box that shows
 // number maintainable and maintained Objects / tasks
 // shows when and was is the next task/Object to care about
-//@Composable
-//fun CareObjectStatus(
-//    modifier: Modifier = Modifier,
-//    data: CareObject
-//) {
-//    Box(modifier = modifier) {
-//        Card(
-//            modifier = Modifier.fillMaxWidth(),
-//            elevation = DIM_XXXS,
-//            shape = RoundedCornerShape(DIM_S)
-//        ) {
-//
-//
-//        }
-//    }
-//}
+@Composable
+fun CareObjectStatus(
+    modifier: Modifier = Modifier,
+    data: CareObject
+) {
+    Box(modifier = modifier) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            elevation = DIM_XXXS,
+            shape = RoundedCornerShape(DIM_S)
+        ) {
+
+
+        }
+    }
+}
 
 @Composable
-fun MaintainObjectStatus(
+fun MachineStatus(
     modifier: Modifier = Modifier,
-    data: MaintainObject
+    data: MachineObject
 ) {
     Box(modifier = modifier) {
         Card(
@@ -117,7 +118,7 @@ fun MaintainObjectStatus(
 
                         Column(Modifier.fillMaxWidth()) {
                             data.getMaintainStats().forEach { state ->
-                                TaskStatusRow(title = state.first, tasks = state.third)
+                                TaskStatusRow(title = state.first, tasks = state.second)
                             }
                         }
                     }
@@ -194,7 +195,7 @@ private fun TaskStatusRow(
 fun PreviewMaintainObjectStatus() {
     MaintainerTheme {
         Column {
-            MaintainObjectStatus(
+            MachineStatus(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(DIM_XS),

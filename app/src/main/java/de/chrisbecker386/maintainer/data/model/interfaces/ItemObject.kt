@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 19/04/2023, 16:38
+ * Created by Christopher Becker on 24/04/2023, 14:13
  * Copyright (c) 2023. All rights reserved.
- * Last modified 19/04/2023, 16:38
+ * Last modified 24/04/2023, 14:13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,22 +17,15 @@
  *
  */
 
-package de.chrisbecker386.maintainer.data.model.dummy
+package de.chrisbecker386.maintainer.data.model.interfaces
 
-import de.chrisbecker386.maintainer.R
-import de.chrisbecker386.maintainer.data.model.CareObject
+import androidx.annotation.DrawableRes
 
-val dummyCares = listOf(
-    CareObject(
-        id = 1,
-        title = "kitchen",
-        graphic = R.drawable.kitchen_48px,
-        list = listOf(dummyMaintains[0], dummyMaintains[1])
-    ),
-    CareObject(
-        id = 2,
-        title = "car",
-        graphic = R.drawable.directions_car_48px,
-        list = listOf(dummyMaintains[2], dummyMaintains[3])
-    )
-)
+interface ItemObject {
+    val id: Int
+    val title: String
+
+    @get:DrawableRes
+    val graphic: Int?
+    val list: List<ItemObject>?
+}
