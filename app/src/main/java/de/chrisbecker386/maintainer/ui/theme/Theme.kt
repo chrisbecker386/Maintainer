@@ -34,8 +34,9 @@ private val DarkColorPalette = darkColors(
     surface = AiryBlack,
     onPrimary = AiryWhite,
     onSecondary = AiryWhite,
-    onBackground = AiryWhite,
-    onSurface = AiryWhite
+    onBackground = AiryBlack,
+    onSurface = AiryBlack,
+    onError = LightGray
 )
 
 private val LightColorPalette = lightColors(
@@ -48,7 +49,8 @@ private val LightColorPalette = lightColors(
     onPrimary = AiryWhite,
     onSecondary = AiryWhite,
     onBackground = AiryBlack,
-    onSurface = AiryBlack
+    onSurface = AiryBlack,
+    onError = AiryWhite
 )
 
 @Composable

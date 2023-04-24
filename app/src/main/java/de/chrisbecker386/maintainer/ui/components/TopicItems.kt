@@ -78,8 +78,8 @@ fun TopicWithItems(modifier: Modifier = Modifier, data: ItemObject) {
                             data.list?.forEachIndexed { index, item ->
                                 ItemNoDetails(
                                     modifier = Modifier.padding(bottom = DIM_XS),
-                                    data = item,
-                                    number = index+1
+                                    title = item.title,
+                                    number = index + 1
                                 )
                             }
                         }
@@ -91,7 +91,7 @@ fun TopicWithItems(modifier: Modifier = Modifier, data: ItemObject) {
 }
 
 @Composable
-fun ItemNoDetails(modifier: Modifier, data: ItemObject, number: Int?) {
+fun ItemNoDetails(modifier: Modifier = Modifier, title:String, number: Int? = null) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Start,
@@ -115,7 +115,7 @@ fun ItemNoDetails(modifier: Modifier, data: ItemObject, number: Int?) {
         }
         Text(
             modifier = Modifier.padding(start = DIM_XS),
-            text = data.title,
+            text = title,
             style = MaterialTheme.typography.body1,
             color = MaterialTheme.colors.onBackground
         )

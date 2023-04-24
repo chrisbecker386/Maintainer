@@ -19,15 +19,57 @@
 
 package de.chrisbecker386.maintainer.ui.home
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import de.chrisbecker386.maintainer.BuildConfig
+import de.chrisbecker386.maintainer.data.model.dummy.DummyData
+import de.chrisbecker386.maintainer.data.model.dummy.dummyCares
+import de.chrisbecker386.maintainer.data.model.dummy.dummyMaintains
+import de.chrisbecker386.maintainer.ui.components.MachineStatus
+import de.chrisbecker386.maintainer.ui.components.NextMaintainItem
+import de.chrisbecker386.maintainer.ui.components.NextMaintains
+import de.chrisbecker386.maintainer.ui.components.ShortStatus
+import de.chrisbecker386.maintainer.ui.theme.DIM_XS
+import de.chrisbecker386.maintainer.ui.theme.LightGreen
 
 @Composable
-fun HomeScreen(onTabSelectInfo: () -> Unit = {}, onTabSelectSettings: () -> Unit = {}) {
-    Column(Modifier.fillMaxWidth()) {
-        Text(text = "HomeScreen")
+fun HomeScreen(
+    modifier: Modifier = Modifier.background(color = LightGreen),
+    onCareObjectClick: (String) -> Unit = {},
+    onMachineClick: (String) -> Unit = {}
+) {
+    if (BuildConfig.DEBUG) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Text(text = "HomeScreen", Modifier.align(Alignment.BottomEnd))
+        }
+    }
+
+    LazyColumn(Modifier.fillMaxWidth()) {
+        item {
+            ShortStatus(
+                Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
+                maintained = 6,
+                total = 11
+            )
+        }
+        item {
+            NextMaintains(
+                Modifier
+                    .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS)
+                    .clickable { onMachineClick(DummyData.cares[0].list[0].title) },
+                machineTitle = DummyData.cares[0].list[0].title,
+                tasks = DummyData.cares[0].list[0].list
+            )
+        }
+
     }
 }

@@ -31,11 +31,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import de.chrisbecker386.maintainer.navigation.APP_TABS
+import de.chrisbecker386.maintainer.navigation.Home
 import de.chrisbecker386.maintainer.navigation.MaintainerAppBar
 import de.chrisbecker386.maintainer.navigation.MaintainerBottomBar
 import de.chrisbecker386.maintainer.navigation.MaintainerNavGraph
-import de.chrisbecker386.maintainer.navigation.Screen
-import de.chrisbecker386.maintainer.navigation.navigateWithPopUp
+import de.chrisbecker386.maintainer.navigation.navigateSingleTopTo
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXL
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXL
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
             val currentBackStack by navController.currentBackStackEntryAsState()
             val currentDestination = currentBackStack?.destination
             val currentScreen =
-                APP_TABS.find { it.route == currentDestination?.route } ?: Screen.Home
+                APP_TABS.find { it.route == currentDestination?.route } ?: Home
 
             Scaffold(
                 topBar = {
@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
                         allTabScreens = APP_TABS,
                         currentTab = currentScreen,
                         onSelected = { newDestination ->
-                            navController.navigateWithPopUp(
+                            navController.navigateSingleTopTo(
                                 newDestination.route
                             )
                         },

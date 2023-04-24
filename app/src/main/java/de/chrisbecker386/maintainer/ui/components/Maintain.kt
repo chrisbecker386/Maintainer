@@ -66,8 +66,8 @@ fun NextMaintains(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(DIM_S_PLUS))
-                .background(MaterialTheme.colors.primaryVariant)
+                .clip(RoundedCornerShape(DIM_S)),
+            backgroundColor = MaterialTheme.colors.onError
         ) {
             Column(
                 Modifier
@@ -117,7 +117,7 @@ fun NextMaintainItem(
             Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(DIM_S)),
-            backgroundColor = if (isMaintained) MediumGreen else MaterialTheme.colors.onError
+            backgroundColor = if (isMaintained) MediumGreen else MaterialTheme.colors.primaryVariant
         ) {
             Row(
                 Modifier
@@ -131,7 +131,7 @@ fun NextMaintainItem(
                         .clip(
                             RoundedCornerShape(DIM_XXS)
                         )
-                        .background(color = MaterialTheme.colors.primaryVariant),
+                        .background(color = MaterialTheme.colors.onError),
                     painter = painterResource(
                         id = graphic
                             ?: com.google.android.material.R.drawable.mtrl_ic_checkbox_unchecked

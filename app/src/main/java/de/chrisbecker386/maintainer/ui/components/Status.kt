@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -36,54 +37,171 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ProgressIndicatorDefaults
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Handyman
+import androidx.compose.material.icons.filled.HomeRepairService
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import de.chrisbecker386.maintainer.R
-import de.chrisbecker386.maintainer.data.model.CareObject
 import de.chrisbecker386.maintainer.data.model.MachineObject
 import de.chrisbecker386.maintainer.data.model.TaskObject
+import de.chrisbecker386.maintainer.data.model.dummy.dummyCares
 import de.chrisbecker386.maintainer.data.model.dummy.dummyMaintains
 import de.chrisbecker386.maintainer.data.model.getMaintainStats
+import de.chrisbecker386.maintainer.data.model.interfaces.ItemObject
 import de.chrisbecker386.maintainer.ui.theme.DIM_L
+import de.chrisbecker386.maintainer.ui.theme.DIM_L_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
+import de.chrisbecker386.maintainer.ui.theme.DIM_S_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
+import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 
-//TODO status Box that shows
-// number maintainable and maintained Objects / tasks
-// shows when and was is the next task/Object to care about
+/**
+ * Basic Status/Dashboard
+ * shows number of items
+ * shows number of items.list childs
+ * shows a list of all items
+ * */
 @Composable
-fun CareObjectStatus(
+fun BasicStatus(
     modifier: Modifier = Modifier,
-    data: CareObject
+    title: String,
+    propertyList: List<Pair<String, Int>>,
+    list: List<String>
 ) {
     Box(modifier = modifier) {
         Card(
             modifier = Modifier.fillMaxWidth(),
             elevation = DIM_XXXS,
-            shape = RoundedCornerShape(DIM_S)
+            shape = RoundedCornerShape(DIM_S),
+            backgroundColor = MaterialTheme.colors.primaryVariant
         ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.primaryVariant)
+                        .padding(DIM_XS),
 
+                    text = title, textAlign = TextAlign.Center, style = MaterialTheme.typography.h5
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.onError)
+                        .padding(DIM_XS)
+                ) {
 
+                    Column(Modifier.fillMaxWidth()) {
+                        Row {
+                            propertyList.forEach { property ->
+                                StatusItemBasic(
+                                    title = property.first, number = property.second
+                                )
+                                Spacer(modifier = Modifier.width(DIM_L_PLUS))
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(DIM_XXS))
+                        list.forEach {
+                            ItemNoDetails(title = it)
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
+fun ShortStatus(
+    modifier: Modifier = Modifier, maintained: Int, total: Int
+) {
+    Box(modifier = modifier) {
+        Card(
+            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(DIM_S)),
+            backgroundColor = MaterialTheme.colors.onError
+        ) {
+            Column(
+                Modifier.padding(
+                    top = DIM_S,
+                    bottom = DIM_S,
+                    start = DIM_XS,
+                    end = DIM_XS
+                )
+            ) {
+                Row {
+                    ConstraintLayout(Modifier.fillMaxWidth()) {
+                        val (leftTextRef, rightIcon, rightText) = createRefs()
+                        Text(
+                            modifier = Modifier.constrainAs(leftTextRef) {
+                                start.linkTo(parent.start)
+                                top.linkTo(parent.top)
+                                bottom.linkTo(parent.bottom)
+                            }, text = "Maintain Status", style = MaterialTheme.typography.body1
+
+                        )
+                        Text(
+                            modifier = Modifier.constrainAs(rightText) {
+                                end.linkTo(parent.end)
+                                top.linkTo(parent.top)
+                                bottom.linkTo(parent.bottom)
+                            },
+                            text = "$maintained/$total",
+                            style = MaterialTheme.typography.body1,
+                        )
+                        Image(
+                            modifier = Modifier
+                                .constrainAs(rightIcon) {
+                                    end.linkTo(rightText.start)
+                                    top.linkTo(parent.top)
+                                    bottom.linkTo(parent.bottom)
+                                }
+                                .padding(end = DIM_XXS),
+                            imageVector = Icons.Default.Handyman,
+                            contentDescription = "repair",
+                            colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground)
+                        )
+                    }
+
+                }
+                Spacer(modifier = Modifier.height(DIM_XXS))
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(DIM_XXS),
+                    progress = maintained.toFloat() / total.toFloat(),
+                    color = MaterialTheme.colors.primary,
+                    strokeCap = StrokeCap.Round
+                )
+            }
+        }
+
+    }
+}
+
+
+@Composable
 fun MachineStatus(
-    modifier: Modifier = Modifier,
-    data: MachineObject
+    modifier: Modifier = Modifier, data: MachineObject
 ) {
     Box(modifier = modifier) {
         Card(
@@ -91,8 +209,7 @@ fun MachineStatus(
             elevation = DIM_XXXS,
             shape = RoundedCornerShape(DIM_S),
             backgroundColor = MaterialTheme.colors.primaryVariant,
-
-            ) {
+        ) {
             Column {
                 Text(
                     modifier = Modifier
@@ -107,13 +224,12 @@ fun MachineStatus(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(MaterialTheme.colors.background)
+                        .background(MaterialTheme.colors.onError)
                         .padding(DIM_XS)
                 ) {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
-                            text = "Tasks",
-                            style = MaterialTheme.typography.h6
+                            text = "Tasks", style = MaterialTheme.typography.h6
                         )
 
                         Column(Modifier.fillMaxWidth()) {
@@ -130,10 +246,35 @@ fun MachineStatus(
 }
 
 @Composable
+private fun StatusItemBasic(
+    modifier: Modifier = Modifier, title: String, number: Int
+) {
+    Column(
+        verticalArrangement = Arrangement.SpaceAround, horizontalAlignment = Alignment.Start
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.body1,
+            color = MaterialTheme.colors.onBackground
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(modifier = Modifier.width(DIM_XS))
+            Text(
+                text = number.toString(),
+                style = MaterialTheme.typography.h4,
+                color = MaterialTheme.colors.onBackground
+            )
+
+        }
+    }
+
+}
+
+@Composable
 private fun TaskStatusRow(
-    modifier: Modifier = Modifier,
-    title: String,
-    tasks: List<TaskObject>
+    modifier: Modifier = Modifier, title: String, tasks: List<TaskObject>
 ) {
     Row(
         modifier.fillMaxWidth()
@@ -144,17 +285,14 @@ private fun TaskStatusRow(
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                text = title,
-                style = MaterialTheme.typography.body1
+                text = title, style = MaterialTheme.typography.body1
             )
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
             ) {
                 Spacer(modifier = Modifier.width(DIM_XS))
                 Text(
-                    text = tasks.size.toString(),
-                    style = MaterialTheme.typography.h4
+                    text = tasks.size.toString(), style = MaterialTheme.typography.h4
                 )
                 Spacer(modifier = Modifier.width(DIM_L))
                 LazyRow(modifier = Modifier.weight(3f)) {
@@ -198,9 +336,17 @@ fun PreviewMaintainObjectStatus() {
             MachineStatus(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(DIM_XS),
-                data = dummyMaintains[0]
+                    .padding(DIM_XS), data = dummyMaintains[0]
             )
+            BasicStatus(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(DIM_XS),
+                title = "Dashboard",
+                propertyList = listOf(Pair("Locactions", 2), Pair("Tasks", 3)),
+                list = listOf("Dishwasher", "coffee-machine")
+            )
+            ShortStatus(Modifier.padding(DIM_XS), maintained = 2, total = 7)
         }
     }
 }

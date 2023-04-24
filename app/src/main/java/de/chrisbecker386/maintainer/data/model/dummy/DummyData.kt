@@ -25,7 +25,7 @@ import de.chrisbecker386.maintainer.data.model.MachineObject
 
 // mocking repository
 object DummyData {
-    private val cares = dummyCares
+    val cares = dummyCares
     private val maintains = dummyMaintains
     private val steps = dummySteps
     private val tasks = dummyTasks

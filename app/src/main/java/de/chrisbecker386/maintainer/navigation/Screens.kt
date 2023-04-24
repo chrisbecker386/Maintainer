@@ -24,16 +24,41 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
-sealed class Screen(
-    val route: String,
-    val title: String,
-    val icon: ImageVector? = null
-) {
-    object Home : Screen(route = "home_screen", title = "home", icon = Icons.Default.Home)
-    object Info : Screen(route = "info_screen", title = "info", icon = Icons.Default.Info)
-    object Settings :
-        Screen(route = "settings_screen", title = "settings", icon = Icons.Default.Settings)
+interface Screen {
+    val route: String
+    val title: String
+    val icon: ImageVector?
 }
 
-val APP_TABS = listOf(Screen.Home, Screen.Info, Screen.Settings)
+
+object Home : Screen {
+    override val route: String = "home_screen"
+    override val title: String = "home"
+    override val icon: ImageVector = Icons.Default.Home
+}
+
+object Info : Screen {
+    override val route: String = "info_screen"
+    override val title: String = "info"
+    override val icon: ImageVector = Icons.Default.Info
+}
+
+object Settings : Screen {
+    override val route: String = "settings_screen"
+    override val title: String = "settings"
+    override val icon: ImageVector = Icons.Default.Settings
+}
+
+object SingleMachine : Screen {
+    override val route: String = "single_machine"
+    override val title: String = "Machine"
+    override val icon = null
+    const val machineTypeArg = "machine_type"
+    val routeWithArgs = "${route}/{${machineTypeArg}}"
+    val arguments = listOf(navArgument(machineTypeArg){type = NavType.StringType})
+}
+
+val APP_TABS = listOf(Home, Info, Settings)

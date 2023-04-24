@@ -30,7 +30,7 @@ val dummyMaintains = listOf(
         list = dummyTasks
     ),
     MachineObject(
-        id = 1,
+        id = 2,
         title = "Washing Machine",
         graphic = null,
         list = dummyTasks
