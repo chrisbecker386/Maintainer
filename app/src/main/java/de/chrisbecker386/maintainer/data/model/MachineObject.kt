@@ -20,43 +20,38 @@
 package de.chrisbecker386.maintainer.data.model
 
 import androidx.annotation.DrawableRes
+import de.chrisbecker386.maintainer.data.model.interfaces.ItemObject
 
-data class MaintainObject(
-    val id: Int,
-    val title: String,
+data class MachineObject(
+    override val id: Int,
+    override val title: String,
     @DrawableRes
-    val graphic: Int? = null,
-    val tasks: List<TaskObject> = emptyList()
-)
+    override val graphic: Int? = null,
+    override val list: List<TaskObject> = emptyList(),
+) : ItemObject
 
-fun MaintainObject.getNumberOfTasks(): Int = tasks.size
+fun MachineObject.getTasks() = list
 
-fun MaintainObject.getNumberOfOpenTask() = getOpenTasks().size
-
-fun MaintainObject.getNumberOfClosedTask() = getClosedTasks().size
-
-fun MaintainObject.getTasks() = tasks
-
-fun MaintainObject.getOpenTasks(): List<TaskObject> {
+fun MachineObject.getOpenTasks(): List<TaskObject> {
     val openTasks: MutableList<TaskObject> = mutableListOf()
-    tasks.forEach { task ->
+    list.forEach { task ->
         if (task.repeatCycle.isCycleValid(task.getLastPerformedDate())) openTasks.add(task)
     }
     return openTasks.toList()
 }
 
-fun MaintainObject.getClosedTasks(): List<TaskObject> {
+fun MachineObject.getClosedTasks(): List<TaskObject> {
     val closeTasks: MutableList<TaskObject> = mutableListOf()
-    tasks.forEach { task ->
+    list.forEach { task ->
         if (task.repeatCycle.isCycleExpired(task.getLastPerformedDate())) closeTasks.add(task)
     }
     return closeTasks.toList()
 }
 
-fun MaintainObject.getMaintainStats() = listOf(
-    Triple("Total", getNumberOfTasks(), getTasks()),
-    Triple("Open", getNumberOfOpenTask(), getOpenTasks()),
-    Triple("Closed", getNumberOfClosedTask(), getClosedTasks())
+fun MachineObject.getMaintainStats() = listOf(
+    Pair("Total", getTasks()),
+    Pair("Open", getOpenTasks()),
+    Pair("Closed", getClosedTasks())
 )
 
 

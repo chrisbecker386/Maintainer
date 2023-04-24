@@ -20,31 +20,31 @@
 package de.chrisbecker386.maintainer.data.model.dummy
 
 import de.chrisbecker386.maintainer.R
-import de.chrisbecker386.maintainer.data.model.MaintainObject
+import de.chrisbecker386.maintainer.data.model.MachineObject
 
 val dummyMaintains = listOf(
-    MaintainObject(
+    MachineObject(
         id = 1,
         title = "Espresso Machine",
         graphic = R.drawable.espresso_machine,
-        tasks = dummyTasks
+        list = dummyTasks
     ),
-    MaintainObject(
+    MachineObject(
         id = 1,
         title = "Washing Machine",
         graphic = null,
-        tasks = dummyTasks
+        list = dummyTasks
     ),
-    MaintainObject(
+    MachineObject(
         id = 3,
         title = "Motor",
         graphic = R.drawable.kettle_48px,
-        tasks = dummyTasks
+        list = dummyTasks
     ),
-    MaintainObject(
+    MachineObject(
         id = 4,
         title = "Tire",
         graphic = null,
-        tasks = dummyTasks
+        list = dummyTasks
     )
 )

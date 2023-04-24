@@ -27,13 +27,13 @@ val dummyTasks = listOf(
         id = 1,
         title = "Example Task",
         graphic = R.drawable.espresso_machine,
-        steps = dummySteps
+        list = dummySteps
     ),
     TaskObject(
         id = 2,
         title = "Example Task Other",
         graphic = null,
-        steps = dummySteps
+        list = dummySteps
     )
 
 )

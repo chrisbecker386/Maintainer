@@ -20,17 +20,19 @@
 package de.chrisbecker386.maintainer.data.model
 
 import androidx.annotation.DrawableRes
+import de.chrisbecker386.maintainer.data.model.interfaces.ItemObject
+import de.chrisbecker386.maintainer.data.model.interfaces.MaintainObject
 import java.time.LocalDate
 
 data class TaskObject(
-    val id: Int,
-    val title: String,
-    val performedDates: List<LocalDate>? = emptyList(),
-    val repeatCycle: RepeatCycle = RepeatCycle(RepeatFrequency.WEEKLY, 1),
+    override val id: Int,
+    override val title: String,
     @DrawableRes
-    val graphic: Int? = null,
-    val steps: List<StepObject> = emptyList()
-)
+    override val graphic: Int? = null,
+    override val list: List<StepObject> = emptyList(),
+    override val performedDates: List<LocalDate>? = emptyList(),
+    override val repeatCycle: RepeatCycle = RepeatCycle(RepeatFrequency.WEEKLY, 1),
+) : ItemObject, MaintainObject
 
 fun TaskObject.getLastPerformedDate(): LocalDate {
     return if (performedDates.isNullOrEmpty()) {

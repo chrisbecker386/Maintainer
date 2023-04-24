@@ -68,16 +68,7 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
-fun Step(modifier: Modifier = Modifier, data: StepObject, showDetails: Boolean = false) {
-    if (showDetails) {
-        StepWithDetails(modifier = modifier, data = data)
-    } else {
-        StepNoDetails(modifier = modifier, data = data)
-    }
-}
-
-@Composable
-fun StepWithDetails(modifier: Modifier, data: StepObject) {
+fun StepWithDetails(modifier: Modifier = Modifier, data: StepObject) {
     Row(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -197,46 +188,14 @@ private fun ExpandButton(
     }
 }
 
-@Composable
-private fun StepNoDetails(modifier: Modifier, data: StepObject) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .size(DIM_M_PLUS)
-                .background(
-                    color = MaterialTheme.colors.primaryVariant,
-                    shape = RoundedCornerShape(DIM_M)
-                ),
-            Alignment.Center
-        ) {
-            Text(
-                text = data.orderNumber.toString(),
-                style = MaterialTheme.typography.subtitle1,
-                color = MaterialTheme.colors.background,
-                textAlign = TextAlign.Center
-            )
-        }
-        Text(
-            modifier = Modifier.padding(start = DIM_XS),
-            text = data.title,
-            style = MaterialTheme.typography.body1,
-            color = MaterialTheme.colors.onBackground
-        )
-    }
-}
-
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewStep() {
     MaintainerTheme {
         Column {
-            Step(data = dummySteps[0], showDetails = false)
-            Step(data = dummySteps[1], showDetails = true)
-            Step(data = dummySteps[2], showDetails = true)
+            StepWithDetails(data = dummySteps[0])
+            StepWithDetails(data = dummySteps[1])
+            StepWithDetails(data = dummySteps[2])
         }
     }
 }
