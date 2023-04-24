@@ -24,34 +24,56 @@ import androidx.compose.ui.unit.dp
 // dimensions
 /** 1.dp*/
 val DIM_XXXXS = 1.dp
+
 /** 2.dp*/
 val DIM_XXXS = 2.dp
+
 /** 4.dp*/
 val DIM_XXS = 4.dp
+
 /** 8.dp*/
 val DIM_XS = 8.dp
+
 /** 12.dp*/
 val DIM_S = 12.dp
+
 /** 16.dp*/
 val DIM_S_PLUS = 16.dp
+
 /** 20.dp*/
 val DIM_M = 20.dp
+
 /** 24.dp*/
 val DIM_M_PLUS = 24.dp
+
 /** 32.dp*/
 val DIM_L = 32.dp
-/** 56.dp.dp*/
-val APP_BAR_HEIGHT = 56.dp
-/** 70.dp*/
-val BOTTOM_BAR_HEIGHT = 70.dp
+
 /** 40.dp*/
-val LIST_ITEM_TITLE_HEIGHT = 40.dp
+val DIM_L_PLUS = 40.dp
+
+/** 48.dp*/
+val DIM_XL = 48.dp
+
+/** 60.dp*/
+val DIM_XXL = 60.dp
+
+/** 72.dp*/
+val DIM_XXXL = 72.dp
 
 // durations
+/** 150 */
 const val TAB_FADE_IN_DURATION = 150
+
+/** 100 */
 const val TAB_FADE_IN_DELAY_DURATION = 100
+
+/** 100 */
 const val TAB_FADE_OUT_DURATION = 100
+
+/** 200 */
 const val ACCORDION_ANIMATION_DURATION = 200
 
 // opacity
+/** 0.6f */
 const val TAB_INACTIVE_OPACITY = 0.6f

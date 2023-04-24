@@ -36,8 +36,8 @@ import de.chrisbecker386.maintainer.navigation.MaintainerBottomBar
 import de.chrisbecker386.maintainer.navigation.MaintainerNavGraph
 import de.chrisbecker386.maintainer.navigation.Screen
 import de.chrisbecker386.maintainer.navigation.navigateWithPopUp
-import de.chrisbecker386.maintainer.ui.theme.APP_BAR_HEIGHT
-import de.chrisbecker386.maintainer.ui.theme.BOTTOM_BAR_HEIGHT
+import de.chrisbecker386.maintainer.ui.theme.DIM_XXL
+import de.chrisbecker386.maintainer.ui.theme.DIM_XXXL
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 class MainActivity : ComponentActivity() {
@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
                         title = currentScreen.title,
 //                        showBackButton = currentScreen == Screen.Home,
 //                        showContextMenu = currentScreen == Screen.Settings,
-                        modifier = Modifier.height(APP_BAR_HEIGHT)
+                        modifier = Modifier.height(DIM_XXL)
                     )
                 },
                 bottomBar = {
@@ -75,7 +75,7 @@ class MainActivity : ComponentActivity() {
                                 newDestination.route
                             )
                         },
-                        modifier = Modifier.height(BOTTOM_BAR_HEIGHT)
+                        modifier = Modifier.height(DIM_XXXL)
                     )
                 }
             ) { innerPadding ->
