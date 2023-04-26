@@ -27,7 +27,7 @@ data class MachineObject(
     override val title: String,
     @DrawableRes
     override val graphic: Int? = null,
-    override val list: List<TaskObject> = emptyList(),
+    override val list: List<TaskObject> = emptyList()
 ) : ItemObject
 
 fun MachineObject.getTasks() = list
@@ -53,5 +53,3 @@ fun MachineObject.getMaintainStats() = listOf(
     Pair("Open", getOpenTasks()),
     Pair("Closed", getClosedTasks())
 )
-
-

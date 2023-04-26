@@ -21,7 +21,6 @@ package de.chrisbecker386.maintainer.data.model
 
 import java.time.LocalDate
 
-
 data class RepeatCycle(val frequency: RepeatFrequency, val tact: Int)
 
 fun RepeatCycle.getNewCycleStart(date: LocalDate): LocalDate {

@@ -70,7 +70,6 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         }
         launchSingleTop = true
         restoreState = true
-
     }
 
 private fun NavHostController.navigateToSingleMachine(machineType: String) {

@@ -28,4 +28,4 @@ data class CareObject(
     @DrawableRes
     override val graphic: Int? = null,
     override val list: List<MachineObject> = emptyList()
-): ItemObject
+) : ItemObject

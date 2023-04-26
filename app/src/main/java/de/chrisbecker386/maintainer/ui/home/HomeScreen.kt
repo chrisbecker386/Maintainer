@@ -32,10 +32,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import de.chrisbecker386.maintainer.BuildConfig
 import de.chrisbecker386.maintainer.data.model.dummy.DummyData
-import de.chrisbecker386.maintainer.data.model.dummy.dummyCares
-import de.chrisbecker386.maintainer.data.model.dummy.dummyMaintains
-import de.chrisbecker386.maintainer.ui.components.MachineStatus
-import de.chrisbecker386.maintainer.ui.components.NextMaintainItem
 import de.chrisbecker386.maintainer.ui.components.NextMaintains
 import de.chrisbecker386.maintainer.ui.components.ShortStatus
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
@@ -70,6 +66,5 @@ fun HomeScreen(
                 tasks = DummyData.cares[0].list[0].list
             )
         }
-
     }
 }

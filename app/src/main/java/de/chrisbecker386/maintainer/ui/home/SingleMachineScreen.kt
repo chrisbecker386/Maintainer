@@ -36,6 +36,7 @@ fun SingleMachineScreen(
     MachineStatus(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(DIM_XS), data = machine
+            .padding(DIM_XS),
+        data = machine
     )
 }

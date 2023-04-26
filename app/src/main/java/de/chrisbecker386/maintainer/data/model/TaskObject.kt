@@ -31,7 +31,7 @@ data class TaskObject(
     override val graphic: Int? = null,
     override val list: List<StepObject> = emptyList(),
     override val performedDates: List<LocalDate>? = emptyList(),
-    override val repeatCycle: RepeatCycle = RepeatCycle(RepeatFrequency.WEEKLY, 1),
+    override val repeatCycle: RepeatCycle = RepeatCycle(RepeatFrequency.WEEKLY, 1)
 ) : ItemObject, MaintainObject
 
 fun TaskObject.getLastPerformedDate(): LocalDate {

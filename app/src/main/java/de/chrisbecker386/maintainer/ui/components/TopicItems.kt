@@ -91,7 +91,7 @@ fun TopicWithItems(modifier: Modifier = Modifier, data: ItemObject) {
 }
 
 @Composable
-fun ItemNoDetails(modifier: Modifier = Modifier, title:String, number: Int? = null) {
+fun ItemNoDetails(modifier: Modifier = Modifier, title: String, number: Int? = null) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Start,

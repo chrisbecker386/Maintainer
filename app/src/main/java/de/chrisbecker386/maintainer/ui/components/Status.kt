@@ -37,21 +37,17 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProgressIndicatorDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Handyman
-import androidx.compose.material.icons.filled.HomeRepairService
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -61,19 +57,15 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.model.MachineObject
 import de.chrisbecker386.maintainer.data.model.TaskObject
-import de.chrisbecker386.maintainer.data.model.dummy.dummyCares
 import de.chrisbecker386.maintainer.data.model.dummy.dummyMaintains
 import de.chrisbecker386.maintainer.data.model.getMaintainStats
-import de.chrisbecker386.maintainer.data.model.interfaces.ItemObject
 import de.chrisbecker386.maintainer.ui.theme.DIM_L
 import de.chrisbecker386.maintainer.ui.theme.DIM_L_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
-import de.chrisbecker386.maintainer.ui.theme.DIM_S_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
-
 
 /**
  * Basic Status/Dashboard
@@ -102,7 +94,9 @@ fun BasicStatus(
                         .background(MaterialTheme.colors.primaryVariant)
                         .padding(DIM_XS),
 
-                    text = title, textAlign = TextAlign.Center, style = MaterialTheme.typography.h5
+                    text = title,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.h5
                 )
                 Box(
                     modifier = Modifier
@@ -110,12 +104,12 @@ fun BasicStatus(
                         .background(MaterialTheme.colors.onError)
                         .padding(DIM_XS)
                 ) {
-
                     Column(Modifier.fillMaxWidth()) {
                         Row {
                             propertyList.forEach { property ->
                                 StatusItemBasic(
-                                    title = property.first, number = property.second
+                                    title = property.first,
+                                    number = property.second
                                 )
                                 Spacer(modifier = Modifier.width(DIM_L_PLUS))
                             }
@@ -133,7 +127,9 @@ fun BasicStatus(
 
 @Composable
 fun ShortStatus(
-    modifier: Modifier = Modifier, maintained: Int, total: Int
+    modifier: Modifier = Modifier,
+    maintained: Int,
+    total: Int
 ) {
     Box(modifier = modifier) {
         Card(
@@ -156,7 +152,9 @@ fun ShortStatus(
                                 start.linkTo(parent.start)
                                 top.linkTo(parent.top)
                                 bottom.linkTo(parent.bottom)
-                            }, text = "Maintain Status", style = MaterialTheme.typography.body1
+                            },
+                            text = "Maintain Status",
+                            style = MaterialTheme.typography.body1
 
                         )
                         Text(
@@ -166,7 +164,7 @@ fun ShortStatus(
                                 bottom.linkTo(parent.bottom)
                             },
                             text = "$maintained/$total",
-                            style = MaterialTheme.typography.body1,
+                            style = MaterialTheme.typography.body1
                         )
                         Image(
                             modifier = Modifier
@@ -181,7 +179,6 @@ fun ShortStatus(
                             colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground)
                         )
                     }
-
                 }
                 Spacer(modifier = Modifier.height(DIM_XXS))
                 LinearProgressIndicator(
@@ -194,21 +191,20 @@ fun ShortStatus(
                 )
             }
         }
-
     }
 }
 
-
 @Composable
 fun MachineStatus(
-    modifier: Modifier = Modifier, data: MachineObject
+    modifier: Modifier = Modifier,
+    data: MachineObject
 ) {
     Box(modifier = modifier) {
         Card(
             modifier = Modifier.fillMaxWidth(),
             elevation = DIM_XXXS,
             shape = RoundedCornerShape(DIM_S),
-            backgroundColor = MaterialTheme.colors.primaryVariant,
+            backgroundColor = MaterialTheme.colors.primaryVariant
         ) {
             Column {
                 Text(
@@ -229,7 +225,8 @@ fun MachineStatus(
                 ) {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
-                            text = "Tasks", style = MaterialTheme.typography.h6
+                            text = "Tasks",
+                            style = MaterialTheme.typography.h6
                         )
 
                         Column(Modifier.fillMaxWidth()) {
@@ -240,17 +237,19 @@ fun MachineStatus(
                     }
                 }
             }
-
         }
     }
 }
 
 @Composable
 private fun StatusItemBasic(
-    modifier: Modifier = Modifier, title: String, number: Int
+    modifier: Modifier = Modifier,
+    title: String,
+    number: Int
 ) {
     Column(
-        verticalArrangement = Arrangement.SpaceAround, horizontalAlignment = Alignment.Start
+        verticalArrangement = Arrangement.SpaceAround,
+        horizontalAlignment = Alignment.Start
     ) {
         Text(
             text = title,
@@ -266,15 +265,15 @@ private fun StatusItemBasic(
                 style = MaterialTheme.typography.h4,
                 color = MaterialTheme.colors.onBackground
             )
-
         }
     }
-
 }
 
 @Composable
 private fun TaskStatusRow(
-    modifier: Modifier = Modifier, title: String, tasks: List<TaskObject>
+    modifier: Modifier = Modifier,
+    title: String,
+    tasks: List<TaskObject>
 ) {
     Row(
         modifier.fillMaxWidth()
@@ -285,14 +284,17 @@ private fun TaskStatusRow(
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                text = title, style = MaterialTheme.typography.body1
+                text = title,
+                style = MaterialTheme.typography.body1
             )
             Row(
-                modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Spacer(modifier = Modifier.width(DIM_XS))
                 Text(
-                    text = tasks.size.toString(), style = MaterialTheme.typography.h4
+                    text = tasks.size.toString(),
+                    style = MaterialTheme.typography.h4
                 )
                 Spacer(modifier = Modifier.width(DIM_L))
                 LazyRow(modifier = Modifier.weight(3f)) {
@@ -320,11 +322,8 @@ private fun TaskStatusRow(
                         }
                     }
                 }
-
             }
-
         }
-
     }
 }
 
@@ -336,7 +335,8 @@ fun PreviewMaintainObjectStatus() {
             MachineStatus(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(DIM_XS), data = dummyMaintains[0]
+                    .padding(DIM_XS),
+                data = dummyMaintains[0]
             )
             BasicStatus(
                 modifier = Modifier

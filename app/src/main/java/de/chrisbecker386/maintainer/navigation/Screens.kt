@@ -33,7 +33,6 @@ interface Screen {
     val icon: ImageVector?
 }
 
-
 object Home : Screen {
     override val route: String = "home_screen"
     override val title: String = "home"
@@ -57,8 +56,8 @@ object SingleMachine : Screen {
     override val title: String = "Machine"
     override val icon = null
     const val machineTypeArg = "machine_type"
-    val routeWithArgs = "${route}/{${machineTypeArg}}"
-    val arguments = listOf(navArgument(machineTypeArg){type = NavType.StringType})
+    val routeWithArgs = "$route/{$machineTypeArg}"
+    val arguments = listOf(navArgument(machineTypeArg) { type = NavType.StringType })
 }
 
 val APP_TABS = listOf(Home, Info, Settings)

@@ -22,7 +22,6 @@ package de.chrisbecker386.maintainer.data.model.dummy
 import de.chrisbecker386.maintainer.data.model.CareObject
 import de.chrisbecker386.maintainer.data.model.MachineObject
 
-
 // mocking repository
 object DummyData {
     val cares = dummyCares
@@ -37,5 +36,4 @@ object DummyData {
     fun getMaintainObject(maintainName: String?): MachineObject {
         return maintains.first { it.title == maintainName }
     }
-
 }
