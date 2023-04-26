@@ -24,7 +24,6 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -62,8 +61,6 @@ import de.chrisbecker386.maintainer.data.model.dummy.dummySteps
 import de.chrisbecker386.maintainer.ui.theme.ACCORDION_ANIMATION_DURATION
 import de.chrisbecker386.maintainer.ui.theme.DIM_L_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_M
-import de.chrisbecker386.maintainer.ui.theme.DIM_M_PLUS
-import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 

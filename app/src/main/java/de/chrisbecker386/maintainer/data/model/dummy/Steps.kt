@@ -28,7 +28,7 @@ val dummySteps: List<StepObject> = listOf(
         orderNumber = 1,
         title = "Step 1",
         description = "This is step 1",
-        graphic = null,
+        graphic = null
     ),
 
     StepObject(

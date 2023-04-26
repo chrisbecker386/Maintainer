@@ -49,7 +49,6 @@ import de.chrisbecker386.maintainer.data.model.TaskObject
 import de.chrisbecker386.maintainer.data.model.dummy.dummyMaintains
 import de.chrisbecker386.maintainer.ui.theme.DIM_M
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
-import de.chrisbecker386.maintainer.ui.theme.DIM_S_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XL
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
@@ -80,7 +79,8 @@ fun NextMaintains(
                     color = MaterialTheme.colors.onBackground
                 )
                 Text(
-                    text = machineTitle, style = MaterialTheme.typography.body1,
+                    text = machineTitle,
+                    style = MaterialTheme.typography.body1,
                     color = MaterialTheme.colors.onBackground
                 )
                 Spacer(modifier = Modifier.height(DIM_S))
@@ -97,7 +97,6 @@ fun NextMaintains(
                     }
                 }
             }
-
         }
     }
 }
@@ -137,7 +136,7 @@ fun NextMaintainItem(
                             ?: com.google.android.material.R.drawable.mtrl_ic_checkbox_unchecked
                     ),
                     contentDescription = title,
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.width(DIM_XS))
                 Column(
@@ -154,13 +153,10 @@ fun NextMaintainItem(
                         style = MaterialTheme.typography.h5,
                         color = MaterialTheme.colors.onBackground
                     )
-
                 }
             }
         }
-
     }
-
 }
 
 @Preview(uiMode = UI_MODE_NIGHT_YES)
