@@ -70,36 +70,36 @@ val Typography = Typography(
     h1 = TextStyle(
         fontFamily = nunitoSansFont,
         fontWeight = FontWeight.Light,
-        fontSize = 106.sp,
+        fontSize = 53.sp,
         letterSpacing = (-1.5).sp
     ),
     h2 = TextStyle(
         fontFamily = nunitoSansFont,
-        fontWeight = FontWeight.Light,
-        fontSize = 66.sp,
-        letterSpacing = (-0.5).sp
+        fontWeight = FontWeight.Bold,
+        fontSize = 37.sp,
+        letterSpacing = 0.25.sp
     ),
     h3 = TextStyle(
         fontFamily = nunitoSansFont,
-        fontWeight = FontWeight.Normal,
-        fontSize = 53.sp,
-        letterSpacing = 0.sp
+        fontWeight = FontWeight.Medium,
+        fontSize = 30.sp,
+        letterSpacing = 0.25.sp
     ),
     h4 = TextStyle(
         fontFamily = nunitoSansFont,
-        fontWeight = FontWeight.Normal,
-        fontSize = 37.sp,
+        fontWeight = FontWeight.Bold,
+        fontSize = 26.sp,
         letterSpacing = 0.25.sp
     ),
     h5 = TextStyle(
         fontFamily = nunitoSansFont,
-        fontWeight = FontWeight.Bold,
-        fontSize = 26.sp,
+        fontWeight = FontWeight.Medium,
+        fontSize = 24.sp,
         letterSpacing = 0.sp
     ),
     h6 = TextStyle(
         fontFamily = nunitoSansFont,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
         letterSpacing = 0.15.sp
     ),

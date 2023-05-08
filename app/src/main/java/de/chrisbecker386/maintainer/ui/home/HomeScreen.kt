@@ -19,7 +19,6 @@
 
 package de.chrisbecker386.maintainer.ui.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,11 +34,10 @@ import de.chrisbecker386.maintainer.data.model.dummy.DummyData
 import de.chrisbecker386.maintainer.ui.components.NextMaintains
 import de.chrisbecker386.maintainer.ui.components.ShortStatus
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
-import de.chrisbecker386.maintainer.ui.theme.LightGreen
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier.background(color = LightGreen),
+    modifier: Modifier = Modifier,
     onCareObjectClick: (String) -> Unit = {},
     onMachineClick: (String) -> Unit = {}
 ) {
@@ -48,23 +46,25 @@ fun HomeScreen(
             Text(text = "HomeScreen", Modifier.align(Alignment.BottomEnd))
         }
     }
-
-    LazyColumn(Modifier.fillMaxWidth()) {
-        item {
-            ShortStatus(
-                Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
-                maintained = 6,
-                total = 11
-            )
-        }
-        item {
-            NextMaintains(
-                Modifier
-                    .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS)
-                    .clickable { onMachineClick(DummyData.cares[0].list[0].title) },
-                machineTitle = DummyData.cares[0].list[0].title,
-                tasks = DummyData.cares[0].list[0].list
-            )
+    Box(modifier = modifier) {
+        LazyColumn(Modifier.fillMaxWidth()) {
+            item {
+                ShortStatus(
+                    Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
+                    title = "Maintain Status",
+                    numerator = 6,
+                    denominator = 11
+                )
+            }
+            item {
+                NextMaintains(
+                    Modifier
+                        .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS)
+                        .clickable { onMachineClick(DummyData.cares[0].list[0].title) },
+                    machineTitle = DummyData.cares[0].list[0].title,
+                    tasks = DummyData.cares[0].list[0].list
+                )
+            }
         }
     }
 }

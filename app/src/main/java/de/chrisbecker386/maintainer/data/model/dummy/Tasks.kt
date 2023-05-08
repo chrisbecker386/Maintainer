@@ -26,13 +26,13 @@ val dummyTasks = listOf(
     TaskObject(
         id = 1,
         title = "Example Task",
-        graphic = R.drawable.espresso_machine,
+        graphic = R.drawable.kettle_48px,
         list = dummySteps
     ),
     TaskObject(
         id = 2,
         title = "Example Task Other",
-        graphic = null,
+        graphic = R.drawable.ic_launcher_foreground,
         list = dummySteps
     )
 
