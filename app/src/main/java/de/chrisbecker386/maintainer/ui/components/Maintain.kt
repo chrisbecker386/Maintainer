@@ -42,6 +42,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,6 +50,7 @@ import de.chrisbecker386.maintainer.data.model.TaskObject
 import de.chrisbecker386.maintainer.data.model.dummy.dummyMaintains
 import de.chrisbecker386.maintainer.ui.theme.DIM_M
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
+import de.chrisbecker386.maintainer.ui.theme.DIM_S_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XL
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
@@ -65,7 +67,14 @@ fun NextMaintains(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(DIM_S)),
+                .clip(
+                    RoundedCornerShape(
+                        topStart = DIM_S,
+                        topEnd = DIM_S,
+                        bottomStart = DIM_S_PLUS,
+                        bottomEnd = DIM_S_PLUS
+                    )
+                ),
             backgroundColor = MaterialTheme.colors.onError
         ) {
             Column(
@@ -75,7 +84,7 @@ fun NextMaintains(
             ) {
                 Text(
                     text = "next maintains",
-                    style = MaterialTheme.typography.h4,
+                    style = MaterialTheme.typography.h2,
                     color = MaterialTheme.colors.onBackground
                 )
                 Text(
@@ -136,7 +145,8 @@ fun NextMaintainItem(
                             ?: com.google.android.material.R.drawable.mtrl_ic_checkbox_unchecked
                     ),
                     contentDescription = title,
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground)
                 )
                 Spacer(modifier = Modifier.width(DIM_XS))
                 Column(
@@ -150,7 +160,7 @@ fun NextMaintainItem(
                     )
                     Text(
                         text = title,
-                        style = MaterialTheme.typography.h5,
+                        style = MaterialTheme.typography.h3,
                         color = MaterialTheme.colors.onBackground
                     )
                 }

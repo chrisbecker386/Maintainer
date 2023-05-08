@@ -57,83 +57,26 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.model.MachineObject
 import de.chrisbecker386.maintainer.data.model.TaskObject
-import de.chrisbecker386.maintainer.data.model.dummy.dummyMaintains
 import de.chrisbecker386.maintainer.data.model.getMaintainStats
 import de.chrisbecker386.maintainer.ui.theme.DIM_L
-import de.chrisbecker386.maintainer.ui.theme.DIM_L_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
-/**
- * Basic Status/Dashboard
- * shows number of items
- * shows number of items.list childs
- * shows a list of all items
- * */
-@Composable
-fun BasicStatus(
-    modifier: Modifier = Modifier,
-    title: String,
-    propertyList: List<Pair<String, Int>>,
-    list: List<String>
-) {
-    Box(modifier = modifier) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = DIM_XXXS,
-            shape = RoundedCornerShape(DIM_S),
-            backgroundColor = MaterialTheme.colors.primaryVariant
-        ) {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colors.primaryVariant)
-                        .padding(DIM_XS),
-
-                    text = title,
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.h5
-                )
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colors.onError)
-                        .padding(DIM_XS)
-                ) {
-                    Column(Modifier.fillMaxWidth()) {
-                        Row {
-                            propertyList.forEach { property ->
-                                StatusItemBasic(
-                                    title = property.first,
-                                    number = property.second
-                                )
-                                Spacer(modifier = Modifier.width(DIM_L_PLUS))
-                            }
-                        }
-                        Spacer(modifier = Modifier.height(DIM_XXS))
-                        list.forEach {
-                            ItemNoDetails(title = it)
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 @Composable
 fun ShortStatus(
     modifier: Modifier = Modifier,
-    maintained: Int,
-    total: Int
+    title: String = "",
+    numerator: Int,
+    denominator: Int
 ) {
     Box(modifier = modifier) {
         Card(
-            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(DIM_S)),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(DIM_S)),
             backgroundColor = MaterialTheme.colors.onError
         ) {
             Column(
@@ -153,7 +96,7 @@ fun ShortStatus(
                                 top.linkTo(parent.top)
                                 bottom.linkTo(parent.bottom)
                             },
-                            text = "Maintain Status",
+                            text = title,
                             style = MaterialTheme.typography.body1
 
                         )
@@ -163,7 +106,7 @@ fun ShortStatus(
                                 top.linkTo(parent.top)
                                 bottom.linkTo(parent.bottom)
                             },
-                            text = "$maintained/$total",
+                            text = "$numerator/$denominator",
                             style = MaterialTheme.typography.body1
                         )
                         Image(
@@ -185,7 +128,7 @@ fun ShortStatus(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(DIM_XXS),
-                    progress = maintained.toFloat() / total.toFloat(),
+                    progress = numerator.toFloat() / denominator.toFloat(),
                     color = MaterialTheme.colors.primary,
                     strokeCap = StrokeCap.Round
                 )
@@ -237,34 +180,6 @@ fun MachineStatus(
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun StatusItemBasic(
-    modifier: Modifier = Modifier,
-    title: String,
-    number: Int
-) {
-    Column(
-        verticalArrangement = Arrangement.SpaceAround,
-        horizontalAlignment = Alignment.Start
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.body1,
-            color = MaterialTheme.colors.onBackground
-        )
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Spacer(modifier = Modifier.width(DIM_XS))
-            Text(
-                text = number.toString(),
-                style = MaterialTheme.typography.h4,
-                color = MaterialTheme.colors.onBackground
-            )
         }
     }
 }
@@ -332,21 +247,12 @@ private fun TaskStatusRow(
 fun PreviewMaintainObjectStatus() {
     MaintainerTheme {
         Column {
-            MachineStatus(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(DIM_XS),
-                data = dummyMaintains[0]
+            ShortStatus(
+                Modifier.padding(DIM_XS),
+                title = "Maintain Status",
+                numerator = 2,
+                denominator = 7
             )
-            BasicStatus(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(DIM_XS),
-                title = "Dashboard",
-                propertyList = listOf(Pair("Locactions", 2), Pair("Tasks", 3)),
-                list = listOf("Dishwasher", "coffee-machine")
-            )
-            ShortStatus(Modifier.padding(DIM_XS), maintained = 2, total = 7)
         }
     }
 }

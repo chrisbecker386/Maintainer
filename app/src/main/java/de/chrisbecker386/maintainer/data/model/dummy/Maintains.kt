@@ -26,19 +26,19 @@ val dummyMaintains = listOf(
     MachineObject(
         id = 1,
         title = "Espresso Machine",
-        graphic = R.drawable.espresso_machine,
+        graphic = R.drawable.kettle_48px,
         list = dummyTasks
     ),
     MachineObject(
         id = 2,
-        title = "Washing Machine",
-        graphic = null,
+        title = "Motor",
+        graphic = R.drawable.directions_car_48px,
         list = dummyTasks
     ),
     MachineObject(
         id = 3,
-        title = "Motor",
-        graphic = R.drawable.kettle_48px,
+        title = "Washing Machine",
+        graphic = null,
         list = dummyTasks
     ),
     MachineObject(
