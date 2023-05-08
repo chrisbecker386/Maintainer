@@ -29,5 +29,6 @@ data class StepObject(
     override val graphic: Int? = null,
     override val list: List<ItemObject>? = null,
     val orderNumber: Int,
-    val description: String? = null
+    val description: String? = null,
+    var done: Boolean = false
 ) : ItemObject

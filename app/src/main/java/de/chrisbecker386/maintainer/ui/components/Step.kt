@@ -131,7 +131,7 @@ fun StepWithDetails(modifier: Modifier = Modifier, data: StepObject) {
                                 },
                             text = data.title,
                             style = MaterialTheme.typography.subtitle1,
-                            color = MaterialTheme.colors.surface
+                            color = MaterialTheme.colors.onBackground
                         )
                         data.description?.let {
                             ExpandButton(

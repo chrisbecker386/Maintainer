@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 25/04/2023, 12:33
+ * Created by Christopher Becker on 08/05/2023, 10:49
  * Copyright (c) 2023. All rights reserved.
- * Last modified 25/04/2023, 12:33
+ * Last modified 08/05/2023, 10:49
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,55 +19,55 @@
 
 package de.chrisbecker386.maintainer.ui.home
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import de.chrisbecker386.maintainer.data.model.ApproximateTime
 import de.chrisbecker386.maintainer.data.model.dummy.DummyData
 import de.chrisbecker386.maintainer.ui.components.ShortStatus
-import de.chrisbecker386.maintainer.ui.components.TaskContent
+import de.chrisbecker386.maintainer.ui.components.StepWithDetails
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
-fun SingleMachineScreen(
-    machineType: String? = "Espresso Machine",
-    onTaskClick: (String) -> Unit = {}
-) {
-    val machine = remember(machineType) { DummyData.getMaintainObject(machineType) }
+fun SingleTaskScreen(taskType: String? = "Unclogging") {
+    val task = remember(taskType) { DummyData.getTaskObject(taskType) }
+    var doneTasks by rememberSaveable { mutableStateOf(0) }
+
     LazyColumn(Modifier.fillMaxWidth()) {
         item {
             ShortStatus(
                 modifier = Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
-                title = "${machine.title} Status",
-                numerator = 0,
-                denominator = 2
+                title = "${task.title} Status",
+                numerator = doneTasks,
+                denominator = task.list.size
             )
         }
-        items(count = machine.list.size) { index ->
-            TaskContent(
-                modifier = Modifier
-                    .clickable { onTaskClick(machine.list[index].title) }
-                    .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
-                title = machine.list[index].title,
-                subtitle = "none",
-                approximateTime = ApproximateTime.MIN_45,
-                numberOfSteps = 4
+        items(count = task.list.size) { index ->
+            StepWithDetails(
+                Modifier.clickable {
+                    task.list[index].done = true
+                    doneTasks = task.list.filter { it.done }.size
+                }.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
+                data = task.list[index]
             )
         }
     }
 }
 
-@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun PreviewSingleMachine() {
+fun PreviewSingleTaskScreen() {
     MaintainerTheme {
-        SingleMachineScreen()
+        SingleTaskScreen()
     }
 }
