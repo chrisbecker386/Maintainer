@@ -60,4 +60,13 @@ object SingleMachine : Screen {
     val arguments = listOf(navArgument(machineTypeArg) { type = NavType.StringType })
 }
 
+object SingleTask : Screen {
+    override val route: String = "single_task"
+    override val title: String = "Task"
+    override val icon = null
+    const val taskTypeArg = "task_type"
+    val routeWithArgs = "$route/{$taskTypeArg}"
+    val arguments = listOf(navArgument(taskTypeArg) { type = NavType.StringType })
+}
+
 val APP_TABS = listOf(Home, Info, Settings)

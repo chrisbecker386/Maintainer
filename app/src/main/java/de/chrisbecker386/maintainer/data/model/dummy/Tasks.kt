@@ -25,13 +25,13 @@ import de.chrisbecker386.maintainer.data.model.TaskObject
 val dummyTasks = listOf(
     TaskObject(
         id = 1,
-        title = "Example Task",
+        title = "clean water tank",
         graphic = R.drawable.kettle_48px,
-        list = dummySteps
+        list = cleanWaterTank
     ),
     TaskObject(
         id = 2,
-        title = "Example Task Other",
+        title = "unclogging",
         graphic = R.drawable.ic_launcher_foreground,
         list = dummySteps
     )

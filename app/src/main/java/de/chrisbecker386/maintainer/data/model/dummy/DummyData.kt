@@ -21,6 +21,7 @@ package de.chrisbecker386.maintainer.data.model.dummy
 
 import de.chrisbecker386.maintainer.data.model.CareObject
 import de.chrisbecker386.maintainer.data.model.MachineObject
+import de.chrisbecker386.maintainer.data.model.TaskObject
 
 // mocking repository
 object DummyData {
@@ -35,5 +36,9 @@ object DummyData {
 
     fun getMaintainObject(maintainName: String?): MachineObject {
         return maintains.first { it.title == maintainName }
+    }
+
+    fun getTaskObject(taskName: String?): TaskObject {
+        return tasks.first { it.title == taskName }
     }
 }
