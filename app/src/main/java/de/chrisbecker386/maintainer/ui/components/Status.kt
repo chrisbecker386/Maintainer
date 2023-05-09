@@ -20,6 +20,7 @@
 package de.chrisbecker386.maintainer.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -57,12 +58,15 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.model.MachineObject
 import de.chrisbecker386.maintainer.data.model.TaskObject
+import de.chrisbecker386.maintainer.data.model.dummy.dummyTasks
 import de.chrisbecker386.maintainer.data.model.getMaintainStats
 import de.chrisbecker386.maintainer.ui.theme.DIM_L
+import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXS
+import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
@@ -75,9 +79,10 @@ fun ShortStatus(
     Box(modifier = modifier) {
         Card(
             modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(DIM_S)),
-            backgroundColor = MaterialTheme.colors.onError
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(DIM_XS),
+            elevation = DIM_NO,
+            border = BorderStroke(width = DIM_XXXXS, color = MaterialTheme.colors.onBackground)
         ) {
             Column(
                 Modifier.padding(
@@ -146,8 +151,7 @@ fun MachineStatus(
         Card(
             modifier = Modifier.fillMaxWidth(),
             elevation = DIM_XXXS,
-            shape = RoundedCornerShape(DIM_S),
-            backgroundColor = MaterialTheme.colors.primaryVariant
+            shape = RoundedCornerShape(DIM_S)
         ) {
             Column {
                 Text(
@@ -163,7 +167,6 @@ fun MachineStatus(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(MaterialTheme.colors.onError)
                         .padding(DIM_XS)
                 ) {
                     Column(modifier = Modifier.fillMaxWidth()) {
@@ -252,6 +255,10 @@ fun PreviewMaintainObjectStatus() {
                 title = "Maintain Status",
                 numerator = 2,
                 denominator = 7
+            )
+            NextMaintains(
+                machineTitle = "machine",
+                tasks = dummyTasks
             )
         }
     }

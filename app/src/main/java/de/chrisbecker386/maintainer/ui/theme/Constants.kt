@@ -22,6 +22,9 @@ package de.chrisbecker386.maintainer.ui.theme
 import androidx.compose.ui.unit.dp
 
 // dimensions
+/** 0.dp*/
+val DIM_NO = 0.dp
+
 /** 1.dp*/
 val DIM_XXXXS = 1.dp
 
