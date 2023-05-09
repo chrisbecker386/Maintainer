@@ -40,6 +40,11 @@ val BaseGreen = Color(0xFF407361)
 val MediumGreen = Color(0xFF5C8E79)
 val LightGreen = Color(0xFFC5C895)
 
+val DarkBlue = Color(0xFF1A4A60)
+val BaseBlue = Color(0xFF0A5C7F)
+val MediumBlue = Color(0xFF1C86A4)
+val LightBlue = Color(0xFF7ECED0)
+
 val BaseGray = Color(0xFF333936)
 val MediumGray = Color(0xFF676867)
 val LightGray = Color(0xFFB3AFB2)

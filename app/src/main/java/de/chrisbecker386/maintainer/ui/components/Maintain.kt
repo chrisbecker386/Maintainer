@@ -22,8 +22,8 @@ package de.chrisbecker386.maintainer.ui.components
 import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,13 +49,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.data.model.TaskObject
 import de.chrisbecker386.maintainer.data.model.dummy.dummyMaintains
 import de.chrisbecker386.maintainer.ui.theme.DIM_M
+import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_S_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XL
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
+import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
-import de.chrisbecker386.maintainer.ui.theme.MediumGreen
 
 @Composable
 fun NextMaintains(
@@ -66,16 +67,19 @@ fun NextMaintains(
     Box(modifier = modifier) {
         Card(
             modifier = Modifier
-                .fillMaxWidth()
-                .clip(
-                    RoundedCornerShape(
-                        topStart = DIM_S,
-                        topEnd = DIM_S,
-                        bottomStart = DIM_S_PLUS,
-                        bottomEnd = DIM_S_PLUS
-                    )
-                ),
-            backgroundColor = MaterialTheme.colors.onError
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(
+                topStart = DIM_S,
+                topEnd = DIM_S,
+                bottomStart = DIM_S_PLUS,
+                bottomEnd = DIM_S_PLUS
+            ),
+            elevation = DIM_NO,
+            border = BorderStroke(
+                width = DIM_XXXXS,
+                color = MaterialTheme.colors.onBackground
+            )
+
         ) {
             Column(
                 Modifier
@@ -122,10 +126,14 @@ fun NextMaintainItem(
 ) {
     Box(modifier = modifier) {
         Card(
+            modifier =
             Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(DIM_S)),
-            backgroundColor = if (isMaintained) MediumGreen else MaterialTheme.colors.primaryVariant
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(DIM_S),
+            border = BorderStroke(
+                width = DIM_XXXXS,
+                color = MaterialTheme.colors.onBackground
+            )
         ) {
             Row(
                 Modifier
@@ -138,8 +146,7 @@ fun NextMaintainItem(
                         .size(DIM_XL)
                         .clip(
                             RoundedCornerShape(DIM_XXS)
-                        )
-                        .background(color = MaterialTheme.colors.onError),
+                        ),
                     painter = painterResource(
                         id = graphic
                             ?: com.google.android.material.R.drawable.mtrl_ic_checkbox_unchecked
@@ -169,7 +176,7 @@ fun NextMaintainItem(
     }
 }
 
-@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Preview(uiMode = UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun PreviewNextMaintains() {
     MaintainerTheme {

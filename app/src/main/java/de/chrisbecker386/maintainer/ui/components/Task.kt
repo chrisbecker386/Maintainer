@@ -19,7 +19,7 @@
 
 package de.chrisbecker386.maintainer.ui.components
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -36,12 +36,13 @@ import androidx.compose.material.icons.filled.FactCheck
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.data.model.ApproximateTime
+import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
+import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
@@ -56,9 +57,10 @@ fun TaskContent(
     Box(modifier = modifier) {
         Card(
             modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(DIM_S)),
-            backgroundColor = MaterialTheme.colors.onError
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(DIM_S),
+            elevation = DIM_NO,
+            border = BorderStroke(width = DIM_XXXXS, color = MaterialTheme.colors.onBackground)
         ) {
             Column(
                 Modifier
@@ -88,7 +90,7 @@ fun TaskContent(
 fun IconWithTextRow(modifier: Modifier) {
 }
 
-@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Preview
 @Composable
 fun PreviewTaskContent() {
     MaintainerTheme {
