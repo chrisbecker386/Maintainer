@@ -28,28 +28,33 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import de.chrisbecker386.maintainer.navigation.APP_TABS
 import de.chrisbecker386.maintainer.navigation.Home
 import de.chrisbecker386.maintainer.navigation.MaintainerAppBar
 import de.chrisbecker386.maintainer.navigation.MaintainerBottomBar
 import de.chrisbecker386.maintainer.navigation.MaintainerNavGraph
 import de.chrisbecker386.maintainer.navigation.navigateSingleTopTo
+import de.chrisbecker386.maintainer.ui.home.HomeScreenViewModel
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXL
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXL
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaintainerApp()
+            MaintainersApp()
+
         }
     }
 
     @Composable
-    fun MaintainerApp() {
+    fun MaintainersApp() {
         MaintainerTheme {
             val navController = rememberNavController()
             val currentBackStack by navController.currentBackStackEntryAsState()

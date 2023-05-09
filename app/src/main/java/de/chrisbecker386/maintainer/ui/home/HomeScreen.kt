@@ -29,6 +29,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import de.chrisbecker386.maintainer.BuildConfig
 import de.chrisbecker386.maintainer.data.model.dummy.DummyData
 import de.chrisbecker386.maintainer.ui.components.NextMaintains
@@ -41,6 +42,8 @@ fun HomeScreen(
     onCareObjectClick: (String) -> Unit = {},
     onMachineClick: (String) -> Unit = {}
 ) {
+    val viewModel= hiltViewModel<HomeScreenViewModel>()
+
     if (BuildConfig.DEBUG) {
         Box(modifier = Modifier.fillMaxSize()) {
             Text(text = "HomeScreen", Modifier.align(Alignment.BottomEnd))
