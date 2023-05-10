@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 09/05/2023, 14:02
+ * Created by Christopher Becker on 13/04/2023, 17:40
  * Copyright (c) 2023. All rights reserved.
- * Last modified 09/05/2023, 14:02
+ * Last modified 13/04/2023, 17:40
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,17 @@
  *
  */
 
-package de.chrisbecker386.maintainer.ui.home
+package de.chrisbecker386.maintainer.ui.tab.settings
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
-import javax.inject.Inject
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
-@HiltViewModel
-class HomeScreenViewModel @Inject constructor(private val repository: MaintainerRepository) :
-    ViewModel() {
-        //TODO add data some data an provide function to the homescreen
-
+@Composable
+fun SettingsScreen(onTabSelectHome: () -> Unit = {}, onTabSelectInfo: () -> Unit = {}) {
+    Column(Modifier.fillMaxWidth()) {
+        Text(text = "SettingsScreen")
+    }
 }

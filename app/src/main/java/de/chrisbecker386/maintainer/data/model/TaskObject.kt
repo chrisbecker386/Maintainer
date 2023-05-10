@@ -28,7 +28,7 @@ data class TaskObject(
     override val id: Int,
     override val title: String,
     @DrawableRes
-    override val graphic: Int? = null,
+    val graphic: Int? = null,
     override val list: List<StepObject> = emptyList(),
     override val performedDates: List<LocalDate>? = emptyList(),
     override val repeatCycle: RepeatCycle = RepeatCycle(RepeatFrequency.WEEKLY, 1)

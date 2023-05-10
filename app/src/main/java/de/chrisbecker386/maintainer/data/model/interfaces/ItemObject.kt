@@ -19,13 +19,9 @@
 
 package de.chrisbecker386.maintainer.data.model.interfaces
 
-import androidx.annotation.DrawableRes
-
 interface ItemObject {
     val id: Int
     val title: String
 
-    @get:DrawableRes
-    val graphic: Int?
     val list: List<ItemObject>?
 }

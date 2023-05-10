@@ -17,7 +17,7 @@
  *
  */
 
-package de.chrisbecker386.maintainer.ui.components
+package de.chrisbecker386.maintainer.ui.component
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES

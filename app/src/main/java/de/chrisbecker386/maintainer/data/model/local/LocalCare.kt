@@ -26,8 +26,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "cares")
 data class LocalCare(
     @PrimaryKey
-    @ColumnInfo(name ="care_id")
-    val id:Int,
-    @ColumnInfo(name ="care_title")
-    val title:String
+    @ColumnInfo(name = "care_id")
+    val id: Int,
+    @ColumnInfo(name = "care_title")
+    val title: String
 )

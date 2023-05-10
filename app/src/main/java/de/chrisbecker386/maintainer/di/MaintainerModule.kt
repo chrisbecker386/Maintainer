@@ -49,10 +49,10 @@ object MaintainerModule {
             "maintainer_database"
         ).fallbackToDestructiveMigration().build()
     }
+
     @Provides
     @Singleton
-    fun provideMaintainerRepository(database: MaintainerDb):MaintainerRepository{
-        return  MaintainerRepositoryImpl(database)
+    fun provideMaintainerRepository(database: MaintainerDb): MaintainerRepository {
+        return MaintainerRepositoryImpl(database)
     }
-
 }
