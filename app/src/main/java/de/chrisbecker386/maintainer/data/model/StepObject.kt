@@ -26,7 +26,7 @@ data class StepObject(
     override val id: Int,
     override val title: String,
     @DrawableRes
-    override val graphic: Int? = null,
+    val graphic: Int? = null,
     override val list: List<ItemObject>? = null,
     val orderNumber: Int,
     val description: String? = null,

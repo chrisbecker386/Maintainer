@@ -19,20 +19,43 @@
 
 package de.chrisbecker386.maintainer.data.model.dummy
 
-import de.chrisbecker386.maintainer.R
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DirectionsBike
+import androidx.compose.material.icons.filled.DirectionsCar
+import androidx.compose.material.icons.filled.Kitchen
+import androidx.compose.material.icons.filled.Laptop
+import androidx.compose.material.icons.filled.Shower
 import de.chrisbecker386.maintainer.data.model.CareObject
 
 val dummyCares = listOf(
     CareObject(
         id = 1,
-        title = "kitchen",
-        graphic = R.drawable.kitchen_48px,
+        title = "Kitchen",
+        graphic = Icons.Default.Kitchen,
         list = listOf(dummyMaintains[0], dummyMaintains[1])
     ),
     CareObject(
         id = 2,
-        title = "car",
-        graphic = R.drawable.directions_car_48px,
+        title = "Car",
+        graphic = Icons.Default.DirectionsCar,
+        list = listOf(dummyMaintains[2], dummyMaintains[3])
+    ),
+    CareObject(
+        id = 3,
+        title = "Bathroom",
+        graphic = Icons.Default.Shower,
+        list = listOf(dummyMaintains[2], dummyMaintains[3])
+    ),
+    CareObject(
+        id = 4,
+        title = "Bike",
+        graphic = Icons.Default.DirectionsBike,
+        list = listOf(dummyMaintains[2], dummyMaintains[3])
+    ),
+    CareObject(
+        id = 5,
+        title = "Computer",
+        graphic = Icons.Default.Laptop,
         list = listOf(dummyMaintains[2], dummyMaintains[3])
     )
 )

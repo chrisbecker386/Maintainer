@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 13/04/2023, 17:40
+ * Created by Christopher Becker on 10/05/2023, 12:59
  * Copyright (c) 2023. All rights reserved.
- * Last modified 13/04/2023, 17:40
+ * Last modified 10/05/2023, 12:59
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  *
  */
 
-package de.chrisbecker386.maintainer.ui.home
+package de.chrisbecker386.maintainer.ui.tab.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -31,10 +31,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import de.chrisbecker386.maintainer.BuildConfig
+import de.chrisbecker386.maintainer.data.model.CareGridItemData
 import de.chrisbecker386.maintainer.data.model.dummy.DummyData
-import de.chrisbecker386.maintainer.ui.components.NextMaintains
-import de.chrisbecker386.maintainer.ui.components.ShortStatus
+import de.chrisbecker386.maintainer.data.model.dummy.dummyCares
+import de.chrisbecker386.maintainer.data.model.toCareGridItem
+import de.chrisbecker386.maintainer.ui.component.CareGrid
+import de.chrisbecker386.maintainer.ui.component.NextMaintains
+import de.chrisbecker386.maintainer.ui.component.ShortStatus
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
+import de.chrisbecker386.maintainer.viewmodel.home.HomeScreenViewModel
 
 @Composable
 fun HomeScreen(
@@ -42,7 +47,7 @@ fun HomeScreen(
     onCareObjectClick: (String) -> Unit = {},
     onMachineClick: (String) -> Unit = {}
 ) {
-    val viewModel= hiltViewModel<HomeScreenViewModel>()
+    val viewModel = hiltViewModel<HomeScreenViewModel>()
 
     if (BuildConfig.DEBUG) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -66,6 +71,18 @@ fun HomeScreen(
                         .clickable { onMachineClick(DummyData.cares[0].list[0].title) },
                     machineTitle = DummyData.cares[0].list[0].title,
                     tasks = DummyData.cares[0].list[0].list
+                )
+            }
+            item {
+                val list = mutableListOf<CareGridItemData>()
+                dummyCares.forEach { list.add(it.toCareGridItem()) }
+                CareGrid(
+                    modifier = Modifier.padding(
+                        start = DIM_XS,
+                        end = DIM_XS,
+                        top = DIM_XS
+                    ),
+                    items = list
                 )
             }
         }

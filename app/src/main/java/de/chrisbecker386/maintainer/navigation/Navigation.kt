@@ -25,11 +25,11 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import de.chrisbecker386.maintainer.ui.home.HomeScreen
-import de.chrisbecker386.maintainer.ui.home.SingleMachineScreen
-import de.chrisbecker386.maintainer.ui.home.SingleTaskScreen
-import de.chrisbecker386.maintainer.ui.info.InfoScreen
-import de.chrisbecker386.maintainer.ui.settings.SettingsScreen
+import de.chrisbecker386.maintainer.ui.tab.home.HomeScreen
+import de.chrisbecker386.maintainer.ui.tab.home.SingleMachineScreen
+import de.chrisbecker386.maintainer.ui.tab.home.SingleTaskScreen
+import de.chrisbecker386.maintainer.ui.tab.info.InfoScreen
+import de.chrisbecker386.maintainer.ui.tab.settings.SettingsScreen
 
 @Composable
 fun MaintainerNavGraph(

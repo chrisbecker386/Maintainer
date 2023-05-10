@@ -17,7 +17,7 @@
  *
  */
 
-package de.chrisbecker386.maintainer.ui.components
+package de.chrisbecker386.maintainer.ui.component
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween

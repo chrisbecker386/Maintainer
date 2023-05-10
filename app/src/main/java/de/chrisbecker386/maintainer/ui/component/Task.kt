@@ -17,7 +17,7 @@
  *
  */
 
-package de.chrisbecker386.maintainer.ui.components
+package de.chrisbecker386.maintainer.ui.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box

@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 13/04/2023, 17:40
+ * Created by Christopher Becker on 10/05/2023, 13:58
  * Copyright (c) 2023. All rights reserved.
- * Last modified 13/04/2023, 17:40
+ * Last modified 10/05/2023, 13:58
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,19 +19,9 @@
 
 package de.chrisbecker386.maintainer.data.model
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.ui.graphics.vector.ImageVector
-import de.chrisbecker386.maintainer.data.model.interfaces.ItemObject
 
-data class CareObject(
-    override val id: Int,
-    override val title: String,
-    val graphic: ImageVector = Icons.Default.QuestionMark,
-    override val list: List<MachineObject> = emptyList()
-) : ItemObject
-
-fun CareObject.toCareGridItem(): CareGridItemData = CareGridItemData(
-    this.title,
-    this.graphic
+data class CareGridItemData(
+    val title: String,
+    val icon: ImageVector
 )

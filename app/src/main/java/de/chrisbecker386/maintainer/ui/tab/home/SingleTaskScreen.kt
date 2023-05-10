@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 08/05/2023, 10:49
+ * Created by Christopher Becker on 10/05/2023, 12:59
  * Copyright (c) 2023. All rights reserved.
- * Last modified 08/05/2023, 10:49
+ * Last modified 10/05/2023, 12:59
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  *
  */
 
-package de.chrisbecker386.maintainer.ui.home
+package de.chrisbecker386.maintainer.ui.tab.home
 
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
@@ -33,8 +33,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.data.model.dummy.DummyData
-import de.chrisbecker386.maintainer.ui.components.ShortStatus
-import de.chrisbecker386.maintainer.ui.components.StepWithDetails
+import de.chrisbecker386.maintainer.ui.component.ShortStatus
+import de.chrisbecker386.maintainer.ui.component.StepWithDetails
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
