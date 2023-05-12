@@ -21,7 +21,7 @@ package de.chrisbecker386.maintainer.data.model
 
 import androidx.compose.ui.graphics.vector.ImageVector
 
-data class CareGridItemData(
+data class GridItemData(
     val title: String,
     val icon: ImageVector
 )

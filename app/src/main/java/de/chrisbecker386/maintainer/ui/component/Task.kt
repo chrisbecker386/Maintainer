@@ -20,12 +20,16 @@
 package de.chrisbecker386.maintainer.ui.component
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
@@ -36,8 +40,11 @@ import androidx.compose.material.icons.filled.FactCheck
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.data.model.ApproximateTime
+import de.chrisbecker386.maintainer.ui.theme.DIM_M_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
@@ -87,7 +94,27 @@ fun TaskContent(
 }
 
 @Composable
-fun IconWithTextRow(modifier: Modifier) {
+fun RowWithIconText(
+    modifier: Modifier = Modifier,
+    icon: ImageVector? = null,
+    text: String = ""
+) {
+    Row(modifier = modifier.fillMaxWidth()) {
+        icon?.let { icon ->
+            Image(
+                modifier = Modifier.size(DIM_M_PLUS),
+                imageVector = icon,
+                contentDescription = text,
+                colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground)
+            )
+        } ?: Spacer(modifier = Modifier.width(DIM_M_PLUS))
+        Spacer(Modifier.width(DIM_XS))
+        Text(
+            text = text,
+            style = MaterialTheme.typography.body1,
+            color = MaterialTheme.colors.onBackground
+        )
+    }
 }
 
 @Preview

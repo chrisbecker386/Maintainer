@@ -26,6 +26,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import de.chrisbecker386.maintainer.ui.tab.home.HomeScreen
+import de.chrisbecker386.maintainer.ui.tab.home.SingleCareScreen
 import de.chrisbecker386.maintainer.ui.tab.home.SingleMachineScreen
 import de.chrisbecker386.maintainer.ui.tab.home.SingleTaskScreen
 import de.chrisbecker386.maintainer.ui.tab.info.InfoScreen
@@ -42,9 +43,12 @@ fun MaintainerNavGraph(
         modifier = modifier
     ) {
         composable(route = Home.route) {
-            HomeScreen(onMachineClick = { machineType ->
-                navController.navigateToSingleMachine(machineType)
-            })
+            HomeScreen(
+                onMachineClick = { machineType ->
+                    navController.navigateToSingleMachine(machineType)
+                },
+                onCareObjectClick = { careType -> navController.navigateToSingleCare(careType) }
+            )
         }
         composable(route = Info.route) {
             InfoScreen()
@@ -65,11 +69,22 @@ fun MaintainerNavGraph(
             )
         }
         composable(
+            route = SingleCare.routeWithArgs,
+            arguments = SingleCare.arguments
+        ) { navBackStackEntry ->
+            val careType = navBackStackEntry.arguments?.getString(SingleCare.careTypeArg)
+            SingleCareScreen(
+                careType = careType,
+                onMachineClick = { machineType -> navController.navigateToSingleMachine(machineType) }
+            )
+        }
+
+        composable(
             route = SingleTask.routeWithArgs,
             arguments = SingleTask.arguments
         ) { navBackStackEntry ->
             val taskType = navBackStackEntry.arguments?.getString(SingleTask.taskTypeArg)
-            SingleTaskScreen(taskType)
+            SingleTaskScreen(taskType = taskType)
         }
     }
 }
@@ -91,4 +106,8 @@ private fun NavHostController.navigateToSingleMachine(machineType: String) {
 
 private fun NavHostController.navigateToSingleTask(taskType: String) {
     this.navigate("${SingleTask.route}/$taskType")
+}
+
+private fun NavHostController.navigateToSingleCare(careType: String) {
+    this.navigate("${SingleCare.route}/$careType")
 }

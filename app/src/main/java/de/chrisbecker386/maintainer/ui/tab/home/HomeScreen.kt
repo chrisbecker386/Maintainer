@@ -31,12 +31,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import de.chrisbecker386.maintainer.BuildConfig
-import de.chrisbecker386.maintainer.data.model.CareGridItemData
+import de.chrisbecker386.maintainer.data.model.GridItemData
 import de.chrisbecker386.maintainer.data.model.dummy.DummyData
 import de.chrisbecker386.maintainer.data.model.dummy.dummyCares
 import de.chrisbecker386.maintainer.data.model.toCareGridItem
-import de.chrisbecker386.maintainer.ui.component.CareGrid
 import de.chrisbecker386.maintainer.ui.component.NextMaintains
+import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.viewmodel.home.HomeScreenViewModel
@@ -74,15 +74,16 @@ fun HomeScreen(
                 )
             }
             item {
-                val list = mutableListOf<CareGridItemData>()
+                val list = mutableListOf<GridItemData>()
                 dummyCares.forEach { list.add(it.toCareGridItem()) }
-                CareGrid(
+                OverviewGrid(
                     modifier = Modifier.padding(
                         start = DIM_XS,
                         end = DIM_XS,
                         top = DIM_XS
                     ),
-                    items = list
+                    items = list,
+                    onItemClick = onCareObjectClick
                 )
             }
         }

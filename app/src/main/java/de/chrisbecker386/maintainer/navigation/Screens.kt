@@ -51,6 +51,15 @@ object Settings : Screen {
     override val icon: ImageVector = Icons.Default.Settings
 }
 
+object SingleCare : Screen {
+    override val route: String = "single_care"
+    override val title: String = "Care"
+    override val icon = null
+    const val careTypeArg = "care_type"
+    val routeWithArgs = "${SingleCare.route}/{$careTypeArg}"
+    val arguments = listOf(navArgument(careTypeArg) { type = NavType.StringType })
+}
+
 object SingleMachine : Screen {
     override val route: String = "single_machine"
     override val title: String = "Machine"
