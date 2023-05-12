@@ -31,7 +31,7 @@ data class CareObject(
     override val list: List<MachineObject> = emptyList()
 ) : ItemObject
 
-fun CareObject.toCareGridItem(): CareGridItemData = CareGridItemData(
+fun CareObject.toCareGridItem(): GridItemData = GridItemData(
     this.title,
     this.graphic
 )

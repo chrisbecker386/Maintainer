@@ -41,7 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import de.chrisbecker386.maintainer.data.model.CareGridItemData
+import de.chrisbecker386.maintainer.data.model.GridItemData
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
@@ -51,9 +51,10 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
-fun CareGrid(
+fun OverviewGrid(
     modifier: Modifier = Modifier,
-    items: List<CareGridItemData> = emptyList()
+    items: List<GridItemData> = emptyList(),
+    onItemClick: (String) -> Unit = {}
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Card(
@@ -75,10 +76,11 @@ fun CareGrid(
                     columns = 2,
                     itemCount = items.size
                 ) {
-                    CareGridItem(
+                    OverviewGridItem(
                         modifier = Modifier.padding(DIM_XXS),
                         title = items[it].title,
-                        icon = items[it].icon
+                        icon = items[it].icon,
+                        onClick = onItemClick
                     )
                 }
             }
@@ -87,7 +89,7 @@ fun CareGrid(
 }
 
 @Composable
-fun CareGridItem(
+fun OverviewGridItem(
     modifier: Modifier = Modifier,
     title: String = "missing title",
     icon: ImageVector = Icons.Default.QuestionMark,
@@ -95,7 +97,9 @@ fun CareGridItem(
 ) {
     Box(modifier = modifier) {
         Card(
-            Modifier.fillMaxWidth().clickable { onClick(title) },
+            Modifier
+                .fillMaxWidth()
+                .clickable { onClick(title) },
             shape = RoundedCornerShape(DIM_XS),
             border = BorderStroke(
                 width = DIM_XXXXS,
@@ -132,26 +136,26 @@ fun CareGridItem(
 @Composable
 fun PreviewCare() {
     MaintainerTheme {
-        CareGrid(
+        OverviewGrid(
             modifier = Modifier.fillMaxWidth(),
             items = listOf(
-                CareGridItemData(
+                GridItemData(
                     "Kitchen",
                     Icons.Default.QuestionMark
                 ),
-                CareGridItemData(
+                GridItemData(
                     "Car",
                     Icons.Default.QuestionMark
                 ),
-                CareGridItemData(
+                GridItemData(
                     "Bike",
                     Icons.Default.QuestionMark
                 ),
-                CareGridItemData(
+                GridItemData(
                     "Computer",
                     Icons.Default.QuestionMark
                 ),
-                CareGridItemData(
+                GridItemData(
                     "Bathroom",
                     Icons.Default.QuestionMark
                 )

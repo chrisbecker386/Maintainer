@@ -31,7 +31,7 @@ val DIM_XXXXS = 1.dp
 /** 2.dp*/
 val DIM_XXXS = 2.dp
 
-/** 2.dp*/
+/** 3.dp*/
 val DIM_XXXS_PLUS = 3.dp
 
 /** 4.dp*/
