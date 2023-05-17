@@ -26,18 +26,44 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import de.chrisbecker386.maintainer.data.local.CompletedTaskDao
 import de.chrisbecker386.maintainer.data.local.MaintainerDao
 import de.chrisbecker386.maintainer.data.local.MaintainerDb
+import de.chrisbecker386.maintainer.data.local.PreconditionDao
+import de.chrisbecker386.maintainer.data.local.StepDao
+import de.chrisbecker386.maintainer.data.local.TaskDao
 import de.chrisbecker386.maintainer.data.local.repository.MaintainerRepositoryImpl
+import de.chrisbecker386.maintainer.data.local.repository.TaskRepositoryImpl
 import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
+import de.chrisbecker386.maintainer.domain.repository.TaskRepository
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object MaintainerModule {
     @Provides
-    fun provideRoomDao(database: MaintainerDb): MaintainerDao {
-        return database.dao
+    fun provideMaintainerDao(database: MaintainerDb): MaintainerDao {
+        return database.maintainerDao
+    }
+
+    @Provides
+    fun provideTasksDao(database: MaintainerDb): TaskDao {
+        return database.taskDao
+    }
+
+    @Provides
+    fun provideStepDao(database: MaintainerDb): StepDao {
+        return database.stepDao
+    }
+
+    @Provides
+    fun providePreconditionDao(database: MaintainerDb): PreconditionDao {
+        return database.preconditionDao
+    }
+
+    @Provides
+    fun provideCompletedTaskDao(database: MaintainerDb): CompletedTaskDao {
+        return database.completedTaskDao
     }
 
     @Singleton
@@ -46,7 +72,7 @@ object MaintainerModule {
         return Room.databaseBuilder(
             appContext,
             MaintainerDb::class.java,
-            "maintainer_database"
+            "maintainerdb"
         ).fallbackToDestructiveMigration().build()
     }
 
@@ -54,5 +80,16 @@ object MaintainerModule {
     @Singleton
     fun provideMaintainerRepository(database: MaintainerDb): MaintainerRepository {
         return MaintainerRepositoryImpl(database)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTaskRepository(
+        taskDao: TaskDao,
+        stepDao: StepDao,
+        preconditionDao: PreconditionDao,
+        completedTaskDao: CompletedTaskDao
+    ): TaskRepository {
+        return TaskRepositoryImpl(taskDao, stepDao, preconditionDao, completedTaskDao)
     }
 }

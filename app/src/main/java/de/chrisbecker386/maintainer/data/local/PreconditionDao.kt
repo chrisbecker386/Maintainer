@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 09/05/2023, 12:48
+ * Created by Christopher Becker on 15/05/2023, 11:05
  * Copyright (c) 2023. All rights reserved.
- * Last modified 09/05/2023, 12:48
+ * Last modified 15/05/2023, 11:05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,23 @@
 package de.chrisbecker386.maintainer.data.local
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import de.chrisbecker386.maintainer.data.entity.LocalCare
+import androidx.room.Update
+import de.chrisbecker386.maintainer.data.entity.Precondition
 
 @Dao
-interface MaintainerDao {
-    @Query("SELECT * FROM cares")
-    suspend fun getAllCares(): List<LocalCare>
+interface PreconditionDao {
+    @Insert
+    suspend fun insertPrecondition(precondition: Precondition): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addAllCares(cares: List<LocalCare>)
+    @Update
+    suspend fun updatePrecondition(precondition: Precondition)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addNewCare(care: LocalCare)
+    @Delete
+    suspend fun deletePrecondition(precondition: Precondition)
+
+    @Query("SELECT * FROM preconditions WHERE precondition_fk_task_id = :taskId")
+    suspend fun getPreconditionsForTask(taskId: Int): List<Precondition>
 }

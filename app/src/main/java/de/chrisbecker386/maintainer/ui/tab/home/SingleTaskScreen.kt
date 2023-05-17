@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,33 +33,45 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import de.chrisbecker386.maintainer.data.model.dummy.DummyData
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
 import de.chrisbecker386.maintainer.ui.component.StepWithDetails
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
+import de.chrisbecker386.maintainer.viewmodel.home.SingleTaskViewModel
 
 @Composable
 fun SingleTaskScreen(taskType: String? = "Unclogging") {
-    val task = remember(taskType) { DummyData.getTaskObject(taskType) }
-    var doneTasks by rememberSaveable { mutableStateOf(0) }
+
+    val viewModel = hiltViewModel<SingleTaskViewModel>()
+    viewModel.setup(1)
+
+    val task by viewModel.task.collectAsState()
+    val steps by viewModel.steps.collectAsState()
+    val status by viewModel.shortStatus.collectAsState()
+
 
     LazyColumn(Modifier.fillMaxWidth()) {
         item {
             ShortStatus(
                 modifier = Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
-                title = "${task.title} Status",
-                numerator = doneTasks,
-                denominator = task.list.size
+                title = task?.title ?: "",
+                state = status
+
             )
         }
-        items(count = task.list.size) { index ->
+
+        items(count = steps.size) { index ->
             StepWithDetails(
-                Modifier.clickable {
-                    task.list[index].done = true
-                    doneTasks = task.list.filter { it.done }.size
-                }.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
-                data = task.list[index]
+                Modifier
+                    .clickable {
+                        //TODO update functionality for the step
+//                            task.list[index].done = true
+//                            doneTasks = task.list.filter { it.done }.size
+                    }
+                    .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
+                data = steps[index]
             )
         }
     }

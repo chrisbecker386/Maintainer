@@ -60,6 +60,7 @@ import de.chrisbecker386.maintainer.data.model.MachineObject
 import de.chrisbecker386.maintainer.data.model.TaskObject
 import de.chrisbecker386.maintainer.data.model.dummy.dummyTasks
 import de.chrisbecker386.maintainer.data.model.getMaintainStats
+import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 import de.chrisbecker386.maintainer.ui.theme.DIM_L
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
@@ -73,8 +74,7 @@ import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 fun ShortStatus(
     modifier: Modifier = Modifier,
     title: String = "",
-    numerator: Int,
-    denominator: Int
+    state: ShortStatusState,
 ) {
     Box(modifier = modifier) {
         Card(
@@ -111,7 +111,7 @@ fun ShortStatus(
                                 top.linkTo(parent.top)
                                 bottom.linkTo(parent.bottom)
                             },
-                            text = "$numerator/$denominator",
+                            text = state.toString(),
                             style = MaterialTheme.typography.body1
                         )
                         Image(
@@ -133,7 +133,7 @@ fun ShortStatus(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(DIM_XXS),
-                    progress = numerator.toFloat() / denominator.toFloat(),
+                    progress = state.getProgress(),
                     color = MaterialTheme.colors.primary,
                     strokeCap = StrokeCap.Round
                 )
@@ -253,8 +253,10 @@ fun PreviewMaintainObjectStatus() {
             ShortStatus(
                 Modifier.padding(DIM_XS),
                 title = "Maintain Status",
-                numerator = 2,
-                denominator = 7
+                state = ShortStatusState(
+                    numerator = 2,
+                    denominator = 7
+                ),
             )
             NextMaintains(
                 machineTitle = "machine",

@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 09/05/2023, 13:05
+ * Created by Christopher Becker on 13/05/2023, 07:50
  * Copyright (c) 2023. All rights reserved.
- * Last modified 09/05/2023, 13:05
+ * Last modified 13/05/2023, 07:50
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,25 @@
  *
  */
 
-package de.chrisbecker386.maintainer.data.model.local
+package de.chrisbecker386.maintainer.data.entity
 
+import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "cares")
-data class LocalCare(
-    @PrimaryKey
-    @ColumnInfo(name = "care_id")
-    val id: Int,
-    @ColumnInfo(name = "care_title")
-    val title: String
+@Entity(tableName = "tasks")
+data class Task(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "task_id")
+    val id: Int = 0,
+    @ColumnInfo(name = "task_title")
+    val title: String,
+    @ColumnInfo(name = "task_subtitle")
+    val subtitle: String?,
+    @ColumnInfo(name = "task_imageRes")
+    @DrawableRes
+    val imageRes: Int,
+    @ColumnInfo(name = "task_duration")
+    val duration: Int,
 )

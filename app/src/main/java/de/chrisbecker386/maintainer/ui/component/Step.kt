@@ -50,8 +50,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
+import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.model.StepObject
 import de.chrisbecker386.maintainer.data.model.dummy.dummySteps
+import de.chrisbecker386.maintainer.data.model.dummy.dummyStepsDB
 import de.chrisbecker386.maintainer.ui.theme.ACCORDION_ANIMATION_DURATION
 import de.chrisbecker386.maintainer.ui.theme.DIM_L_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_M
@@ -64,7 +66,7 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
-fun StepWithDetails(modifier: Modifier = Modifier, data: StepObject) {
+fun StepWithDetails(modifier: Modifier = Modifier, data: Step) {
     Row(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -89,7 +91,7 @@ fun StepWithDetails(modifier: Modifier = Modifier, data: StepObject) {
                             Alignment.Center
                         ) {
                             Text(
-                                text = data.orderNumber.toString(),
+                                text = data.order.toString(),
                                 style = MaterialTheme.typography.subtitle1,
                                 color = MaterialTheme.colors.background
                             )
@@ -193,7 +195,7 @@ private fun ExpandButton(
 fun PreviewStep() {
     MaintainerTheme {
         Column {
-            StepWithDetails(data = dummySteps[0])
+            StepWithDetails(data = dummyStepsDB[0])
         }
     }
 }

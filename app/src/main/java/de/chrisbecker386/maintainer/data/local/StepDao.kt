@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 09/05/2023, 12:48
+ * Created by Christopher Becker on 15/05/2023, 10:37
  * Copyright (c) 2023. All rights reserved.
- * Last modified 09/05/2023, 12:48
+ * Last modified 15/05/2023, 10:37
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,36 @@
 package de.chrisbecker386.maintainer.data.local
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import de.chrisbecker386.maintainer.data.entity.LocalCare
+import androidx.room.Transaction
+import androidx.room.Update
+import de.chrisbecker386.maintainer.data.entity.Step
 
 @Dao
-interface MaintainerDao {
-    @Query("SELECT * FROM cares")
-    suspend fun getAllCares(): List<LocalCare>
-
+interface StepDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addAllCares(cares: List<LocalCare>)
+    suspend fun insertSteps(steps: List<Step>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addNewCare(care: LocalCare)
+    @Insert
+    suspend fun insertStep(step: Step)
+
+    @Update
+    suspend fun updateStep(step: Step)
+
+    @Delete
+    suspend fun deleteStep(step: Step)
+
+    @Delete
+    suspend fun removeSteps(steps: List<Step>)
+
+    @Transaction
+    @Query("DELETE FROM steps")
+    fun removeAllSteps()
+
+    @Transaction
+    @Query("SELECT * FROM steps WHERE step_fk_task_id = :taskId")
+    suspend fun getStepsForTask(taskId: Int): List<Step>
 }

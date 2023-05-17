@@ -38,6 +38,7 @@ import de.chrisbecker386.maintainer.data.model.toCareGridItem
 import de.chrisbecker386.maintainer.ui.component.NextMaintains
 import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
+import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.viewmodel.home.HomeScreenViewModel
 
@@ -60,8 +61,10 @@ fun HomeScreen(
                 ShortStatus(
                     Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
                     title = "Maintain Status",
-                    numerator = 6,
-                    denominator = 11
+                    state = ShortStatusState(
+                        numerator = 6,
+                        denominator = 11
+                    )
                 )
             }
             item {

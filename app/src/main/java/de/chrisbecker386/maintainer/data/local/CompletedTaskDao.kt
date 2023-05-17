@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 09/05/2023, 12:48
+ * Created by Christopher Becker on 15/05/2023, 11:36
  * Copyright (c) 2023. All rights reserved.
- * Last modified 09/05/2023, 12:48
+ * Last modified 15/05/2023, 11:36
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,24 @@
 package de.chrisbecker386.maintainer.data.local
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import de.chrisbecker386.maintainer.data.entity.LocalCare
+import androidx.room.Update
+import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface MaintainerDao {
-    @Query("SELECT * FROM cares")
-    suspend fun getAllCares(): List<LocalCare>
+interface CompletedTaskDao {
+    @Insert
+    suspend fun insertCompletedTask(taskCompletedDate: TaskCompletedDate)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addAllCares(cares: List<LocalCare>)
+    @Update
+    suspend fun updateCompletedTask(taskCompletedDate: TaskCompletedDate)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addNewCare(care: LocalCare)
+    @Delete
+    suspend fun deleteCompletedTask(taskCompletedDate: TaskCompletedDate)
+
+    @Query("SELECT * FROM tasks_completed_dates WHERE task_completed_fk_task_id = :taskId")
+    fun getCompletesForTask(taskId: Int): Flow<List<TaskCompletedDate>>
 }
