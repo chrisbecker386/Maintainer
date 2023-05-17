@@ -20,6 +20,7 @@
 package de.chrisbecker386.maintainer.data.model.dummy
 
 import de.chrisbecker386.maintainer.R
+import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.model.StepObject
 
 val dummySteps: List<StepObject> = listOf(
@@ -86,4 +87,117 @@ val cleanWaterTank: List<StepObject> = listOf(
         description = null,
         graphic = null
     )
+)
+
+val dummyStepsDB = listOf(
+    //clean water tank
+    Step(
+        id = 1,
+        order = 1,
+        title = "Open lid",
+        imageRes = null,
+        description = null,
+        completedDate = null,
+        taskId = 1
+    ),
+    Step(
+        id = 2,
+        order = 2,
+        title = "Remove water tank",
+        imageRes = null,
+        description = "Carefully lift the tank out of the machine. So that no water is spilled unnecessarily",
+        completedDate = null,
+        taskId = 1
+    ),
+    Step(
+        id = 3,
+        order = 3,
+        title = "Clean water tank",
+        imageRes = null,
+        description = "Clean the water tank properly with a brush, warm water and detergent. Then rinse again with clean water and dry the tank.",
+        completedDate = null,
+        taskId = 1
+    ),
+    Step(
+        id = 4,
+        order = 4,
+        title = "Reinstall the water tank",
+        imageRes = null,
+        description = null,
+        completedDate = null,
+        taskId = 1
+    ),
+    Step(
+        id = 5,
+        order = 5,
+        title = "Close lit",
+        imageRes = null,
+        description = null,
+        completedDate = null,
+        taskId = 1
+    ),
+    //unclogging
+    Step(
+        id = 6,
+        order = 1,
+        title = "Open lit",
+        imageRes = null,
+        description = null,
+        completedDate = null,
+        taskId = 2
+    ),
+    Step(
+        id = 7,
+        order = 2,
+        title = "Empty Tank",
+        imageRes = null,
+        description = "Carefully empty the tank",
+        completedDate = null,
+        taskId = 2
+    ),
+    Step(
+        id = 8,
+        order = 3,
+        title = "add descaling agent to the tank",
+        imageRes = null,
+        description = "Proportional to the size of the water tank: Dissolve the descaler in lukewarm water and then pour it into the water tank.",
+        completedDate = null,
+        taskId = 2
+    ),
+    Step(
+        id = 9,
+        order = 4,
+        title = "uncoggling",
+        imageRes = null,
+        description = "Place a sufficiently large container under the coffee outlet. Let the machine warm up and then run the entire tank through once. If the container is full, stop briefly and empty the container. If the tank is empty, stop the machine. ",
+        completedDate = null,
+        taskId = 2
+    ),
+    Step(
+        id = 10,
+        order = 5,
+        title = "Flush out residues",
+        imageRes = null,
+        description = "Fill the water tank again with ordinary water and let the tank run completely empty again. Carry out this procedure 2 times",
+        completedDate = null,
+        taskId = 2
+    ),
+    Step(
+        id = 11,
+        order = 6,
+        title = "Refill tank",
+        imageRes = null,
+        description = null,
+        completedDate = null,
+        taskId = 2
+    ),
+    Step(
+        id = 12,
+        order = 6,
+        title = "Close lit",
+        imageRes = null,
+        description = null,
+        completedDate = null,
+        taskId = 2
+    ),
 )

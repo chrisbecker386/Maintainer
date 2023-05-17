@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 09/05/2023, 12:26
+ * Created by Christopher Becker on 13/05/2023, 07:48
  * Copyright (c) 2023. All rights reserved.
- * Last modified 09/05/2023, 12:26
+ * Last modified 13/05/2023, 07:48
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,17 @@
  *
  */
 
-package de.chrisbecker386.maintainer.data.local.repository
+package de.chrisbecker386.maintainer.data.entity
 
-import de.chrisbecker386.maintainer.data.local.MaintainerDb
-import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-class MaintainerRepositoryImpl(private val database: MaintainerDb) : MaintainerRepository {
-    override suspend fun getAllLocalCares() {
-        TODO("Not implemented")
-    }
-}
+@Entity(tableName = "cares")
+data class LocalCare(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "care_id")
+    val id: Int = 0,
+    @ColumnInfo(name = "care_title")
+    val title: String
+)

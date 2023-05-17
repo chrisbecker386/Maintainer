@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 09/05/2023, 12:26
+ * Created by Christopher Becker on 15/05/2023, 10:03
  * Copyright (c) 2023. All rights reserved.
- * Last modified 09/05/2023, 12:26
+ * Last modified 15/05/2023, 10:03
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,18 @@
  *
  */
 
-package de.chrisbecker386.maintainer.data.local.repository
+package de.chrisbecker386.maintainer.data.entity.relation
 
-import de.chrisbecker386.maintainer.data.local.MaintainerDb
-import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
+import androidx.room.Embedded
+import androidx.room.Relation
+import de.chrisbecker386.maintainer.data.entity.Step
+import de.chrisbecker386.maintainer.data.entity.Task
 
-class MaintainerRepositoryImpl(private val database: MaintainerDb) : MaintainerRepository {
-    override suspend fun getAllLocalCares() {
-        TODO("Not implemented")
-    }
-}
+data class TaskWithSteps(
+    @Embedded val task: Task,
+    @Relation(
+        parentColumn = "task_id",
+        entityColumn = "step_fk_task_id"
+    )
+    val steps: List<Step>
+)

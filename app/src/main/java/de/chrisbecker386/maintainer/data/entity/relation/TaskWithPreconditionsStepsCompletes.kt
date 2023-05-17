@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 09/05/2023, 12:51
+ * Created by Christopher Becker on 15/05/2023, 11:21
  * Copyright (c) 2023. All rights reserved.
- * Last modified 09/05/2023, 12:51
+ * Last modified 15/05/2023, 11:21
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,32 +17,30 @@
  *
  */
 
-package de.chrisbecker386.maintainer.data.local
+package de.chrisbecker386.maintainer.data.entity.relation
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import de.chrisbecker386.maintainer.data.entity.LocalCare
+import androidx.room.Embedded
+import androidx.room.Relation
 import de.chrisbecker386.maintainer.data.entity.Precondition
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
 
-@Database(
-    entities = [
-        LocalCare::class,
-        Task::class,
-        Step::class,
-        Precondition::class,
-        TaskCompletedDate::class
-    ],
-    version = 3,
-    exportSchema = false
+data class TaskWithPreconditionsStepsCompletes(
+    @Embedded val task: Task,
+    @Relation(
+        parentColumn = "task_id",
+        entityColumn = "precondition_fk_task_id"
+    )
+    val preconditions: List<Precondition>,
+    @Relation(
+        parentColumn = "task_id",
+        entityColumn = "step_fk_task_id"
+    )
+    val steps: List<Step>,
+    @Relation(
+        parentColumn = "task_id",
+        entityColumn = "task_completed_fk_task_id"
+    )
+    val completes: List<TaskCompletedDate>
 )
-
-abstract class MaintainerDb : RoomDatabase() {
-    abstract val maintainerDao: MaintainerDao
-    abstract val taskDao: TaskDao
-    abstract val stepDao: StepDao
-    abstract val preconditionDao: PreconditionDao
-    abstract val completedTaskDao: CompletedTaskDao
-}

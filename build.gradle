@@ -1,4 +1,4 @@
-buildscript {
+ buildscript {
     ext {
         kotlin_core_extension = '1.10.0'
         kotlin_stdlib = '1.8.20'

@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 09/05/2023, 12:26
+ * Created by Christopher Becker on 17/05/2023, 10:11
  * Copyright (c) 2023. All rights reserved.
- * Last modified 09/05/2023, 12:26
+ * Last modified 17/05/2023, 10:11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,14 @@
  *
  */
 
-package de.chrisbecker386.maintainer.data.local.repository
+package de.chrisbecker386.maintainer.viewmodel.home
 
-import de.chrisbecker386.maintainer.data.local.MaintainerDb
-import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import de.chrisbecker386.maintainer.domain.repository.TaskRepository
+import javax.inject.Inject
 
-class MaintainerRepositoryImpl(private val database: MaintainerDb) : MaintainerRepository {
-    override suspend fun getAllLocalCares() {
-        TODO("Not implemented")
-    }
+@HiltViewModel
+class SingleMachineViewModel @Inject constructor(private val repository: TaskRepository) :
+    ViewModel() {
 }

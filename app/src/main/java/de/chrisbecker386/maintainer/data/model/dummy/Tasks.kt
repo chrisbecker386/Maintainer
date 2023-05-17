@@ -20,6 +20,7 @@
 package de.chrisbecker386.maintainer.data.model.dummy
 
 import de.chrisbecker386.maintainer.R
+import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.model.TaskObject
 
 val dummyTasks = listOf(
@@ -35,5 +36,21 @@ val dummyTasks = listOf(
         graphic = R.drawable.ic_launcher_foreground,
         list = dummySteps
     )
+)
 
+val dummyTasksDB = listOf(
+    Task(
+        id = 1,
+        title = "clean water tank",
+        subtitle = null,
+        imageRes = R.drawable.kettle_48px,
+        duration = 5
+    ),
+    Task(
+        id = 2,
+        title = "unclogging",
+        subtitle = null,
+        imageRes = R.drawable.ic_launcher_foreground,
+        duration = 5
+    ),
 )

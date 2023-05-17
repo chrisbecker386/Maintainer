@@ -34,6 +34,7 @@ import de.chrisbecker386.maintainer.data.model.GridItemData
 import de.chrisbecker386.maintainer.data.model.dummy.DummyData
 import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
+import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
 
@@ -50,8 +51,10 @@ fun SingleCareScreen(
     ) {
         ShortStatus(
             title = "Machine Status",
-            numerator = 2,
-            denominator = 3
+            state = ShortStatusState(
+                numerator = 2,
+                denominator = 3
+            )
         )
         Spacer(modifier = Modifier.height(DIM_XS))
         OverviewGrid(

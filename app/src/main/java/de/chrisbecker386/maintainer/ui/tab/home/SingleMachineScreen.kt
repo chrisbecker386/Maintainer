@@ -32,6 +32,7 @@ import de.chrisbecker386.maintainer.data.model.ApproximateTime
 import de.chrisbecker386.maintainer.data.model.dummy.DummyData
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
 import de.chrisbecker386.maintainer.ui.component.TaskContent
+import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
@@ -46,9 +47,11 @@ fun SingleMachineScreen(
             ShortStatus(
                 modifier = Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
                 title = "${machine.title} Status",
-                numerator = 0,
-                denominator = 2
-            )
+                state = ShortStatusState(
+                    numerator = 0,
+                    denominator = 2
+                ),
+                )
         }
         items(count = machine.list.size) { index ->
             TaskContent(

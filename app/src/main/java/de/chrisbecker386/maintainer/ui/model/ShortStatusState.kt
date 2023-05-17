@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 09/05/2023, 12:26
+ * Created by Christopher Becker on 17/05/2023, 09:25
  * Copyright (c) 2023. All rights reserved.
- * Last modified 09/05/2023, 12:26
+ * Last modified 17/05/2023, 09:25
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,19 @@
  *
  */
 
-package de.chrisbecker386.maintainer.data.local.repository
+package de.chrisbecker386.maintainer.ui.model
 
-import de.chrisbecker386.maintainer.data.local.MaintainerDb
-import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
+data class ShortStatusState(
+    val numerator: Int,
+    val denominator: Int
+) {
+    override fun toString(): String = "$numerator/$denominator"
 
-class MaintainerRepositoryImpl(private val database: MaintainerDb) : MaintainerRepository {
-    override suspend fun getAllLocalCares() {
-        TODO("Not implemented")
+    fun getProgress(): Float {
+        return if (denominator <= 0) {
+            0f
+        } else {
+            numerator.toFloat() / denominator.toFloat()
+        }
     }
 }
