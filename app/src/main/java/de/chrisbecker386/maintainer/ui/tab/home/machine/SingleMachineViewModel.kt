@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 13/05/2023, 07:38
+ * Created by Christopher Becker on 23/05/2023, 14:13
  * Copyright (c) 2023. All rights reserved.
- * Last modified 13/05/2023, 07:38
+ * Last modified 23/05/2023, 14:13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,44 +17,28 @@
  *
  */
 
-package de.chrisbecker386.maintainer.viewmodel.home
+package de.chrisbecker386.maintainer.ui.tab.home.machine
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import de.chrisbecker386.maintainer.data.entity.Step
-import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.model.dummy.dummyStepsDB
 import de.chrisbecker386.maintainer.data.model.dummy.dummyTasksDB
 import de.chrisbecker386.maintainer.domain.repository.TaskRepository
-import de.chrisbecker386.maintainer.ui.model.ShortStatusState
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 @HiltViewModel
-class SingleTaskViewModel
-@Inject
-constructor(
-    private val repository: TaskRepository
-) :
+class SingleMachineViewModel @Inject constructor(private val repository: TaskRepository) :
     ViewModel() {
+
+    // TODO only for dev has to removed soon!
     init {
         setDBEntries()
     }
-
-    private val _task = MutableStateFlow<Task?>(null)
-    val task = _task
-    private val _steps = MutableStateFlow<List<Step>>(emptyList())
-    val steps = _steps
-
-    private val _shortState = MutableStateFlow(ShortStatusState(0, 0))
-    val shortStatus = _shortState
-
-
     private fun setDBEntries() {
         CoroutineScope(IO).launch {
             withContext(Dispatchers.Default) {
@@ -69,20 +53,4 @@ constructor(
             }
         }
     }
-
-    fun setup(taskId: Int) {
-        CoroutineScope(IO).launch {
-            getTask(taskId)
-            getSteps(taskId)
-        }
-    }
-
-    private suspend fun getTask(taskId: Int) = _task.emit(repository.getTask(taskId))
-
-    private suspend fun getSteps(taskId: Int) {
-        _steps.emit(repository.getSteps(taskId))
-        _shortState.emit(ShortStatusState(0, steps.value.size))
-    }
-
-
 }

@@ -27,8 +27,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import de.chrisbecker386.maintainer.ui.tab.home.HomeScreen
 import de.chrisbecker386.maintainer.ui.tab.home.SingleCareScreen
-import de.chrisbecker386.maintainer.ui.tab.home.SingleMachineScreen
-import de.chrisbecker386.maintainer.ui.tab.home.SingleTaskScreen
+import de.chrisbecker386.maintainer.ui.tab.home.machine.SingleMachineScreen
+import de.chrisbecker386.maintainer.ui.tab.home.task.SingleTaskScreen
 import de.chrisbecker386.maintainer.ui.tab.info.InfoScreen
 import de.chrisbecker386.maintainer.ui.tab.settings.SettingsScreen
 
@@ -83,8 +83,10 @@ fun MaintainerNavGraph(
             route = SingleTask.routeWithArgs,
             arguments = SingleTask.arguments
         ) { navBackStackEntry ->
-            val taskType = navBackStackEntry.arguments?.getString(SingleTask.taskTypeArg)
-            SingleTaskScreen(taskType = taskType)
+            val taskType = navBackStackEntry.arguments?.getInt(SingleTask.taskTypeArg)
+            if (taskType != null) {
+                SingleTaskScreen(taskType = taskType)
+            }
         }
     }
 }
@@ -104,7 +106,7 @@ private fun NavHostController.navigateToSingleMachine(machineType: String) {
     this.navigateSingleTopTo("${SingleMachine.route}/$machineType")
 }
 
-private fun NavHostController.navigateToSingleTask(taskType: String) {
+private fun NavHostController.navigateToSingleTask(taskType: Int) {
     this.navigate("${SingleTask.route}/$taskType")
 }
 

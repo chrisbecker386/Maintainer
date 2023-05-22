@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 10/05/2023, 13:00
+ * Created by Christopher Becker on 23/05/2023, 10:46
  * Copyright (c) 2023. All rights reserved.
- * Last modified 10/05/2023, 13:00
+ * Last modified 23/05/2023, 10:46
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@
  *
  */
 
-package de.chrisbecker386.maintainer.viewmodel.home
+package de.chrisbecker386.maintainer.ui.tab.home.task
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
-import javax.inject.Inject
+import de.chrisbecker386.maintainer.R
+import de.chrisbecker386.maintainer.data.entity.Step
+import de.chrisbecker386.maintainer.data.entity.Task
+import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 
-@HiltViewModel
-class HomeScreenViewModel @Inject constructor(private val repository: MaintainerRepository) :
-    ViewModel() {
-    // TODO add data some data an provide function to the homescreen
-}
+data class SingleTaskState(
+    val task: Task = Task(0, "", null, R.drawable.kettle_48px, 1),
+    val shortStatus: ShortStatusState = ShortStatusState(0, 0),
+    val steps: List<Step> = emptyList()
+)

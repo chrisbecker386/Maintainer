@@ -74,7 +74,7 @@ import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 fun ShortStatus(
     modifier: Modifier = Modifier,
     title: String = "",
-    state: ShortStatusState,
+    state: ShortStatusState
 ) {
     Box(modifier = modifier) {
         Card(
@@ -256,7 +256,7 @@ fun PreviewMaintainObjectStatus() {
                 state = ShortStatusState(
                     numerator = 2,
                     denominator = 7
-                ),
+                )
             )
             NextMaintains(
                 machineTitle = "machine",

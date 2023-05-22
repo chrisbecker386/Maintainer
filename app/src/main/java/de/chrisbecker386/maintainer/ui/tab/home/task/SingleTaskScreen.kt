@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 10/05/2023, 12:59
+ * Created by Christopher Becker on 23/05/2023, 10:45
  * Copyright (c) 2023. All rights reserved.
- * Last modified 10/05/2023, 12:59
+ * Last modified 23/05/2023, 10:45
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,60 +17,58 @@
  *
  */
 
-package de.chrisbecker386.maintainer.ui.tab.home
+package de.chrisbecker386.maintainer.ui.tab.home.task
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import de.chrisbecker386.maintainer.data.model.ApproximateTime
-import de.chrisbecker386.maintainer.data.model.dummy.DummyData
+import androidx.hilt.navigation.compose.hiltViewModel
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
-import de.chrisbecker386.maintainer.ui.component.TaskContent
-import de.chrisbecker386.maintainer.ui.model.ShortStatusState
+import de.chrisbecker386.maintainer.ui.component.StepWithDetails
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
-fun SingleMachineScreen(
-    machineType: String? = "Espresso Machine",
-    onTaskClick: (String) -> Unit = {}
-) {
-    val machine = remember(machineType) { DummyData.getMaintainObject(machineType) }
+fun SingleTaskScreen(taskType: Int) {
+    val viewModel = hiltViewModel<SingleTaskViewModel>()
+    val state by viewModel.state.collectAsState()
+    SingleTask(state = state, onEvent = viewModel::onEvent)
+}
+
+@Composable
+private fun SingleTask(state: SingleTaskState, onEvent: (SingleTaskEvent) -> Unit = {}) {
     LazyColumn(Modifier.fillMaxWidth()) {
         item {
             ShortStatus(
                 modifier = Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
-                title = "${machine.title} Status",
-                state = ShortStatusState(
-                    numerator = 0,
-                    denominator = 2
-                ),
-                )
+                title = state.task.title,
+                state = state.shortStatus
+            )
         }
-        items(count = machine.list.size) { index ->
-            TaskContent(
-                modifier = Modifier
-                    .clickable { onTaskClick(machine.list[index].title) }
+
+        items(count = state.steps.size) { index ->
+            StepWithDetails(
+                Modifier
+                    .clickable { onEvent(SingleTaskEvent.SetStepDone(state.steps[index])) }
                     .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
-                title = machine.list[index].title,
-                subtitle = "none",
-                approximateTime = ApproximateTime.MIN_45,
-                numberOfSteps = 4
+                step = state.steps[index],
+                task = state.task
             )
         }
     }
 }
 
-@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun PreviewSingleMachine() {
+fun PreviewSingleTaskScreen() {
     MaintainerTheme {
-        SingleMachineScreen()
+        SingleTaskScreen(1)
     }
 }

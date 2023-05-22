@@ -52,5 +52,5 @@ val dummyTasksDB = listOf(
         subtitle = null,
         imageRes = R.drawable.ic_launcher_foreground,
         duration = 5
-    ),
+    )
 )

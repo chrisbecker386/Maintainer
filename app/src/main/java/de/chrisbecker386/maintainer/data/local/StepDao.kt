@@ -27,6 +27,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import de.chrisbecker386.maintainer.data.entity.Step
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface StepDao {
@@ -51,5 +52,5 @@ interface StepDao {
 
     @Transaction
     @Query("SELECT * FROM steps WHERE step_fk_task_id = :taskId")
-    suspend fun getStepsForTask(taskId: Int): List<Step>
+    fun getStepsForTask(taskId: Int): Flow<List<Step>>
 }

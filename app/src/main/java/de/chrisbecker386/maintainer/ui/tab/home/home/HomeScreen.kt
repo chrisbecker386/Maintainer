@@ -39,8 +39,8 @@ import de.chrisbecker386.maintainer.ui.component.NextMaintains
 import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
 import de.chrisbecker386.maintainer.ui.model.ShortStatusState
+import de.chrisbecker386.maintainer.ui.tab.home.home.HomeScreenViewModel
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
-import de.chrisbecker386.maintainer.viewmodel.home.HomeScreenViewModel
 
 @Composable
 fun HomeScreen(

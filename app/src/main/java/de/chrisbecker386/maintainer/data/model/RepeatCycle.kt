@@ -19,10 +19,28 @@
 
 package de.chrisbecker386.maintainer.data.model
 
+import android.icu.util.Calendar
 import java.time.LocalDate
 
-data class RepeatCycle(val frequency: RepeatFrequency, val tact: Int)
+data class RepeatCycle(
+    val frequency: RepeatFrequency,
+    val tact: Int
+) {
+    fun inMillis(): Long {
+        return this.frequency.inMillis() * tact.toLong()
+    }
 
+    fun isValid(timeInMillis: Long?): Boolean {
+        if (timeInMillis == null) return false
+
+        val now = Calendar.getInstance().timeInMillis
+        val lastPlusFrequency = this.inMillis() + timeInMillis
+
+        return lastPlusFrequency > now
+    }
+}
+
+// TODO has to removed
 fun RepeatCycle.getNewCycleStart(date: LocalDate): LocalDate {
     val longTact = tact.toLong()
     return when (frequency) {
@@ -30,9 +48,13 @@ fun RepeatCycle.getNewCycleStart(date: LocalDate): LocalDate {
         RepeatFrequency.WEEKLY -> date.plusWeeks(longTact)
         RepeatFrequency.MONTHLY -> date.plusMonths(longTact)
         RepeatFrequency.YEARLY -> date.plusYears(longTact)
+        RepeatFrequency.MINUTELY -> TODO()
+        RepeatFrequency.HOURLY -> TODO()
+        RepeatFrequency.SECONDLY -> TODO()
     }
 }
 
+// TODO has to removed
 fun RepeatCycle.getLastCycleStartCalculated(date: LocalDate): LocalDate {
     val longTact = tact.toLong()
     return when (frequency) {
@@ -40,14 +62,19 @@ fun RepeatCycle.getLastCycleStartCalculated(date: LocalDate): LocalDate {
         RepeatFrequency.WEEKLY -> date.minusWeeks(longTact)
         RepeatFrequency.MONTHLY -> date.minusMonths(longTact)
         RepeatFrequency.YEARLY -> date.minusYears(longTact)
+        RepeatFrequency.MINUTELY -> TODO()
+        RepeatFrequency.HOURLY -> TODO()
+        RepeatFrequency.SECONDLY -> TODO()
     }
 }
 
+// TODO has to removed
 fun RepeatCycle.isCycleExpired(date: LocalDate): Boolean {
     val today = LocalDate.now()
-    return today.isBefore(getNewCycleStart(today))
+    return today.isBefore(getNewCycleStart(date))
 }
 
+// TODO has to removed
 fun RepeatCycle.isCycleValid(date: LocalDate): Boolean {
     val today = LocalDate.now()
     val newCycleStartDate = getNewCycleStart(date = date)

@@ -21,7 +21,6 @@ package de.chrisbecker386.maintainer.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
@@ -48,7 +47,7 @@ interface TaskDao {
 
     @Transaction
     @Query("SELECT * FROM tasks WHERE task_id = :taskId")
-    fun getTaskById(taskId: Int): Task
+    fun getTaskById(taskId: Int): Flow<Task>
 
     @Transaction
     @Query("SELECT * FROM steps WHERE step_fk_task_id = :taskId")

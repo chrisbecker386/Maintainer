@@ -23,6 +23,8 @@ import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import de.chrisbecker386.maintainer.data.model.RepeatCycle
+import de.chrisbecker386.maintainer.data.model.RepeatFrequency
 
 @Entity(tableName = "tasks")
 data class Task(
@@ -38,4 +40,12 @@ data class Task(
     val imageRes: Int,
     @ColumnInfo(name = "task_duration")
     val duration: Int,
-)
+    @ColumnInfo(name = "task_repeat_frequency")
+    val repeatFrequency: RepeatFrequency = RepeatFrequency.WEEKLY,
+    @ColumnInfo(name = "task_tact")
+    val tact: Int = 1
+) {
+    fun getRepeatCycle(): RepeatCycle {
+        return RepeatCycle(this.repeatFrequency, this.tact)
+    }
+}
