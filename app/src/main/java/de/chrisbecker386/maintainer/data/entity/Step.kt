@@ -25,6 +25,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import de.chrisbecker386.maintainer.data.model.RepeatCycle
 
 @Entity(
     tableName = "steps",
@@ -56,4 +57,8 @@ data class Step(
     val completedDate: Long? = null,
     @ColumnInfo(name = "step_fk_task_id")
     val taskId: Int
-)
+) {
+    fun isValid(repeatCycle: RepeatCycle): Boolean {
+        return repeatCycle.isValid(completedDate)
+    }
+}

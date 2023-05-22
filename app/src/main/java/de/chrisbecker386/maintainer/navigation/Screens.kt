@@ -75,7 +75,7 @@ object SingleTask : Screen {
     override val icon = null
     const val taskTypeArg = "task_type"
     val routeWithArgs = "$route/{$taskTypeArg}"
-    val arguments = listOf(navArgument(taskTypeArg) { type = NavType.StringType })
+    val arguments = listOf(navArgument(taskTypeArg) { type = NavType.IntType })
 }
 
 val APP_TABS = listOf(Home, Info, Settings)

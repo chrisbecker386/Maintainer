@@ -22,6 +22,7 @@ package de.chrisbecker386.maintainer.ui.component
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.runtime.Composable
@@ -48,12 +50,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import de.chrisbecker386.maintainer.data.entity.Step
-import de.chrisbecker386.maintainer.data.model.StepObject
-import de.chrisbecker386.maintainer.data.model.dummy.dummySteps
+import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.model.dummy.dummyStepsDB
+import de.chrisbecker386.maintainer.data.model.dummy.dummyTasksDB
 import de.chrisbecker386.maintainer.ui.theme.ACCORDION_ANIMATION_DURATION
 import de.chrisbecker386.maintainer.ui.theme.DIM_L_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_M
@@ -66,11 +69,11 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
-fun StepWithDetails(modifier: Modifier = Modifier, data: Step) {
+fun StepWithDetails(modifier: Modifier = Modifier, step: Step, task: Task) {
     Row(
         modifier = modifier.fillMaxWidth()
     ) {
-        var expanded by rememberSaveable { mutableStateOf(true) }
+        var expanded by rememberSaveable { mutableStateOf(false) }
         Box(modifier = Modifier) {
             Column(
                 modifier = Modifier
@@ -90,11 +93,19 @@ fun StepWithDetails(modifier: Modifier = Modifier, data: Step) {
                                 ),
                             Alignment.Center
                         ) {
-                            Text(
-                                text = data.order.toString(),
-                                style = MaterialTheme.typography.subtitle1,
-                                color = MaterialTheme.colors.background
-                            )
+                            if (step.isValid(task.getRepeatCycle())) {
+                                Image(
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = "Check",
+                                    colorFilter = ColorFilter.tint(color = MaterialTheme.colors.background)
+                                )
+                            } else {
+                                Text(
+                                    text = step.order.toString(),
+                                    style = MaterialTheme.typography.subtitle1,
+                                    color = MaterialTheme.colors.background
+                                )
+                            }
                         }
                         Spacer(modifier = Modifier.width(DIM_S))
                         Card(
@@ -118,7 +129,7 @@ fun StepWithDetails(modifier: Modifier = Modifier, data: Step) {
                                         .fillMaxWidth()
                                         .height(DIM_L_PLUS)
                                 ) {
-                                    val (labelRef, iconRef, descriptionRef) = createRefs()
+                                    val (labelRef, iconRef) = createRefs()
                                     Text(
                                         modifier = Modifier
                                             .padding(start = DIM_XS)
@@ -127,11 +138,11 @@ fun StepWithDetails(modifier: Modifier = Modifier, data: Step) {
                                                 top.linkTo(parent.top)
                                                 bottom.linkTo(parent.bottom)
                                             },
-                                        text = data.title,
+                                        text = step.title,
                                         style = MaterialTheme.typography.subtitle1,
                                         color = MaterialTheme.colors.onBackground
                                     )
-                                    data.description?.let {
+                                    step.description?.let {
                                         ExpandButton(
                                             modifier = Modifier.constrainAs(iconRef) {
                                                 end.linkTo(parent.end)
@@ -143,7 +154,7 @@ fun StepWithDetails(modifier: Modifier = Modifier, data: Step) {
                                         )
                                     }
                                 }
-                                data.description?.let {
+                                step.description?.let {
                                     if (expanded) {
                                         Row(
                                             modifier = Modifier
@@ -195,7 +206,7 @@ private fun ExpandButton(
 fun PreviewStep() {
     MaintainerTheme {
         Column {
-            StepWithDetails(data = dummyStepsDB[0])
+            StepWithDetails(step = dummyStepsDB[0], task = dummyTasksDB[0])
         }
     }
 }

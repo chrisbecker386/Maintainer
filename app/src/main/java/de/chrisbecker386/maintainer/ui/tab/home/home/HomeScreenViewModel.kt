@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 19/04/2023, 10:56
+ * Created by Christopher Becker on 10/05/2023, 13:00
  * Copyright (c) 2023. All rights reserved.
- * Last modified 19/04/2023, 10:56
+ * Last modified 10/05/2023, 13:00
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,26 +17,15 @@
  *
  */
 
-package de.chrisbecker386.maintainer.data.model
+package de.chrisbecker386.maintainer.ui.tab.home.home
 
-enum class RepeatFrequency {
-    SECONDLY,
-    MINUTELY,
-    HOURLY,
-    DAILY,
-    WEEKLY,
-    MONTHLY,
-    YEARLY;
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
+import javax.inject.Inject
 
-    fun inMillis(): Long {
-        return when (this) {
-            SECONDLY -> 1000L
-            MINUTELY -> 60000L
-            HOURLY -> 3600000L
-            DAILY -> 86400000L
-            WEEKLY -> 604800000L
-            MONTHLY -> 2628000000L
-            YEARLY -> 31540000000L
-        }
-    }
+@HiltViewModel
+class HomeScreenViewModel @Inject constructor(private val repository: MaintainerRepository) :
+    ViewModel() {
+    // TODO add data some data an provide function to the homescreen
 }

@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 17/05/2023, 10:11
+ * Created by Christopher Becker on 23/05/2023, 10:46
  * Copyright (c) 2023. All rights reserved.
- * Last modified 17/05/2023, 10:11
+ * Last modified 23/05/2023, 10:46
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,10 @@
  *
  */
 
-package de.chrisbecker386.maintainer.viewmodel.home
+package de.chrisbecker386.maintainer.ui.tab.home.task
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import de.chrisbecker386.maintainer.domain.repository.TaskRepository
-import javax.inject.Inject
+import de.chrisbecker386.maintainer.data.entity.Step
 
-@HiltViewModel
-class SingleMachineViewModel @Inject constructor(private val repository: TaskRepository) :
-    ViewModel() {
+sealed interface SingleTaskEvent {
+    data class SetStepDone(val step: Step) : SingleTaskEvent
 }

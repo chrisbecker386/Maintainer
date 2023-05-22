@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 19/04/2023, 10:56
+ * Created by Christopher Becker on 23/05/2023, 18:29
  * Copyright (c) 2023. All rights reserved.
- * Last modified 19/04/2023, 10:56
+ * Last modified 23/05/2023, 18:29
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,26 +17,22 @@
  *
  */
 
-package de.chrisbecker386.maintainer.data.model
+package de.chrisbecker386.maintainer.data.utility
 
-enum class RepeatFrequency {
-    SECONDLY,
-    MINUTELY,
-    HOURLY,
-    DAILY,
-    WEEKLY,
-    MONTHLY,
-    YEARLY;
+import android.annotation.SuppressLint
+import android.icu.text.SimpleDateFormat
 
-    fun inMillis(): Long {
+enum class SimpleDateType {
+    FULL_DATE_AND_TIME,
+    FULL_DATE,
+    FULL_TIME;
+
+    @SuppressLint("SimpleDateFormat")
+    fun getSimpleDateFormat(): SimpleDateFormat {
         return when (this) {
-            SECONDLY -> 1000L
-            MINUTELY -> 60000L
-            HOURLY -> 3600000L
-            DAILY -> 86400000L
-            WEEKLY -> 604800000L
-            MONTHLY -> 2628000000L
-            YEARLY -> 31540000000L
+            FULL_DATE_AND_TIME -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS")
+            FULL_DATE -> SimpleDateFormat("yyyy-MM-dd")
+            FULL_TIME -> SimpleDateFormat("HH:mm:ss:SSS")
         }
     }
 }

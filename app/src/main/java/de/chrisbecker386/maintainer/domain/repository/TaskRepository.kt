@@ -44,7 +44,7 @@ interface TaskRepository {
 
     suspend fun removeAllSteps()
 
-    suspend fun getSteps(taskId: Int): List<Step>
+    fun getSteps(taskId: Int): Flow<List<Step>>
 
-    suspend fun getTask(taskId: Int): Task
+    fun getTask(taskId: Int): Flow<Task>
 }

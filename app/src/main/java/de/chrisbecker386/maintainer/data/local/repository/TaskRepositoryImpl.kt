@@ -57,7 +57,7 @@ class TaskRepositoryImpl(
     override suspend fun removeSteps(steps: List<Step>) = stepDao.removeSteps(steps)
     override suspend fun removeAllSteps() = stepDao.removeAllSteps()
 
-    override suspend fun getTask(taskId: Int): Task = taskDao.getTaskById(taskId)
+    override fun getTask(taskId: Int): Flow<Task> = taskDao.getTaskById(taskId)
 
-    override suspend fun getSteps(taskId: Int): List<Step> = stepDao.getStepsForTask(taskId)
+    override fun getSteps(taskId: Int): Flow<List<Step>> = stepDao.getStepsForTask(taskId)
 }

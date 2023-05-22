@@ -35,7 +35,7 @@ import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
         Precondition::class,
         TaskCompletedDate::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 

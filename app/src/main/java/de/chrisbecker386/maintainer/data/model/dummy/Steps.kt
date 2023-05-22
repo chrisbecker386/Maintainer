@@ -90,7 +90,7 @@ val cleanWaterTank: List<StepObject> = listOf(
 )
 
 val dummyStepsDB = listOf(
-    //clean water tank
+    // clean water tank
     Step(
         id = 1,
         order = 1,
@@ -136,7 +136,7 @@ val dummyStepsDB = listOf(
         completedDate = null,
         taskId = 1
     ),
-    //unclogging
+    // unclogging
     Step(
         id = 6,
         order = 1,
@@ -193,11 +193,11 @@ val dummyStepsDB = listOf(
     ),
     Step(
         id = 12,
-        order = 6,
+        order = 7,
         title = "Close lit",
         imageRes = null,
         description = null,
         completedDate = null,
         taskId = 2
-    ),
+    )
 )
