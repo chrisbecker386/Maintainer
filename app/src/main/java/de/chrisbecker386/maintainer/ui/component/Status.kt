@@ -59,6 +59,7 @@ import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.model.MachineObject
 import de.chrisbecker386.maintainer.data.model.TaskObject
 import de.chrisbecker386.maintainer.data.model.dummy.dummyTasks
+import de.chrisbecker386.maintainer.data.model.dummy.dummyTasksDB
 import de.chrisbecker386.maintainer.data.model.getMaintainStats
 import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 import de.chrisbecker386.maintainer.ui.theme.DIM_L
@@ -260,7 +261,7 @@ fun PreviewMaintainObjectStatus() {
             )
             NextMaintains(
                 machineTitle = "machine",
-                tasks = dummyTasks
+                tasks = dummyTasksDB
             )
         }
     }

@@ -25,8 +25,8 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import de.chrisbecker386.maintainer.ui.tab.home.HomeScreen
 import de.chrisbecker386.maintainer.ui.tab.home.SingleCareScreen
+import de.chrisbecker386.maintainer.ui.tab.home.home.HomeScreen
 import de.chrisbecker386.maintainer.ui.tab.home.machine.SingleMachineScreen
 import de.chrisbecker386.maintainer.ui.tab.home.task.SingleTaskScreen
 import de.chrisbecker386.maintainer.ui.tab.info.InfoScreen
@@ -56,18 +56,7 @@ fun MaintainerNavGraph(
         composable(route = Settings.route) {
             SettingsScreen()
         }
-        composable(
-            route = SingleMachine.routeWithArgs,
-            arguments = SingleMachine.arguments
-        ) { navBackStackEntry ->
-            val machineType = navBackStackEntry.arguments?.getString(SingleMachine.machineTypeArg)
-            SingleMachineScreen(
-                machineType = machineType,
-                onTaskClick = { taskType ->
-                    navController.navigateToSingleTask(taskType)
-                }
-            )
-        }
+
         composable(
             route = SingleCare.routeWithArgs,
             arguments = SingleCare.arguments
@@ -77,6 +66,21 @@ fun MaintainerNavGraph(
                 careType = careType,
                 onMachineClick = { machineType -> navController.navigateToSingleMachine(machineType) }
             )
+        }
+
+        composable(
+            route = SingleMachine.routeWithArgs,
+            arguments = SingleMachine.arguments
+        ) { navBackStackEntry ->
+            val machineType = navBackStackEntry.arguments?.getInt(SingleMachine.machineTypeArg)
+            if (machineType != null) {
+                SingleMachineScreen(
+                    machineType = machineType,
+                    onTaskClick = { taskType ->
+                        navController.navigateToSingleTask(taskType)
+                    }
+                )
+            }
         }
 
         composable(
@@ -102,7 +106,7 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         restoreState = true
     }
 
-private fun NavHostController.navigateToSingleMachine(machineType: String) {
+private fun NavHostController.navigateToSingleMachine(machineType: Int) {
     this.navigateSingleTopTo("${SingleMachine.route}/$machineType")
 }
 
@@ -110,6 +114,6 @@ private fun NavHostController.navigateToSingleTask(taskType: Int) {
     this.navigate("${SingleTask.route}/$taskType")
 }
 
-private fun NavHostController.navigateToSingleCare(careType: String) {
+private fun NavHostController.navigateToSingleCare(careType: Int) {
     this.navigate("${SingleCare.route}/$careType")
 }

@@ -58,6 +58,7 @@ fun TaskContent(
     title: String,
     subtitle: String,
     approximateTime: ApproximateTime,
+    preconditions: Int,
     numberOfSteps: Int
 
 ) {
@@ -85,8 +86,11 @@ fun TaskContent(
                 )
 
                 RowWithIconText(icon = Icons.Default.Timer, text = approximateTime.approxAsString)
-                RowWithIconText(icon = Icons.Default.FactCheck, text = "Preconditions")
-                RowWithIconText(icon = Icons.Default.Ballot, text = numberOfSteps.toString())
+                RowWithIconText(
+                    icon = Icons.Default.FactCheck,
+                    text = "$preconditions preconditions"
+                )
+                RowWithIconText(icon = Icons.Default.Ballot, text = "$numberOfSteps steps")
                 Spacer(modifier = Modifier.height(DIM_XXS))
             }
         }
@@ -126,6 +130,7 @@ fun PreviewTaskContent() {
             title = "task_title",
             subtitle = "task_sub_title",
             approximateTime = ApproximateTime.MIN_5,
+            preconditions = 2,
             numberOfSteps = 4
         )
     }

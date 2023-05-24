@@ -46,8 +46,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import de.chrisbecker386.maintainer.data.model.TaskObject
+import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.model.dummy.dummyMaintains
+import de.chrisbecker386.maintainer.data.model.dummy.dummyTasksDB
 import de.chrisbecker386.maintainer.ui.theme.DIM_M
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
@@ -62,7 +63,7 @@ import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 fun NextMaintains(
     modifier: Modifier = Modifier,
     machineTitle: String,
-    tasks: List<TaskObject>
+    tasks: List<Task>
 ) {
     Box(modifier = modifier) {
         Card(
@@ -100,7 +101,7 @@ fun NextMaintains(
                 tasks.forEachIndexed { index, task ->
                     if (index < 2) {
                         NextMaintainItem(
-                            graphic = task.graphic,
+                            graphic = task.imageRes,
                             title = task.title,
                             isMaintained = index == 0
                         )
@@ -185,7 +186,7 @@ fun PreviewNextMaintains() {
                 .fillMaxWidth()
                 .padding(DIM_XS),
             dummyMaintains[0].title,
-            dummyMaintains[0].list
+            dummyTasksDB
         )
     }
 }

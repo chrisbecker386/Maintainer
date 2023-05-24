@@ -66,7 +66,7 @@ object SingleMachine : Screen {
     override val icon = null
     const val machineTypeArg = "machine_type"
     val routeWithArgs = "$route/{$machineTypeArg}"
-    val arguments = listOf(navArgument(machineTypeArg) { type = NavType.StringType })
+    val arguments = listOf(navArgument(machineTypeArg) { type = NavType.IntType })
 }
 
 object SingleTask : Screen {

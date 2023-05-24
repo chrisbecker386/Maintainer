@@ -19,38 +19,70 @@
 
 package de.chrisbecker386.maintainer.ui.tab.home.machine
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import de.chrisbecker386.maintainer.data.model.dummy.dummyStepsDB
-import de.chrisbecker386.maintainer.data.model.dummy.dummyTasksDB
 import de.chrisbecker386.maintainer.domain.repository.TaskRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import de.chrisbecker386.maintainer.ui.model.ShortStatusState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
+import kotlinx.coroutines.flow.mapLatest
 
 @HiltViewModel
-class SingleMachineViewModel @Inject constructor(private val repository: TaskRepository) :
+class SingleMachineViewModel @Inject constructor(
+    private val repository: TaskRepository,
+    savedStateHandle: SavedStateHandle
+) :
     ViewModel() {
+    private val _machine =
+        repository.getMachine(checkNotNull(savedStateHandle.get<Int>("machine_type")))
 
-    // TODO only for dev has to removed soon!
-    init {
-        setDBEntries()
+    private val _tasks = _machine.flatMapLatest { machine ->
+        repository.getTasksForMachineWithPreconditionsStepsCompletes(machine.id)
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(),
+        emptyList()
+    )
+
+    private val _closedTasks = _tasks.mapLatest { tasks ->
+        tasks.filter { task -> task.isValid() }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(),
+        emptyList()
+    )
+
+    private val _openTasks = _tasks.mapLatest { tasks ->
+        tasks.filter { task -> !task.isValid() }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(),
+        emptyList()
+    )
+
+    private val _shortStatus = combine(_closedTasks, _tasks) { closedTask, tasks ->
+        ShortStatusState(numerator = closedTask.size, denominator = tasks.size)
     }
-    private fun setDBEntries() {
-        CoroutineScope(IO).launch {
-            withContext(Dispatchers.Default) {
-                repository.upsertTasks(
-                    dummyTasksDB
-                )
-            }
-            withContext(Dispatchers.Default) {
-                repository.insertSteps(
-                    dummyStepsDB
-                )
-            }
-        }
-    }
+    private val _state = MutableStateFlow(SingleMachineState())
+
+    val state = combine(
+        _state,
+        _machine,
+        _shortStatus,
+        _openTasks,
+        _closedTasks
+    ) { state, machine, shortStatus, openTasks, closedTasks ->
+        state.copy(
+            machine = machine,
+            shortStatus = shortStatus,
+            openTasks = openTasks,
+            closedTasks = closedTasks
+        )
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SingleMachineState())
 }

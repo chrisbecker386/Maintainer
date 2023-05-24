@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 15/05/2023, 10:37
+ * Created by Christopher Becker on 24/05/2023, 13:11
  * Copyright (c) 2023. All rights reserved.
- * Last modified 15/05/2023, 10:37
+ * Last modified 24/05/2023, 13:11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,37 +20,32 @@
 package de.chrisbecker386.maintainer.data.local
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import androidx.room.Update
-import de.chrisbecker386.maintainer.data.entity.Step
+import androidx.room.Upsert
+import de.chrisbecker386.maintainer.data.entity.Machine
+import de.chrisbecker386.maintainer.data.entity.Task
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface StepDao {
+interface MachineDao {
+    @Upsert
+    suspend fun upsertMachine(machine: Machine)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSteps(steps: List<Step>)
-
-    @Insert
-    suspend fun insertStep(step: Step)
-
-    @Update
-    suspend fun updateStep(step: Step)
-
-    @Delete
-    suspend fun deleteStep(step: Step)
-
-    @Delete
-    suspend fun removeSteps(steps: List<Step>)
+    suspend fun insertMachines(machines: List<Machine>)
 
     @Transaction
-    @Query("DELETE FROM steps")
-    suspend fun removeAllSteps()
+    @Query("DELETE FROM machines")
+    suspend fun removeAllMachines()
 
     @Transaction
-    @Query("SELECT * FROM steps WHERE step_fk_task_id = :taskId")
-    fun getStepsForTask(taskId: Int): Flow<List<Step>>
+    @Query("SELECT * FROM tasks WHERE task_fk_machine_id = :machineId")
+    fun getTasksForMachine(machineId: Int): Flow<List<Task>>
+
+    @Transaction
+    @Query("SELECT * FROM machines WHERE machine_id = :machineId")
+    fun getMachine(machineId: Int): Flow<Machine>
 }

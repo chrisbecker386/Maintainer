@@ -24,7 +24,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,34 +43,67 @@ import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
 fun SingleMachineScreen(
-    machineType: String? = "Espresso Machine",
+    machineType: Int = 1,
     onTaskClick: (Int) -> Unit = {}
 ) {
     val viewModel = hiltViewModel<SingleMachineViewModel>()
+    val state by viewModel.state.collectAsState()
+    SingleMachine(state = state, onTaskClick = onTaskClick)
+//    val machine = remember(machineType) { DummyData.getMaintainObject("Espresso Machine") }
 
-    val machine = remember(machineType) { DummyData.getMaintainObject(machineType) }
+}
+
+@Composable
+private fun SingleMachine(
+    state: SingleMachineState,
+    onEvent: (SingleMachineEvent) -> Unit = {},
+    onTaskClick: (Int) -> Unit = {}
+) {
     LazyColumn(Modifier.fillMaxWidth()) {
         item {
             ShortStatus(
                 modifier = Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
-                title = "${machine.title} Status",
-                state = ShortStatusState(
-                    numerator = 0,
-                    denominator = 2
-                )
+                title = state.machine.title,
+                state = state.shortStatus
             )
         }
-        items(count = machine.list.size) { index ->
+        item {
+            Text(
+                modifier = Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
+                text = "Open",
+                style = MaterialTheme.typography.h3
+            )
+        }
+        items(count = state.openTasks.size) { index ->
             TaskContent(
                 modifier = Modifier
-                    .clickable { onTaskClick(index + 1) }
+                    .clickable { onTaskClick(state.openTasks[index].task.id) }
                     .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
-                title = machine.list[index].title,
-                subtitle = "none",
+                title = state.openTasks[index].task.title,
+                subtitle = state.openTasks[index].task.subtitle ?: "none",
                 approximateTime = ApproximateTime.MIN_45,
-                numberOfSteps = 4
+                preconditions = state.openTasks[index].preconditions.size,
+                numberOfSteps = state.openTasks[index].steps.size)
+        }
+        item {
+            Text(
+                modifier = Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
+                text = "Closed",
+                style = MaterialTheme.typography.h3
             )
         }
+        items(count = state.closedTasks.size) { index ->
+            TaskContent(
+                modifier = Modifier
+                    .clickable { onTaskClick(state.closedTasks[index].task.id) }
+                    .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
+                title = state.closedTasks[index].task.title,
+                subtitle = state.closedTasks[index].task.subtitle ?: "none",
+                approximateTime = ApproximateTime.MIN_45,
+                preconditions = state.closedTasks[index].preconditions.size,
+                numberOfSteps = state.closedTasks[index].steps.size)
+        }
+
     }
 }
 

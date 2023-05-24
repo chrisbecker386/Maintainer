@@ -43,4 +43,14 @@ data class TaskWithPreconditionsStepsCompletes(
         entityColumn = "task_completed_fk_task_id"
     )
     val completes: List<TaskCompletedDate>
-)
+) {
+    fun isValid(): Boolean = this.task.getRepeatCycle().isValid(getLatestCompleteOrNull())
+
+    private fun getLatestCompleteOrNull(): Long? {
+        return if (this.completes.isEmpty()) {
+            null
+        } else {
+            this.completes.maxByOrNull { it.date }?.date
+        }
+    }
+}

@@ -19,11 +19,13 @@
 
 package de.chrisbecker386.maintainer.data.local.repository
 
+import de.chrisbecker386.maintainer.data.entity.Machine
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
 import de.chrisbecker386.maintainer.data.entity.relation.TaskWithPreconditionsStepsCompletes
 import de.chrisbecker386.maintainer.data.local.CompletedTaskDao
+import de.chrisbecker386.maintainer.data.local.MachineDao
 import de.chrisbecker386.maintainer.data.local.PreconditionDao
 import de.chrisbecker386.maintainer.data.local.StepDao
 import de.chrisbecker386.maintainer.data.local.TaskDao
@@ -34,7 +36,8 @@ class TaskRepositoryImpl(
     private val taskDao: TaskDao,
     private val stepDao: StepDao,
     private val preconditionDao: PreconditionDao,
-    private val completedTaskDao: CompletedTaskDao
+    private val completedTaskDao: CompletedTaskDao,
+    private val machineDao: MachineDao
 ) : TaskRepository {
     override fun getAllTaskWithWithPreconditionsStepsCompletes(): Flow<List<TaskWithPreconditionsStepsCompletes>> =
         taskDao.getAllTaskWithPreconditionsStepsCompletes()
@@ -58,6 +61,20 @@ class TaskRepositoryImpl(
     override suspend fun removeAllSteps() = stepDao.removeAllSteps()
 
     override fun getTask(taskId: Int): Flow<Task> = taskDao.getTaskById(taskId)
+    override suspend fun upsertMachine(machine: Machine) = machineDao.upsertMachine(machine)
+
+    override suspend fun insertMachines(machines: List<Machine>) =
+        machineDao.insertMachines(machines)
+
+    override suspend fun removeAllMachines() = machineDao.removeAllMachines()
+
+    override fun getTasks(machineId: Int): Flow<List<Task>> =
+        machineDao.getTasksForMachine(machineId)
+
+    override fun getMachine(machineId: Int): Flow<Machine> = machineDao.getMachine(machineId)
+    override fun getTasksForMachineWithPreconditionsStepsCompletes(machineId: Int):
+            Flow<List<TaskWithPreconditionsStepsCompletes>> =
+        taskDao.getTasksForMachineWithPreconditionsStepsCompletes(machineId)
 
     override fun getSteps(taskId: Int): Flow<List<Step>> = stepDao.getStepsForTask(taskId)
 }
