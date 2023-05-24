@@ -54,7 +54,7 @@ import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 fun OverviewGrid(
     modifier: Modifier = Modifier,
     items: List<GridItemData> = emptyList(),
-    onItemClick: (String) -> Unit = {}
+    onItemClick: (Int) -> Unit = {}
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Card(
@@ -92,14 +92,15 @@ fun OverviewGrid(
 fun OverviewGridItem(
     modifier: Modifier = Modifier,
     title: String = "missing title",
+    id: Int = 1,
     icon: ImageVector = Icons.Default.QuestionMark,
-    onClick: (String) -> Unit = {}
+    onClick: (Int) -> Unit = {}
 ) {
     Box(modifier = modifier) {
         Card(
             Modifier
                 .fillMaxWidth()
-                .clickable { onClick(title) },
+                .clickable { onClick(id) },
             shape = RoundedCornerShape(DIM_XS),
             border = BorderStroke(
                 width = DIM_XXXXS,

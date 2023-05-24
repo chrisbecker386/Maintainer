@@ -41,7 +41,7 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
 @Composable
 fun SingleCareScreen(
     careType: String?,
-    onMachineClick: (String) -> Unit = {}
+    onMachineClick: (Int) -> Unit = {}
 ) {
     val care = remember(careType) { DummyData.getCareObject(careType) }
     Column(

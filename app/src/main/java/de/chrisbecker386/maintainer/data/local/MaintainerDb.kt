@@ -22,6 +22,7 @@ package de.chrisbecker386.maintainer.data.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import de.chrisbecker386.maintainer.data.entity.LocalCare
+import de.chrisbecker386.maintainer.data.entity.Machine
 import de.chrisbecker386.maintainer.data.entity.Precondition
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
@@ -30,17 +31,19 @@ import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
 @Database(
     entities = [
         LocalCare::class,
+        Machine::class,
         Task::class,
         Step::class,
         Precondition::class,
         TaskCompletedDate::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 
 abstract class MaintainerDb : RoomDatabase() {
     abstract val maintainerDao: MaintainerDao
+    abstract val machineDao: MachineDao
     abstract val taskDao: TaskDao
     abstract val stepDao: StepDao
     abstract val preconditionDao: PreconditionDao

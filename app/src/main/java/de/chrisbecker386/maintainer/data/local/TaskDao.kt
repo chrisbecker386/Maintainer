@@ -64,4 +64,8 @@ interface TaskDao {
     @Transaction
     @Query("SELECT * FROM tasks WHERE task_id = :taskId")
     fun getTaskWithPreconditionsStepsCompletes(taskId: Int): Flow<TaskWithPreconditionsStepsCompletes>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE task_fk_machine_id = :machineId")
+    fun getTasksForMachineWithPreconditionsStepsCompletes(machineId: Int): Flow<List<TaskWithPreconditionsStepsCompletes>>
 }

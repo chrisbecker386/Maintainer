@@ -19,6 +19,7 @@
 
 package de.chrisbecker386.maintainer.domain.repository
 
+import de.chrisbecker386.maintainer.data.entity.Machine
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
@@ -47,4 +48,16 @@ interface TaskRepository {
     fun getSteps(taskId: Int): Flow<List<Step>>
 
     fun getTask(taskId: Int): Flow<Task>
+
+    suspend fun upsertMachine(machine: Machine)
+
+    suspend fun insertMachines(machines: List<Machine>)
+
+    suspend fun removeAllMachines()
+
+    fun getTasks(machineId: Int): Flow<List<Task>>
+
+    fun getMachine(machineId: Int): Flow<Machine>
+
+    fun getTasksForMachineWithPreconditionsStepsCompletes(machineId: Int): Flow<List<TaskWithPreconditionsStepsCompletes>>
 }

@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 23/05/2023, 10:46
+ * Created by Christopher Becker on 24/05/2023, 10:43
  * Copyright (c) 2023. All rights reserved.
- * Last modified 23/05/2023, 10:46
+ * Last modified 24/05/2023, 10:43
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,6 @@
  *
  */
 
-package de.chrisbecker386.maintainer.ui.tab.home.task
+package de.chrisbecker386.maintainer.ui.tab.home.machine
 
-import de.chrisbecker386.maintainer.R
-import de.chrisbecker386.maintainer.data.entity.Step
-import de.chrisbecker386.maintainer.data.entity.Task
-import de.chrisbecker386.maintainer.ui.model.ShortStatusState
-
-data class SingleTaskState(
-    val task: Task = Task(0, "", null, R.drawable.kettle_48px, 1, machineId = 1),
-    val shortStatus: ShortStatusState = ShortStatusState(0, 0),
-    val steps: List<Step> = emptyList()
-)
+interface SingleMachineEvent

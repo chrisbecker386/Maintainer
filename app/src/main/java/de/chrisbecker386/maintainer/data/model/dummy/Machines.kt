@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 17/04/2023, 12:32
+ * Created by Christopher Becker on 24/05/2023, 11:44
  * Copyright (c) 2023. All rights reserved.
- * Last modified 17/04/2023, 12:32
+ * Last modified 24/05/2023, 11:44
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,39 +20,25 @@
 package de.chrisbecker386.maintainer.data.model.dummy
 
 import de.chrisbecker386.maintainer.R
-import de.chrisbecker386.maintainer.data.entity.Task
-import de.chrisbecker386.maintainer.data.model.TaskObject
+import de.chrisbecker386.maintainer.data.entity.Machine
 
-val dummyTasks = listOf(
-    TaskObject(
+val dummyMachineDB = listOf(
+    Machine(
         id = 1,
-        title = "clean water tank",
-        graphic = R.drawable.kettle_48px,
-        list = cleanWaterTank
+        title = "espresso machine",
+        subtitle = "best coffee",
+        imageRes = R.drawable.coffee_maker_48px
     ),
-    TaskObject(
+    Machine(
         id = 2,
-        title = "unclogging",
-        graphic = R.drawable.ic_launcher_foreground,
-        list = dummySteps
-    )
-)
-
-val dummyTasksDB = listOf(
-    Task(
-        id = 1,
-        title = "clean water tank",
+        title = "dish washer",
         subtitle = null,
-        imageRes = R.drawable.kettle_48px,
-        duration = 5,
-        machineId = 1
+        imageRes = R.drawable.dishwasher_gen_48px
     ),
-    Task(
-        id = 2,
-        title = "unclogging",
+    Machine(
+        id = 3,
+        title = "washing machine",
         subtitle = null,
-        imageRes = R.drawable.ic_launcher_foreground,
-        duration = 5,
-        machineId = 1
+        imageRes = R.drawable.local_laundry_service_48px
     )
 )

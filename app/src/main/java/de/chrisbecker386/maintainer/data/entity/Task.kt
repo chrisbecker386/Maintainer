@@ -22,11 +22,24 @@ package de.chrisbecker386.maintainer.data.entity
 import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import de.chrisbecker386.maintainer.data.model.RepeatCycle
 import de.chrisbecker386.maintainer.data.model.RepeatFrequency
 
-@Entity(tableName = "tasks")
+@Entity(
+    tableName = "tasks",
+    foreignKeys = [
+        ForeignKey(
+            entity = Machine::class,
+            parentColumns = ["machine_id"],
+            childColumns = ["task_fk_machine_id"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index("task_fk_machine_id")]
+)
 data class Task(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "task_id")
@@ -43,7 +56,9 @@ data class Task(
     @ColumnInfo(name = "task_repeat_frequency")
     val repeatFrequency: RepeatFrequency = RepeatFrequency.WEEKLY,
     @ColumnInfo(name = "task_tact")
-    val tact: Int = 1
+    val tact: Int = 1,
+    @ColumnInfo(name = "task_fk_machine_id")
+    val machineId: Int
 ) {
     fun getRepeatCycle(): RepeatCycle {
         return RepeatCycle(this.repeatFrequency, this.tact)
