@@ -21,7 +21,6 @@ package de.chrisbecker386.maintainer.ui.tab.home.machine
 
 import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.entity.Machine
-import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.entity.relation.TaskWithPreconditionsStepsCompletes
 import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 

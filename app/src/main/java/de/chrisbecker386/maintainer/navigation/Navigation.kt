@@ -89,7 +89,10 @@ fun MaintainerNavGraph(
         ) { navBackStackEntry ->
             val taskType = navBackStackEntry.arguments?.getInt(SingleTask.taskTypeArg)
             if (taskType != null) {
-                SingleTaskScreen(taskType = taskType)
+                SingleTaskScreen(
+                    taskType = taskType,
+                    navigateUp = { navController.navigateUp() }
+                )
             }
         }
     }
@@ -107,7 +110,7 @@ fun NavHostController.navigateSingleTopTo(route: String) =
     }
 
 private fun NavHostController.navigateToSingleMachine(machineType: Int) {
-    this.navigateSingleTopTo("${SingleMachine.route}/$machineType")
+    this.navigate("${SingleMachine.route}/$machineType")
 }
 
 private fun NavHostController.navigateToSingleTask(taskType: Int) {

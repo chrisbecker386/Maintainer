@@ -24,13 +24,17 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
 import de.chrisbecker386.maintainer.domain.repository.TaskRepository
 import de.chrisbecker386.maintainer.ui.model.ShortStatusState
+import de.chrisbecker386.maintainer.ui.tab.home.task.SingleTaskEvent.StepDone
+import de.chrisbecker386.maintainer.ui.tab.home.task.SingleTaskEvent.TaskDone
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -59,22 +63,47 @@ constructor(
         ShortStatusState(numerator, denominator)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), ShortStatusState(0, 0))
 
-    val state = combine(_state, _task, _shortStatus, _steps) { state, task, shortStatus, steps ->
+    private val _isTaskDone = combine(_task, _steps) { task, steps ->
+        if (steps.isEmpty()) {
+            false
+        } else {
+            steps.filter { step -> step.isValid(task.getRepeatCycle()) }.size == steps.size
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
+
+    val state = combine(
+        _state,
+        _task,
+        _shortStatus,
+        _steps,
+        _isTaskDone
+    ) { state, task, shortStatus, steps, _isTaskDone ->
         state.copy(
             task = task,
             shortStatus = shortStatus,
-            steps = steps
+            steps = steps,
+            isTaskDone = _isTaskDone
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SingleTaskState())
 
     fun onEvent(event: SingleTaskEvent) {
         when (event) {
-            is SingleTaskEvent.SetStepDone -> {
+            is StepDone -> {
                 viewModelScope.launch {
-                    val newStep =
-                        event.step.copy(completedDate = Calendar.getInstance().timeInMillis)
-                    repository.updateStepComplete(newStep)
+                    val step = event.step.copy(completedDate = Calendar.getInstance().timeInMillis)
+                    repository.updateStepComplete(step)
                 }
+            }
+
+            is TaskDone -> {
+                viewModelScope.launch {
+                    val taskComplete = TaskCompletedDate(
+                        date = Calendar.getInstance().timeInMillis,
+                        taskId = event.task.id
+                    )
+                    repository.addTaskComplete(taskComplete)
+                }
+                _state.update { it.copy(showDialog = true) }
             }
         }
     }

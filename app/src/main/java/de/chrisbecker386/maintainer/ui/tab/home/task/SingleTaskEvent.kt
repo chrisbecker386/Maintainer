@@ -20,7 +20,9 @@
 package de.chrisbecker386.maintainer.ui.tab.home.task
 
 import de.chrisbecker386.maintainer.data.entity.Step
+import de.chrisbecker386.maintainer.data.entity.Task
 
 sealed interface SingleTaskEvent {
-    data class SetStepDone(val step: Step) : SingleTaskEvent
+    data class StepDone(val step: Step) : SingleTaskEvent
+    data class TaskDone(val task: Task) : SingleTaskEvent
 }

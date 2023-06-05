@@ -29,28 +29,23 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import de.chrisbecker386.maintainer.data.model.ApproximateTime
-import de.chrisbecker386.maintainer.data.model.dummy.DummyData
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
 import de.chrisbecker386.maintainer.ui.component.TaskContent
-import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
 fun SingleMachineScreen(
-    machineType: Int = 1,
+    machineType: Int,
     onTaskClick: (Int) -> Unit = {}
 ) {
     val viewModel = hiltViewModel<SingleMachineViewModel>()
     val state by viewModel.state.collectAsState()
     SingleMachine(state = state, onTaskClick = onTaskClick)
-//    val machine = remember(machineType) { DummyData.getMaintainObject("Espresso Machine") }
-
 }
 
 @Composable
@@ -83,7 +78,8 @@ private fun SingleMachine(
                 subtitle = state.openTasks[index].task.subtitle ?: "none",
                 approximateTime = ApproximateTime.MIN_45,
                 preconditions = state.openTasks[index].preconditions.size,
-                numberOfSteps = state.openTasks[index].steps.size)
+                numberOfSteps = state.openTasks[index].steps.size
+            )
         }
         item {
             Text(
@@ -101,9 +97,9 @@ private fun SingleMachine(
                 subtitle = state.closedTasks[index].task.subtitle ?: "none",
                 approximateTime = ApproximateTime.MIN_45,
                 preconditions = state.closedTasks[index].preconditions.size,
-                numberOfSteps = state.closedTasks[index].steps.size)
+                numberOfSteps = state.closedTasks[index].steps.size
+            )
         }
-
     }
 }
 
@@ -111,6 +107,6 @@ private fun SingleMachine(
 @Composable
 fun PreviewSingleMachine() {
     MaintainerTheme {
-        SingleMachineScreen()
+        SingleMachineScreen(machineType = 1)
     }
 }
