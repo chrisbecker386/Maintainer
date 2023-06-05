@@ -27,5 +27,8 @@ import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 data class SingleTaskState(
     val task: Task = Task(0, "", null, R.drawable.kettle_48px, 1, machineId = 1),
     val shortStatus: ShortStatusState = ShortStatusState(0, 0),
-    val steps: List<Step> = emptyList()
+    val steps: List<Step> = emptyList(),
+    val isTaskDone: Boolean = false,
+    val showDialog: Boolean = false,
+    val isNavigateUp: Boolean = false
 )

@@ -73,7 +73,7 @@ class TaskRepositoryImpl(
 
     override fun getMachine(machineId: Int): Flow<Machine> = machineDao.getMachine(machineId)
     override fun getTasksForMachineWithPreconditionsStepsCompletes(machineId: Int):
-            Flow<List<TaskWithPreconditionsStepsCompletes>> =
+        Flow<List<TaskWithPreconditionsStepsCompletes>> =
         taskDao.getTasksForMachineWithPreconditionsStepsCompletes(machineId)
 
     override fun getSteps(taskId: Int): Flow<List<Step>> = stepDao.getStepsForTask(taskId)
