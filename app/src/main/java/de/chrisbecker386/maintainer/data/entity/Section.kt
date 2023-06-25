@@ -23,11 +23,11 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "cares")
-data class LocalCare(
+@Entity(tableName = "sections")
+data class Section(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "care_id")
+    @ColumnInfo(name = "section_id")
     val id: Int = 0,
-    @ColumnInfo(name = "care_title")
+    @ColumnInfo(name = "section_title")
     val title: String
 )

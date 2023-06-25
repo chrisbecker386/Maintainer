@@ -32,10 +32,10 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import de.chrisbecker386.maintainer.BuildConfig
 import de.chrisbecker386.maintainer.data.model.GridItemData
-import de.chrisbecker386.maintainer.data.model.dummy.dummyCares
+import de.chrisbecker386.maintainer.data.model.dummy.dummySection
 import de.chrisbecker386.maintainer.data.model.dummy.dummyMachineDB
 import de.chrisbecker386.maintainer.data.model.dummy.dummyTasksDB
-import de.chrisbecker386.maintainer.data.model.toCareGridItem
+import de.chrisbecker386.maintainer.data.model.toSectionGridItem
 import de.chrisbecker386.maintainer.ui.component.NextMaintains
 import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
@@ -78,7 +78,7 @@ fun HomeScreen(
             }
             item {
                 val list = mutableListOf<GridItemData>()
-                dummyCares.forEach { list.add(it.toCareGridItem()) }
+                dummySection.forEach { list.add(it.toSectionGridItem()) }
                 OverviewGrid(
                     modifier = Modifier.padding(
                         start = DIM_XS,

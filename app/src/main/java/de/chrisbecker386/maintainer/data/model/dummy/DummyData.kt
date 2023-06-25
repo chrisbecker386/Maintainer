@@ -19,19 +19,19 @@
 
 package de.chrisbecker386.maintainer.data.model.dummy
 
-import de.chrisbecker386.maintainer.data.model.CareObject
+import de.chrisbecker386.maintainer.data.model.SectionObject
 import de.chrisbecker386.maintainer.data.model.MachineObject
 import de.chrisbecker386.maintainer.data.model.TaskObject
 
 // mocking repository
 object DummyData {
-    val cares = dummyCares
+    val section = dummySection
     private val maintains = dummyMaintains
     private val steps = dummySteps
     private val tasks = dummyTasks
 
-    fun getCareObject(careName: String?): CareObject {
-        return cares.first { it.title == careName }
+    fun getSectionObject(sectionName: String?): SectionObject {
+        return section.first { it.title == sectionName }
     }
 
     fun getMaintainObject(maintainName: String?): MachineObject {

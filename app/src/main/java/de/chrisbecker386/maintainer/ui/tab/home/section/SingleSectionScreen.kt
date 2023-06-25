@@ -17,7 +17,7 @@
  *
  */
 
-package de.chrisbecker386.maintainer.ui.tab.home
+package de.chrisbecker386.maintainer.ui.tab.home.section
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -39,11 +39,11 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
 
 @Composable
-fun SingleCareScreen(
-    careType: String?,
+fun SingleSectionScreen(
+    sectionType: String?,
     onMachineClick: (Int) -> Unit = {}
 ) {
-    val care = remember(careType) { DummyData.getCareObject(careType) }
+    val section = remember(sectionType) { DummyData.getSectionObject(sectionType) }
     Column(
         Modifier
             .fillMaxWidth()
