@@ -135,7 +135,7 @@ fun OverviewGridItem(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewCare() {
+fun PreviewSection() {
     MaintainerTheme {
         OverviewGrid(
             modifier = Modifier.fillMaxWidth(),

@@ -41,23 +41,23 @@ object Home : Screen {
 
 object Info : Screen {
     override val route: String = "info_screen"
-    override val title: String = "info"
+    override val title: String = "Info"
     override val icon: ImageVector = Icons.Default.Info
 }
 
 object Settings : Screen {
     override val route: String = "settings_screen"
-    override val title: String = "settings"
+    override val title: String = "Settings"
     override val icon: ImageVector = Icons.Default.Settings
 }
 
-object SingleCare : Screen {
-    override val route: String = "single_care"
-    override val title: String = "Care"
+object SingleSection : Screen {
+    override val route: String = "single_section"
+    override val title: String = "Section"
     override val icon = null
-    const val careTypeArg = "care_type"
-    val routeWithArgs = "${SingleCare.route}/{$careTypeArg}"
-    val arguments = listOf(navArgument(careTypeArg) { type = NavType.StringType })
+    const val sectionTypeArg = "section_type"
+    val routeWithArgs = "$route/{$sectionTypeArg}"
+    val arguments = listOf(navArgument(sectionTypeArg) { type = NavType.StringType })
 }
 
 object SingleMachine : Screen {

@@ -20,5 +20,5 @@
 package de.chrisbecker386.maintainer.domain.repository
 
 interface MaintainerRepository {
-    suspend fun getAllLocalCares()
+    suspend fun getAllLocalSections()
 }

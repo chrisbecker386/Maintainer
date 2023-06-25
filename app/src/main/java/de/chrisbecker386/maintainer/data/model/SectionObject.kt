@@ -24,14 +24,14 @@ import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.ui.graphics.vector.ImageVector
 import de.chrisbecker386.maintainer.data.model.interfaces.ItemObject
 
-data class CareObject(
+data class SectionObject(
     override val id: Int,
     override val title: String,
     val graphic: ImageVector = Icons.Default.QuestionMark,
     override val list: List<MachineObject> = emptyList()
 ) : ItemObject
 
-fun CareObject.toCareGridItem(): GridItemData = GridItemData(
+fun SectionObject.toSectionGridItem(): GridItemData = GridItemData(
     this.title,
     this.graphic
 )

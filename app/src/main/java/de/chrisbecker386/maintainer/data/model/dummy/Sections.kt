@@ -25,34 +25,34 @@ import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Kitchen
 import androidx.compose.material.icons.filled.Laptop
 import androidx.compose.material.icons.filled.Shower
-import de.chrisbecker386.maintainer.data.model.CareObject
+import de.chrisbecker386.maintainer.data.model.SectionObject
 
-val dummyCares = listOf(
-    CareObject(
+val dummySection = listOf(
+    SectionObject(
         id = 1,
         title = "Kitchen",
         graphic = Icons.Default.Kitchen,
         list = listOf(dummyMaintains[0], dummyMaintains[1])
     ),
-    CareObject(
+    SectionObject(
         id = 2,
         title = "Car",
         graphic = Icons.Default.DirectionsCar,
         list = listOf(dummyMaintains[2], dummyMaintains[3])
     ),
-    CareObject(
+    SectionObject(
         id = 3,
         title = "Bathroom",
         graphic = Icons.Default.Shower,
         list = listOf(dummyMaintains[2], dummyMaintains[3])
     ),
-    CareObject(
+    SectionObject(
         id = 4,
         title = "Bike",
         graphic = Icons.Default.DirectionsBike,
         list = listOf(dummyMaintains[2], dummyMaintains[3])
     ),
-    CareObject(
+    SectionObject(
         id = 5,
         title = "Computer",
         graphic = Icons.Default.Laptop,

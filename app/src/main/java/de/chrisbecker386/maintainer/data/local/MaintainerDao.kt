@@ -23,16 +23,16 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import de.chrisbecker386.maintainer.data.entity.LocalCare
+import de.chrisbecker386.maintainer.data.entity.Section
 
 @Dao
 interface MaintainerDao {
-    @Query("SELECT * FROM cares")
-    suspend fun getAllCares(): List<LocalCare>
+    @Query("SELECT * FROM sections")
+    suspend fun getAllSections(): List<Section>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addAllCares(cares: List<LocalCare>)
+    suspend fun addAllSections(sections: List<Section>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addNewCare(care: LocalCare)
+    suspend fun addNewSection(section: Section)
 }

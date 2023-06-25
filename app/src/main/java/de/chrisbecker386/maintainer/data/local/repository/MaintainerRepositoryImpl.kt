@@ -23,7 +23,7 @@ import de.chrisbecker386.maintainer.data.local.MaintainerDb
 import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
 
 class MaintainerRepositoryImpl(private val database: MaintainerDb) : MaintainerRepository {
-    override suspend fun getAllLocalCares() {
+    override suspend fun getAllLocalSections() {
         TODO("Not implemented")
     }
 }

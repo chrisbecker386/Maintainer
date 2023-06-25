@@ -25,7 +25,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import de.chrisbecker386.maintainer.ui.tab.home.SingleCareScreen
+import de.chrisbecker386.maintainer.ui.tab.home.section.SingleSectionScreen
 import de.chrisbecker386.maintainer.ui.tab.home.home.HomeScreen
 import de.chrisbecker386.maintainer.ui.tab.home.machine.SingleMachineScreen
 import de.chrisbecker386.maintainer.ui.tab.home.task.SingleTaskScreen
@@ -47,7 +47,7 @@ fun MaintainerNavGraph(
                 onMachineClick = { machineType ->
                     navController.navigateToSingleMachine(machineType)
                 },
-                onCareObjectClick = { careType -> navController.navigateToSingleCare(careType) }
+                onCareObjectClick = { careType -> navController.navigateToSingleSection(careType) }
             )
         }
         composable(route = Info.route) {
@@ -58,12 +58,12 @@ fun MaintainerNavGraph(
         }
 
         composable(
-            route = SingleCare.routeWithArgs,
-            arguments = SingleCare.arguments
+            route = SingleSection.routeWithArgs,
+            arguments = SingleSection.arguments
         ) { navBackStackEntry ->
-            val careType = navBackStackEntry.arguments?.getString(SingleCare.careTypeArg)
-            SingleCareScreen(
-                careType = careType,
+            val careType = navBackStackEntry.arguments?.getString(SingleSection.sectionTypeArg)
+            SingleSectionScreen(
+                sectionType = careType,
                 onMachineClick = { machineType -> navController.navigateToSingleMachine(machineType) }
             )
         }
@@ -117,6 +117,6 @@ private fun NavHostController.navigateToSingleTask(taskType: Int) {
     this.navigate("${SingleTask.route}/$taskType")
 }
 
-private fun NavHostController.navigateToSingleCare(careType: Int) {
-    this.navigate("${SingleCare.route}/$careType")
+private fun NavHostController.navigateToSingleSection(sectionType: Int) {
+    this.navigate("${SingleSection.route}/$sectionType")
 }
