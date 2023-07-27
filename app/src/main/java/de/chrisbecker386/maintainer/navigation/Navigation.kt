@@ -25,9 +25,9 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import de.chrisbecker386.maintainer.ui.tab.home.section.SingleSectionScreen
 import de.chrisbecker386.maintainer.ui.tab.home.home.HomeScreen
 import de.chrisbecker386.maintainer.ui.tab.home.machine.SingleMachineScreen
+import de.chrisbecker386.maintainer.ui.tab.home.section.SingleSectionScreen
 import de.chrisbecker386.maintainer.ui.tab.home.task.SingleTaskScreen
 import de.chrisbecker386.maintainer.ui.tab.info.InfoScreen
 import de.chrisbecker386.maintainer.ui.tab.settings.SettingsScreen
@@ -47,7 +47,7 @@ fun MaintainerNavGraph(
                 onMachineClick = { machineType ->
                     navController.navigateToSingleMachine(machineType)
                 },
-                onCareObjectClick = { careType -> navController.navigateToSingleSection(careType) }
+                onSectionClick = { careType -> navController.navigateToSingleSection(careType) }
             )
         }
         composable(route = Info.route) {
@@ -61,9 +61,9 @@ fun MaintainerNavGraph(
             route = SingleSection.routeWithArgs,
             arguments = SingleSection.arguments
         ) { navBackStackEntry ->
-            val careType = navBackStackEntry.arguments?.getString(SingleSection.sectionTypeArg)
+            val sectionType = navBackStackEntry.arguments?.getInt(SingleSection.sectionTypeArg)
             SingleSectionScreen(
-                sectionType = careType,
+                sectionType = sectionType,
                 onMachineClick = { machineType -> navController.navigateToSingleMachine(machineType) }
             )
         }

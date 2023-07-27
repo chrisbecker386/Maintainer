@@ -19,9 +19,11 @@
 
 package de.chrisbecker386.maintainer.data.model
 
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.annotation.DrawableRes
 
 data class GridItemData(
+    val id: Int,
     val title: String,
-    val icon: ImageVector
+    @DrawableRes
+    val icon: Int? = null
 )

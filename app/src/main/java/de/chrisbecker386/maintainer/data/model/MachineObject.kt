@@ -28,28 +28,32 @@ data class MachineObject(
     @DrawableRes
     val graphic: Int? = null,
     override val list: List<TaskObject> = emptyList()
-) : ItemObject
+) : ItemObject {
 
-fun MachineObject.getTasks() = list
+    fun toGridItemData() =
+        GridItemData(this.id, this.title, this.graphic)
 
-fun MachineObject.getOpenTasks(): List<TaskObject> {
-    val openTasks: MutableList<TaskObject> = mutableListOf()
-    list.forEach { task ->
-        if (task.repeatCycle.isCycleValid(task.getLastPerformedDate())) openTasks.add(task)
+    fun getTasks() = list
+
+    fun getOpenTasks(): List<TaskObject> {
+        val openTasks: MutableList<TaskObject> = mutableListOf()
+        list.forEach { task ->
+            if (task.repeatCycle.isCycleValid(task.getLastPerformedDate())) openTasks.add(task)
+        }
+        return openTasks.toList()
     }
-    return openTasks.toList()
-}
 
-fun MachineObject.getClosedTasks(): List<TaskObject> {
-    val closeTasks: MutableList<TaskObject> = mutableListOf()
-    list.forEach { task ->
-        if (task.repeatCycle.isCycleExpired(task.getLastPerformedDate())) closeTasks.add(task)
+    fun getClosedTasks(): List<TaskObject> {
+        val closeTasks: MutableList<TaskObject> = mutableListOf()
+        list.forEach { task ->
+            if (task.repeatCycle.isCycleExpired(task.getLastPerformedDate())) closeTasks.add(task)
+        }
+        return closeTasks.toList()
     }
-    return closeTasks.toList()
-}
 
-fun MachineObject.getMaintainStats() = listOf(
-    Pair("Total", getTasks()),
-    Pair("Open", getOpenTasks()),
-    Pair("Closed", getClosedTasks())
-)
+    fun getMaintainStats() = listOf(
+        Pair("Total", getTasks()),
+        Pair("Open", getOpenTasks()),
+        Pair("Closed", getClosedTasks())
+    )
+}

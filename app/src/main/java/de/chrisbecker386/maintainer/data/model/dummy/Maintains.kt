@@ -23,6 +23,7 @@ import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.model.MachineObject
 
 val dummyMaintains = listOf(
+    // kitchen
     MachineObject(
         id = 1,
         title = "Espresso Machine",
@@ -35,15 +36,31 @@ val dummyMaintains = listOf(
         graphic = R.drawable.directions_car_48px,
         list = dummyTasks
     ),
+    // Bathroom
     MachineObject(
         id = 3,
         title = "Washing Machine",
         graphic = null,
         list = dummyTasks
     ),
+    // Car
     MachineObject(
         id = 4,
         title = "Tire",
+        graphic = null,
+        list = dummyTasks
+    ),
+    // Bike
+    MachineObject(
+        id = 5,
+        title = "Tire",
+        graphic = null,
+        list = dummyTasks
+    ),
+    // Computer
+    MachineObject(
+        id = 6,
+        title = "Backup",
         graphic = null,
         list = dummyTasks
     )

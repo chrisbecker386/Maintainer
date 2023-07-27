@@ -57,7 +57,7 @@ object SingleSection : Screen {
     override val icon = null
     const val sectionTypeArg = "section_type"
     val routeWithArgs = "$route/{$sectionTypeArg}"
-    val arguments = listOf(navArgument(sectionTypeArg) { type = NavType.StringType })
+    val arguments = listOf(navArgument(sectionTypeArg) { type = NavType.IntType })
 }
 
 object SingleMachine : Screen {

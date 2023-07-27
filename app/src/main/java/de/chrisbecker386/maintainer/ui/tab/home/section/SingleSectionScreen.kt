@@ -24,13 +24,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CoffeeMaker
-import androidx.compose.material.icons.filled.DryCleaning
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import de.chrisbecker386.maintainer.data.model.GridItemData
 import de.chrisbecker386.maintainer.data.model.dummy.DummyData
 import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
@@ -40,7 +36,7 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
 
 @Composable
 fun SingleSectionScreen(
-    sectionType: String?,
+    sectionType: Int?,
     onMachineClick: (Int) -> Unit = {}
 ) {
     val section = remember(sectionType) { DummyData.getSectionObject(sectionType) }
@@ -58,16 +54,8 @@ fun SingleSectionScreen(
         )
         Spacer(modifier = Modifier.height(DIM_XS))
         OverviewGrid(
-            items = listOf(
-                GridItemData(
-                    "Espresso Machine",
-                    Icons.Default.CoffeeMaker
-                ),
-                GridItemData(
-                    "Dish Washer",
-                    Icons.Default.DryCleaning
-                )
-            ),
+            items =
+            section.list.map { it.toGridItemData() },
             onItemClick = onMachineClick
         )
     }

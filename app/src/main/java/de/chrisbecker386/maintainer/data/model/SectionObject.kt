@@ -19,19 +19,20 @@
 
 package de.chrisbecker386.maintainer.data.model
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.QuestionMark
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.annotation.DrawableRes
+import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.model.interfaces.ItemObject
 
 data class SectionObject(
     override val id: Int,
     override val title: String,
-    val graphic: ImageVector = Icons.Default.QuestionMark,
+    @DrawableRes
+    val graphic: Int? = R.drawable.question_mark_48px,
     override val list: List<MachineObject> = emptyList()
-) : ItemObject
-
-fun SectionObject.toSectionGridItem(): GridItemData = GridItemData(
-    this.title,
-    this.graphic
-)
+) : ItemObject {
+    fun toSectionGridItem(): GridItemData = GridItemData(
+        this.id,
+        this.title,
+        this.graphic
+    )
+}

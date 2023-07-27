@@ -32,10 +32,9 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import de.chrisbecker386.maintainer.BuildConfig
 import de.chrisbecker386.maintainer.data.model.GridItemData
-import de.chrisbecker386.maintainer.data.model.dummy.dummySection
 import de.chrisbecker386.maintainer.data.model.dummy.dummyMachineDB
+import de.chrisbecker386.maintainer.data.model.dummy.dummySection
 import de.chrisbecker386.maintainer.data.model.dummy.dummyTasksDB
-import de.chrisbecker386.maintainer.data.model.toSectionGridItem
 import de.chrisbecker386.maintainer.ui.component.NextMaintains
 import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
@@ -45,10 +44,12 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    onCareObjectClick: (Int) -> Unit = {},
+    onSectionClick: (Int) -> Unit = {},
     onMachineClick: (Int) -> Unit = {}
 ) {
     val viewModel = hiltViewModel<HomeScreenViewModel>()
+    val sectionList = mutableListOf<GridItemData>()
+    dummySection.forEach { sectionList.add(it.toSectionGridItem()) }
 
     if (BuildConfig.DEBUG) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -77,16 +78,14 @@ fun HomeScreen(
                 )
             }
             item {
-                val list = mutableListOf<GridItemData>()
-                dummySection.forEach { list.add(it.toSectionGridItem()) }
                 OverviewGrid(
                     modifier = Modifier.padding(
                         start = DIM_XS,
                         end = DIM_XS,
                         top = DIM_XS
                     ),
-                    items = list,
-                    onItemClick = { /* TODO()*/ }
+                    items = sectionList,
+                    onItemClick = { onSectionClick(it) }
                 )
             }
         }
