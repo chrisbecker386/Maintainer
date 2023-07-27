@@ -40,7 +40,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.model.GridItemData
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
@@ -79,8 +81,9 @@ fun OverviewGrid(
                     OverviewGridItem(
                         modifier = Modifier.padding(DIM_XXS),
                         title = items[it].title,
-                        icon = items[it].icon,
-                        onClick = onItemClick
+                        icon = items[it].icon?.let { icon -> ImageVector.vectorResource(id = icon) }
+                            ?: Icons.Default.QuestionMark,
+                        onClick = { onItemClick(it) }
                     )
                 }
             }
@@ -141,24 +144,26 @@ fun PreviewSection() {
             modifier = Modifier.fillMaxWidth(),
             items = listOf(
                 GridItemData(
+                    1,
                     "Kitchen",
-                    Icons.Default.QuestionMark
+                    R.drawable.kitchen_48px
                 ),
                 GridItemData(
+                    2,
                     "Car",
-                    Icons.Default.QuestionMark
+                    R.drawable.question_mark_48px
                 ),
                 GridItemData(
-                    "Bike",
-                    Icons.Default.QuestionMark
+                    3,
+                    "Bike"
                 ),
                 GridItemData(
-                    "Computer",
-                    Icons.Default.QuestionMark
+                    4,
+                    "Computer"
                 ),
                 GridItemData(
-                    "Bathroom",
-                    Icons.Default.QuestionMark
+                    5,
+                    "Bathroom"
                 )
             )
         )
