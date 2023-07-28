@@ -54,8 +54,7 @@ fun SingleSectionScreen(
         )
         Spacer(modifier = Modifier.height(DIM_XS))
         OverviewGrid(
-            items =
-            section.list.map { it.toGridItemData() },
+            items = section.list.map { it.toGridItemData() },
             onItemClick = onMachineClick
         )
     }

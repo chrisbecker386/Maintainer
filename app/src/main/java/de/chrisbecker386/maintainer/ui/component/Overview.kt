@@ -83,7 +83,7 @@ fun OverviewGrid(
                         title = items[it].title,
                         icon = items[it].icon?.let { icon -> ImageVector.vectorResource(id = icon) }
                             ?: Icons.Default.QuestionMark,
-                        onClick = { onItemClick(it) }
+                        onClick = { onItemClick(items[it].id) }
                     )
                 }
             }
@@ -95,15 +95,14 @@ fun OverviewGrid(
 fun OverviewGridItem(
     modifier: Modifier = Modifier,
     title: String = "missing title",
-    id: Int = 1,
     icon: ImageVector = Icons.Default.QuestionMark,
-    onClick: (Int) -> Unit = {}
+    onClick: () -> Unit = {}
 ) {
     Box(modifier = modifier) {
         Card(
             Modifier
                 .fillMaxWidth()
-                .clickable { onClick(id) },
+                .clickable { onClick() },
             shape = RoundedCornerShape(DIM_XS),
             border = BorderStroke(
                 width = DIM_XXXXS,
