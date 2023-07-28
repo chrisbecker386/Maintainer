@@ -44,10 +44,10 @@ fun MaintainerNavGraph(
     ) {
         composable(route = Home.route) {
             HomeScreen(
+                onSectionClick = { careType -> navController.navigateToSingleSection(careType) },
                 onMachineClick = { machineType ->
                     navController.navigateToSingleMachine(machineType)
                 },
-                onSectionClick = { careType -> navController.navigateToSingleSection(careType) }
             )
         }
         composable(route = Info.route) {
