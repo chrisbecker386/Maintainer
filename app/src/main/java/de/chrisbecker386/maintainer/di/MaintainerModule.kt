@@ -28,9 +28,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import de.chrisbecker386.maintainer.data.local.CompletedTaskDao
 import de.chrisbecker386.maintainer.data.local.MachineDao
-import de.chrisbecker386.maintainer.data.local.MaintainerDao
 import de.chrisbecker386.maintainer.data.local.MaintainerDb
 import de.chrisbecker386.maintainer.data.local.PreconditionDao
+import de.chrisbecker386.maintainer.data.local.SectionDao
 import de.chrisbecker386.maintainer.data.local.StepDao
 import de.chrisbecker386.maintainer.data.local.TaskDao
 import de.chrisbecker386.maintainer.data.local.repository.MaintainerRepositoryImpl
@@ -42,9 +42,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object MaintainerModule {
+
     @Provides
-    fun provideMaintainerDao(database: MaintainerDb): MaintainerDao {
-        return database.maintainerDao
+    fun provideSectionDao(database: MaintainerDb): SectionDao {
+        return database.sectionDao
     }
 
     @Provides
@@ -91,12 +92,20 @@ object MaintainerModule {
     @Provides
     @Singleton
     fun provideTaskRepository(
+        sectionDao: SectionDao,
+        machineDao: MachineDao,
         taskDao: TaskDao,
         stepDao: StepDao,
         preconditionDao: PreconditionDao,
-        completedTaskDao: CompletedTaskDao,
-        machineDao: MachineDao
+        completedTaskDao: CompletedTaskDao
     ): TaskRepository {
-        return TaskRepositoryImpl(taskDao, stepDao, preconditionDao, completedTaskDao, machineDao)
+        return TaskRepositoryImpl(
+            sectionDao,
+            machineDao,
+            taskDao,
+            stepDao,
+            preconditionDao,
+            completedTaskDao
+        )
     }
 }

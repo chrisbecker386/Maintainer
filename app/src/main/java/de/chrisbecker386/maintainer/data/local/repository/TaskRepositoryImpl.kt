@@ -20,6 +20,7 @@
 package de.chrisbecker386.maintainer.data.local.repository
 
 import de.chrisbecker386.maintainer.data.entity.Machine
+import de.chrisbecker386.maintainer.data.entity.Section
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
@@ -27,17 +28,19 @@ import de.chrisbecker386.maintainer.data.entity.relation.TaskWithPreconditionsSt
 import de.chrisbecker386.maintainer.data.local.CompletedTaskDao
 import de.chrisbecker386.maintainer.data.local.MachineDao
 import de.chrisbecker386.maintainer.data.local.PreconditionDao
+import de.chrisbecker386.maintainer.data.local.SectionDao
 import de.chrisbecker386.maintainer.data.local.StepDao
 import de.chrisbecker386.maintainer.data.local.TaskDao
 import de.chrisbecker386.maintainer.domain.repository.TaskRepository
 import kotlinx.coroutines.flow.Flow
 
 class TaskRepositoryImpl(
+    private val sectionDao: SectionDao,
+    private val machineDao: MachineDao,
     private val taskDao: TaskDao,
     private val stepDao: StepDao,
     private val preconditionDao: PreconditionDao,
-    private val completedTaskDao: CompletedTaskDao,
-    private val machineDao: MachineDao
+    private val completedTaskDao: CompletedTaskDao
 ) : TaskRepository {
     override fun getAllTaskWithWithPreconditionsStepsCompletes(): Flow<List<TaskWithPreconditionsStepsCompletes>> =
         taskDao.getAllTaskWithPreconditionsStepsCompletes()
@@ -75,6 +78,14 @@ class TaskRepositoryImpl(
     override fun getTasksForMachineWithPreconditionsStepsCompletes(machineId: Int):
         Flow<List<TaskWithPreconditionsStepsCompletes>> =
         taskDao.getTasksForMachineWithPreconditionsStepsCompletes(machineId)
+
+    override suspend fun upsertSection(section: Section) {
+        sectionDao.upsertSection(section)
+    }
+
+    override suspend fun addSections(sections: List<Section>) {
+        sectionDao.addSections(sections)
+    }
 
     override fun getSteps(taskId: Int): Flow<List<Step>> = stepDao.getStepsForTask(taskId)
 }

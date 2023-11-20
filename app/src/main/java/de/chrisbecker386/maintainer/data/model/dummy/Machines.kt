@@ -27,18 +27,21 @@ val dummyMachineDB = listOf(
         id = 1,
         title = "espresso machine",
         subtitle = "best coffee",
-        imageRes = R.drawable.coffee_maker_48px
+        imageRes = R.drawable.coffee_maker_48px,
+        section = 1
     ),
     Machine(
         id = 2,
         title = "dish washer",
         subtitle = null,
-        imageRes = R.drawable.dishwasher_gen_48px
+        imageRes = R.drawable.dishwasher_gen_48px,
+        section = 2
     ),
     Machine(
         id = 3,
         title = "washing machine",
         subtitle = null,
-        imageRes = R.drawable.local_laundry_service_48px
+        imageRes = R.drawable.local_laundry_service_48px,
+        section = 3
     )
 )

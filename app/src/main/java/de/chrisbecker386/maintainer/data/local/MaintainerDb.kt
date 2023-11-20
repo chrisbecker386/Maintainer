@@ -37,12 +37,12 @@ import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
         Precondition::class,
         TaskCompletedDate::class
     ],
-    version = 6,
+    version = 9,
     exportSchema = false
 )
 
 abstract class MaintainerDb : RoomDatabase() {
-    abstract val maintainerDao: MaintainerDao
+    abstract val sectionDao: SectionDao
     abstract val machineDao: MachineDao
     abstract val taskDao: TaskDao
     abstract val stepDao: StepDao

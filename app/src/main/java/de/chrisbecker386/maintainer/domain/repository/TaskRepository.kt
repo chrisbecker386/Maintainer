@@ -20,6 +20,7 @@
 package de.chrisbecker386.maintainer.domain.repository
 
 import de.chrisbecker386.maintainer.data.entity.Machine
+import de.chrisbecker386.maintainer.data.entity.Section
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
@@ -27,6 +28,12 @@ import de.chrisbecker386.maintainer.data.entity.relation.TaskWithPreconditionsSt
 import kotlinx.coroutines.flow.Flow
 
 interface TaskRepository {
+
+    /*TODO
+    * THIS is more a dev Repo
+    * needs a clean up!!!
+    *
+    *  */
     fun getAllTaskWithWithPreconditionsStepsCompletes(): Flow<List<TaskWithPreconditionsStepsCompletes>>
 
     fun getTaskWithPreconditionsStepsCompletes(taskId: Int): Flow<TaskWithPreconditionsStepsCompletes>
@@ -60,4 +67,8 @@ interface TaskRepository {
     fun getMachine(machineId: Int): Flow<Machine>
 
     fun getTasksForMachineWithPreconditionsStepsCompletes(machineId: Int): Flow<List<TaskWithPreconditionsStepsCompletes>>
+
+    suspend fun upsertSection(section: Section)
+
+    suspend fun addSections(sections: List<Section>)
 }
