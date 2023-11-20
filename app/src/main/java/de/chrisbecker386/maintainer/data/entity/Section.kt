@@ -19,6 +19,7 @@
 
 package de.chrisbecker386.maintainer.data.entity
 
+import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -29,5 +30,8 @@ data class Section(
     @ColumnInfo(name = "section_id")
     val id: Int = 0,
     @ColumnInfo(name = "section_title")
-    val title: String
+    val title: String,
+    @ColumnInfo(name = "section_imageRes")
+    @DrawableRes
+    val imageRes: Int
 )

@@ -47,7 +47,7 @@ fun MaintainerNavGraph(
                 onSectionClick = { careType -> navController.navigateToSingleSection(careType) },
                 onMachineClick = { machineType ->
                     navController.navigateToSingleMachine(machineType)
-                },
+                }
             )
         }
         composable(route = Info.route) {
@@ -62,6 +62,7 @@ fun MaintainerNavGraph(
             arguments = SingleSection.arguments
         ) { navBackStackEntry ->
             val sectionType = navBackStackEntry.arguments?.getInt(SingleSection.sectionTypeArg)
+
             SingleSectionScreen(
                 sectionType = sectionType,
                 onMachineClick = { machineType -> navController.navigateToSingleMachine(machineType) }

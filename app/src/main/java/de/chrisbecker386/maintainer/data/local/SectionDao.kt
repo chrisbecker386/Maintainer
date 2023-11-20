@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 09/05/2023, 12:48
+ * Created by Christopher Becker on 20/11/2023, 10:49
  * Copyright (c) 2023. All rights reserved.
- * Last modified 09/05/2023, 12:48
+ * Last modified 20/11/2023, 10:49
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,16 +23,40 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Upsert
+import de.chrisbecker386.maintainer.data.entity.Machine
 import de.chrisbecker386.maintainer.data.entity.Section
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface MaintainerDao {
+interface SectionDao {
+
     @Query("SELECT * FROM sections")
     suspend fun getAllSections(): List<Section>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addAllSections(sections: List<Section>)
+    @Upsert
+    suspend fun upsertSection(section: Section)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addNewSection(section: Section)
+    suspend fun addSection(section: Section)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addSections(sections: List<Section>)
+
+    @Transaction
+    @Query("DELETE FROM sections WHERE section_id = :sectionId")
+    suspend fun removeSection(sectionId: Int)
+
+    @Transaction
+    @Query("DELETE FROM sections")
+    suspend fun removeAllSections()
+
+    @Transaction
+    @Query("SELECT * FROM machines WHERE machine_fk_section_id = :sectionId")
+    fun getMachinesForSection(sectionId: Int): Flow<List<Machine>>
+
+    @Transaction
+    @Query("SELECT * FROM sections WHERE section_id = :sectionId")
+    fun getSection(sectionId: Int): Flow<Section>
 }

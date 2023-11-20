@@ -22,6 +22,5 @@ package de.chrisbecker386.maintainer.data.model.interfaces
 interface ItemObject {
     val id: Int
     val title: String
-
     val list: List<ItemObject>?
 }

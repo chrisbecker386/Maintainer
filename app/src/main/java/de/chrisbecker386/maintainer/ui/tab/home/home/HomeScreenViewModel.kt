@@ -22,6 +22,7 @@ package de.chrisbecker386.maintainer.ui.tab.home.home
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.chrisbecker386.maintainer.data.model.dummy.dummyMachineDB
+import de.chrisbecker386.maintainer.data.model.dummy.dummySectionDB
 import de.chrisbecker386.maintainer.data.model.dummy.dummyStepsDB
 import de.chrisbecker386.maintainer.data.model.dummy.dummyTasksDB
 import de.chrisbecker386.maintainer.domain.repository.TaskRepository
@@ -42,6 +43,10 @@ class HomeScreenViewModel @Inject constructor(private val repository: TaskReposi
 
     private fun setDBEntries() {
         CoroutineScope(Dispatchers.IO).launch {
+            withContext(Dispatchers.Default) {
+                repository.addSections(dummySectionDB)
+            }
+
             withContext(Dispatchers.Default) {
                 repository.insertMachines(
                     dummyMachineDB

@@ -22,10 +22,21 @@ package de.chrisbecker386.maintainer.data.entity
 import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "machines"
+    tableName = "machines",
+    foreignKeys = [
+        ForeignKey(
+            entity = Section::class,
+            parentColumns = ["section_id"],
+            childColumns = ["machine_fk_section_id"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index("machine_fk_section_id")]
 )
 data class Machine(
     @PrimaryKey(autoGenerate = true)
@@ -37,5 +48,7 @@ data class Machine(
     val subtitle: String?,
     @ColumnInfo(name = "machine_imageRes")
     @DrawableRes
-    val imageRes: Int
+    val imageRes: Int,
+    @ColumnInfo(name = "machine_fk_section_id")
+    val section: Int?
 )

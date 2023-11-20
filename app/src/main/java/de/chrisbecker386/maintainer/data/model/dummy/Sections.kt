@@ -20,6 +20,7 @@
 package de.chrisbecker386.maintainer.data.model.dummy
 
 import de.chrisbecker386.maintainer.R
+import de.chrisbecker386.maintainer.data.entity.Section
 import de.chrisbecker386.maintainer.data.model.SectionObject
 
 val dummySection = listOf(
@@ -53,4 +54,33 @@ val dummySection = listOf(
         graphic = R.drawable.computer_48px,
         list = listOf(dummyMaintains[5], dummyMaintains[5])
     )
+)
+
+val dummySectionDB = listOf(
+    Section(
+        id = 1,
+        title = "Kitchen",
+        imageRes = R.drawable.kitchen_48px
+    ),
+    Section(
+        id = 2,
+        title = "Car",
+        imageRes = R.drawable.directions_car_48px
+    ),
+    Section(
+        id = 3,
+        title = "Bathroom",
+        imageRes = R.drawable.bathtub_48px
+    ),
+    Section(
+        id = 4,
+        title = "Bike",
+        imageRes = R.drawable.pedal_bike_48px
+    ),
+    Section(
+        id = 5,
+        title = "Computer",
+        imageRes = R.drawable.computer_48px
+    )
+
 )

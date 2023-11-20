@@ -29,7 +29,8 @@ data class SingleMachineState(
         id = 0,
         title = "",
         subtitle = "",
-        imageRes = R.drawable.kettle_48px
+        imageRes = R.drawable.kettle_48px,
+        section = 0
     ),
     val shortStatus: ShortStatusState = ShortStatusState(0, 0),
     val openTasks: List<TaskWithPreconditionsStepsCompletes> = emptyList(),
