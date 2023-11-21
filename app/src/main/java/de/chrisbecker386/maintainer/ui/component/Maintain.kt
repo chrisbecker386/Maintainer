@@ -47,8 +47,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.data.entity.Task
-import de.chrisbecker386.maintainer.data.model.dummy.dummyMaintains
-import de.chrisbecker386.maintainer.data.model.dummy.dummyTasksDB
+import de.chrisbecker386.maintainer.data.model.dummy.devMachines
+import de.chrisbecker386.maintainer.data.model.dummy.devTasks
 import de.chrisbecker386.maintainer.ui.theme.DIM_M
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
@@ -185,8 +185,8 @@ fun PreviewNextMaintains() {
             Modifier
                 .fillMaxWidth()
                 .padding(DIM_XS),
-            dummyMaintains[0].title,
-            dummyTasksDB
+            devMachines.first().title,
+            devTasks
         )
     }
 }

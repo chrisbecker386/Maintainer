@@ -56,6 +56,10 @@ interface TaskRepository {
 
     fun getTask(taskId: Int): Flow<Task>
 
+    fun getAllTasks(): Flow<List<Task>>
+
+    fun getNextOpenTasks(): Flow<List<Task>>
+
     suspend fun upsertMachine(machine: Machine)
 
     suspend fun insertMachines(machines: List<Machine>)
@@ -67,6 +71,11 @@ interface TaskRepository {
     fun getMachine(machineId: Int): Flow<Machine>
 
     fun getTasksForMachineWithPreconditionsStepsCompletes(machineId: Int): Flow<List<TaskWithPreconditionsStepsCompletes>>
+
+    fun getMachines(sectionId: Int): Flow<List<Machine>>
+
+    fun getAllSections(): Flow<List<Section>>
+    fun getSection(sectionId: Int): Flow<Section>
 
     suspend fun upsertSection(section: Section)
 

@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 17/04/2023, 12:32
+ * Created by Christopher Becker on 21/11/2023, 15:47
  * Copyright (c) 2023. All rights reserved.
- * Last modified 17/04/2023, 12:32
+ * Last modified 21/11/2023, 15:47
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,26 +17,15 @@
  *
  */
 
-package de.chrisbecker386.maintainer.data.model.dummy
+package de.chrisbecker386.maintainer.ui.tab.home.home
 
-import de.chrisbecker386.maintainer.R
+import de.chrisbecker386.maintainer.data.entity.Machine
+import de.chrisbecker386.maintainer.data.entity.Section
 import de.chrisbecker386.maintainer.data.entity.Task
 
-val devTasks = listOf(
-    Task(
-        id = 1,
-        title = "clean water tank",
-        subtitle = null,
-        imageRes = R.drawable.kettle_48px,
-        duration = 5,
-        machineId = 1
-    ),
-    Task(
-        id = 2,
-        title = "unclogging",
-        subtitle = null,
-        imageRes = R.drawable.ic_launcher_foreground,
-        duration = 5,
-        machineId = 1
-    )
+data class HomeLandingState(
+    val nextMachine: Machine? = null,
+    val nextTasks: List<Task> = emptyList(),
+    val sections: List<Section> = emptyList()
+
 )

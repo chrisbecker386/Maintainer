@@ -20,51 +20,66 @@
 package de.chrisbecker386.maintainer.ui.tab.home.home
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import de.chrisbecker386.maintainer.data.model.dummy.dummyMachineDB
-import de.chrisbecker386.maintainer.data.model.dummy.dummySectionDB
-import de.chrisbecker386.maintainer.data.model.dummy.dummyStepsDB
-import de.chrisbecker386.maintainer.data.model.dummy.dummyTasksDB
+import de.chrisbecker386.maintainer.data.model.dummy.devMachines
+import de.chrisbecker386.maintainer.data.model.dummy.devSections
+import de.chrisbecker386.maintainer.data.model.dummy.devSteps
+import de.chrisbecker386.maintainer.data.model.dummy.devTasks
 import de.chrisbecker386.maintainer.domain.repository.TaskRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeScreenViewModel @Inject constructor(private val repository: TaskRepository) :
+class HomeScreenViewModel @Inject constructor(
+    private val repository: TaskRepository
+) :
     ViewModel() {
-    // TODO only for dev has to removed soon!
-    // TODO from here ***
+
+    // TODO only for dev! has to removed as soon as item creation is added!
     init {
         setDBEntries()
     }
 
     private fun setDBEntries() {
         CoroutineScope(Dispatchers.IO).launch {
-            withContext(Dispatchers.Default) {
-                repository.addSections(dummySectionDB)
-            }
-
-            withContext(Dispatchers.Default) {
-                repository.insertMachines(
-                    dummyMachineDB
-                )
-            }
-            withContext(Dispatchers.Default) {
-                repository.upsertTasks(
-                    dummyTasksDB
-                )
-            }
-            withContext(Dispatchers.Default) {
-                repository.insertSteps(
-                    dummyStepsDB
-                )
-            }
+            withContext(Dispatchers.Default) { repository.addSections(devSections) }
+            withContext(Dispatchers.Default) { repository.insertMachines(devMachines) }
+            withContext(Dispatchers.Default) { repository.upsertTasks(devTasks) }
+            withContext(Dispatchers.Default) { repository.insertSteps(devSteps) }
         }
     }
 
-    // TODO to here ***
-    // TODO add data some data an provide function to the homescreen
+    // TODO to here
+
+    private val _sections = repository.getAllSections()
+
+    private val _nextTasks = repository.getNextOpenTasks()
+
+    private val _nextMachine = _nextTasks.flatMapLatest { task ->
+        repository.getMachine(task.first().machineId)
+    }
+
+    private val _state = MutableStateFlow(HomeLandingState())
+
+    val state = combine(
+        _state,
+        _nextMachine,
+        _nextTasks,
+        _sections
+    ) { state, nextMachine, nextTasks, sections ->
+        state.copy(
+            nextMachine = nextMachine,
+            nextTasks = nextTasks,
+            sections = sections
+        )
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), HomeLandingState())
 }

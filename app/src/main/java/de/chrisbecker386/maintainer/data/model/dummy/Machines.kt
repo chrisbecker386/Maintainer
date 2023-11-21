@@ -22,7 +22,7 @@ package de.chrisbecker386.maintainer.data.model.dummy
 import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.entity.Machine
 
-val dummyMachineDB = listOf(
+val devMachines = listOf(
     Machine(
         id = 1,
         title = "espresso machine",

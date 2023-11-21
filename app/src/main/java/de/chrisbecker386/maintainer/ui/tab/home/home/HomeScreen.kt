@@ -20,21 +20,15 @@
 package de.chrisbecker386.maintainer.ui.tab.home.home
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import de.chrisbecker386.maintainer.BuildConfig
-import de.chrisbecker386.maintainer.data.model.GridItemData
-import de.chrisbecker386.maintainer.data.model.dummy.dummyMachineDB
-import de.chrisbecker386.maintainer.data.model.dummy.dummySection
-import de.chrisbecker386.maintainer.data.model.dummy.dummyTasksDB
+import de.chrisbecker386.maintainer.data.model.dummy.devMachines
 import de.chrisbecker386.maintainer.ui.component.NextMaintains
 import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
@@ -48,46 +42,47 @@ fun HomeScreen(
     onMachineClick: (Int) -> Unit = {}
 ) {
     val viewModel = hiltViewModel<HomeScreenViewModel>()
-    val sectionList = mutableListOf<GridItemData>()
-    dummySection.forEach { sectionList.add(it.toSectionGridItem()) }
+    val state by viewModel.state.collectAsState()
+    HomeLanding(state = state, onSectionClick = onSectionClick, onMachineClick = onMachineClick)
+}
 
-    if (BuildConfig.DEBUG) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Text(text = "HomeScreen", Modifier.align(Alignment.BottomEnd))
+@Composable
+private fun HomeLanding(
+    state: HomeLandingState,
+    onEvent: (HomeLandingEvent) -> Unit = {},
+    onSectionClick: (Int) -> Unit = {},
+    onMachineClick: (Int) -> Unit = {}
+) {
+    LazyColumn(Modifier.fillMaxWidth()) {
+        item {
+            ShortStatus(
+                Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
+                title = "Maintain Status",
+                state = ShortStatusState(
+                    numerator = 6,
+                    denominator = 11
+                )
+            )
         }
-    }
-    Box(modifier = modifier) {
-        LazyColumn(Modifier.fillMaxWidth()) {
-            item {
-                ShortStatus(
-                    Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
-                    title = "Maintain Status",
-                    state = ShortStatusState(
-                        numerator = 6,
-                        denominator = 11
-                    )
-                )
-            }
-            item {
-                NextMaintains(
-                    Modifier
-                        .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS)
-                        .clickable { onMachineClick(dummyMachineDB[0].id) },
-                    machineTitle = dummyMachineDB[0].title,
-                    tasks = dummyTasksDB
-                )
-            }
-            item {
-                OverviewGrid(
-                    modifier = Modifier.padding(
-                        start = DIM_XS,
-                        end = DIM_XS,
-                        top = DIM_XS
-                    ),
-                    items = sectionList,
-                    onItemClick = { onSectionClick(it) }
-                )
-            }
+        item {
+            NextMaintains(
+                Modifier
+                    .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS)
+                    .clickable { onMachineClick(devMachines[0].id) },
+                machineTitle = state.nextMachine.let { it?.title } ?: "",
+                tasks = state.nextTasks
+            )
+        }
+        item {
+            OverviewGrid(
+                modifier = Modifier.padding(
+                    start = DIM_XS,
+                    end = DIM_XS,
+                    top = DIM_XS
+                ),
+                items = state.sections.map { it.toGridItemData() },
+                onItemClick = { onSectionClick(it) }
+            )
         }
     }
 }

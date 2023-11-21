@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 19/04/2023, 16:38
+ * Created by Christopher Becker on 21/11/2023, 12:27
  * Copyright (c) 2023. All rights reserved.
- * Last modified 19/04/2023, 16:38
+ * Last modified 21/11/2023, 12:27
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,35 +17,17 @@
  *
  */
 
-package de.chrisbecker386.maintainer.data.model.dummy
+package de.chrisbecker386.maintainer.ui.tab.home.section
 
 import de.chrisbecker386.maintainer.R
+import de.chrisbecker386.maintainer.data.entity.Machine
 import de.chrisbecker386.maintainer.data.entity.Section
 
-val devSections = listOf(
-    Section(
-        id = 1,
-        title = "Kitchen",
-        imageRes = R.drawable.kitchen_48px
+data class SingleSectionState(
+    val section: Section = Section(
+        id = 0,
+        title = "",
+        imageRes = R.drawable.question_mark_48px
     ),
-    Section(
-        id = 2,
-        title = "Car",
-        imageRes = R.drawable.directions_car_48px
-    ),
-    Section(
-        id = 3,
-        title = "Bathroom",
-        imageRes = R.drawable.bathtub_48px
-    ),
-    Section(
-        id = 4,
-        title = "Bike",
-        imageRes = R.drawable.pedal_bike_48px
-    ),
-    Section(
-        id = 5,
-        title = "Computer",
-        imageRes = R.drawable.computer_48px
-    )
+    val machines: List<Machine> = emptyList()
 )
