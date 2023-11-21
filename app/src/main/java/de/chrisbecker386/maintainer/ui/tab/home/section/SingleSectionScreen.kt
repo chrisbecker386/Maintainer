@@ -25,9 +25,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import de.chrisbecker386.maintainer.data.model.dummy.DummyData
+import androidx.hilt.navigation.compose.hiltViewModel
 import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
 import de.chrisbecker386.maintainer.ui.model.ShortStatusState
@@ -39,7 +40,17 @@ fun SingleSectionScreen(
     sectionType: Int?,
     onMachineClick: (Int) -> Unit = {}
 ) {
-    val section = remember(sectionType) { DummyData.getSectionObject(sectionType) }
+    val viewModel = hiltViewModel<SingleSectionViewModel>()
+    val state by viewModel.state.collectAsState()
+    SingleSection(state = state, onMachineClick = onMachineClick)
+}
+
+@Composable
+private fun SingleSection(
+    state: SingleSectionState,
+    onEvent: (SingleSectionState) -> Unit = {},
+    onMachineClick: (Int) -> Unit = {}
+) {
     Column(
         Modifier
             .fillMaxWidth()
@@ -53,8 +64,9 @@ fun SingleSectionScreen(
             )
         )
         Spacer(modifier = Modifier.height(DIM_XS))
+
         OverviewGrid(
-            items = section.list.map { it.toGridItemData() },
+            items = state.machines.map { it.toGridItemData() },
             onItemClick = onMachineClick
         )
     }

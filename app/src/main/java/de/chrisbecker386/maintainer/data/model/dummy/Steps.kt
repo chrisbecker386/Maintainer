@@ -19,77 +19,9 @@
 
 package de.chrisbecker386.maintainer.data.model.dummy
 
-import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.entity.Step
-import de.chrisbecker386.maintainer.data.model.StepObject
 
-val dummySteps: List<StepObject> = listOf(
-    StepObject(
-        id = 1,
-        orderNumber = 1,
-        title = "Step 1",
-        description = "This is step 1",
-        graphic = null
-    ),
-
-    StepObject(
-        id = 2,
-        orderNumber = 2,
-        title = "Step 2",
-        description = "This is step 2",
-        graphic = R.drawable.espresso_machine
-    ),
-
-    StepObject(
-        id = 3,
-        orderNumber = 3,
-        title = "Step 3",
-        description = null,
-        graphic = null
-    )
-)
-
-val cleanWaterTank: List<StepObject> = listOf(
-    StepObject(
-        id = 1,
-        orderNumber = 1,
-        title = "Open lid",
-        description = null,
-        graphic = null
-    ),
-
-    StepObject(
-        id = 2,
-        orderNumber = 2,
-        title = "Remove water tank",
-        description = "Carefully lift the tank out of the machine. So that no water is spilled unnecessarily",
-        graphic = null
-    ),
-
-    StepObject(
-        id = 3,
-        orderNumber = 3,
-        title = "Clean water tank",
-        description = "Clean the water tank properly with a brush, warm water and detergent. Then rinse again with clean water and dry the tank.",
-        graphic = null
-    ),
-    StepObject(
-        id = 4,
-        orderNumber = 4,
-        title = "Reinstall the water tank",
-        description = null,
-        graphic = null
-    ),
-    StepObject(
-        id = 5,
-        orderNumber = 5,
-        title = "Close lit",
-        description = null,
-        graphic = null
-    )
-)
-
-val dummyStepsDB = listOf(
+val devSteps = listOf(
     // clean water tank
     Step(
         id = 1,

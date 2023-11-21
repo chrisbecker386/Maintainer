@@ -64,6 +64,10 @@ class TaskRepositoryImpl(
     override suspend fun removeAllSteps() = stepDao.removeAllSteps()
 
     override fun getTask(taskId: Int): Flow<Task> = taskDao.getTaskById(taskId)
+    override fun getAllTasks(): Flow<List<Task>> = taskDao.getAllTasks()
+
+    override fun getNextOpenTasks(): Flow<List<Task>> = taskDao.getNextOpenTasks()
+
     override suspend fun upsertMachine(machine: Machine) = machineDao.upsertMachine(machine)
 
     override suspend fun insertMachines(machines: List<Machine>) =
@@ -78,6 +82,14 @@ class TaskRepositoryImpl(
     override fun getTasksForMachineWithPreconditionsStepsCompletes(machineId: Int):
         Flow<List<TaskWithPreconditionsStepsCompletes>> =
         taskDao.getTasksForMachineWithPreconditionsStepsCompletes(machineId)
+
+    override fun getMachines(sectionId: Int): Flow<List<Machine>> =
+        sectionDao.getMachinesForSection(sectionId)
+
+    override fun getAllSections(): Flow<List<Section>> =
+        sectionDao.getAllSections()
+
+    override fun getSection(sectionId: Int): Flow<Section> = sectionDao.getSection(sectionId)
 
     override suspend fun upsertSection(section: Section) {
         sectionDao.upsertSection(section)

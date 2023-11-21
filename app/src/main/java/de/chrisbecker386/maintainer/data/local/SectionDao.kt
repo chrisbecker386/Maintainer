@@ -33,7 +33,7 @@ import kotlinx.coroutines.flow.Flow
 interface SectionDao {
 
     @Query("SELECT * FROM sections")
-    suspend fun getAllSections(): List<Section>
+    fun getAllSections(): Flow<List<Section>>
 
     @Upsert
     suspend fun upsertSection(section: Section)

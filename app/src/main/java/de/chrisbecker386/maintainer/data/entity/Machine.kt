@@ -25,6 +25,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import de.chrisbecker386.maintainer.data.model.GridItemData
 
 @Entity(
     tableName = "machines",
@@ -51,4 +52,11 @@ data class Machine(
     val imageRes: Int,
     @ColumnInfo(name = "machine_fk_section_id")
     val section: Int?
-)
+) {
+    fun toGridItemData() =
+        GridItemData(
+            this.id,
+            this.title,
+            this.imageRes
+        )
+}

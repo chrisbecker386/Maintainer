@@ -49,6 +49,12 @@ interface TaskDao {
     @Query("SELECT * FROM tasks WHERE task_id = :taskId")
     fun getTaskById(taskId: Int): Flow<Task>
 
+    // TODO Write a right query that returns 2 task they never fulfilled (no entry in task_completed table) or
+    // TODO entry is not fulfilled since the last repeating cycle is over
+    @Transaction
+    @Query("SELECT * FROM tasks ORDER BY task_tact LIMIT 2")
+    fun getNextOpenTasks(): Flow<List<Task>>
+
     @Transaction
     @Query("SELECT * FROM steps WHERE step_fk_task_id = :taskId")
     fun getStepsForTask(taskId: Int): Flow<List<Step>>

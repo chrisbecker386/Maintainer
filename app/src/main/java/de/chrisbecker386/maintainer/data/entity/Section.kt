@@ -23,6 +23,7 @@ import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import de.chrisbecker386.maintainer.data.model.GridItemData
 
 @Entity(tableName = "sections")
 data class Section(
@@ -34,4 +35,10 @@ data class Section(
     @ColumnInfo(name = "section_imageRes")
     @DrawableRes
     val imageRes: Int
-)
+) {
+    fun toGridItemData(): GridItemData = GridItemData(
+        id = id,
+        title = title,
+        icon = imageRes
+    )
+}

@@ -55,8 +55,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
-import de.chrisbecker386.maintainer.data.model.dummy.dummyStepsDB
-import de.chrisbecker386.maintainer.data.model.dummy.dummyTasksDB
+import de.chrisbecker386.maintainer.data.model.dummy.devSteps
+import de.chrisbecker386.maintainer.data.model.dummy.devTasks
 import de.chrisbecker386.maintainer.ui.theme.ACCORDION_ANIMATION_DURATION
 import de.chrisbecker386.maintainer.ui.theme.DIM_L_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_M
@@ -206,7 +206,7 @@ private fun ExpandButton(
 fun PreviewStep() {
     MaintainerTheme {
         Column {
-            StepWithDetails(step = dummyStepsDB[0], task = dummyTasksDB[0])
+            StepWithDetails(step = devSteps[0], task = devTasks[0])
         }
     }
 }
