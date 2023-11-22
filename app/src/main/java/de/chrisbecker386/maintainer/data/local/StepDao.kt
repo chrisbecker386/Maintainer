@@ -21,27 +21,26 @@ package de.chrisbecker386.maintainer.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import androidx.room.Upsert
 import de.chrisbecker386.maintainer.data.entity.Step
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface StepDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSteps(steps: List<Step>)
+    @Upsert
+    suspend fun addStep(step: Step)
 
-    @Insert
-    suspend fun insertStep(step: Step)
+    @Upsert
+    suspend fun addSteps(steps: List<Step>)
 
     @Update
     suspend fun updateStep(step: Step)
 
     @Delete
-    suspend fun deleteStep(step: Step)
+    suspend fun removeStep(step: Step)
 
     @Delete
     suspend fun removeSteps(steps: List<Step>)
@@ -52,5 +51,5 @@ interface StepDao {
 
     @Transaction
     @Query("SELECT * FROM steps WHERE step_fk_task_id = :taskId")
-    fun getStepsForTask(taskId: Int): Flow<List<Step>>
+    fun getSteps(taskId: Int): Flow<List<Step>>
 }

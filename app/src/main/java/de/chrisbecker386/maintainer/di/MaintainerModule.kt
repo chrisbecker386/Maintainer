@@ -26,17 +26,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import de.chrisbecker386.maintainer.data.local.CompletedTaskDao
 import de.chrisbecker386.maintainer.data.local.MachineDao
 import de.chrisbecker386.maintainer.data.local.MaintainerDb
 import de.chrisbecker386.maintainer.data.local.PreconditionDao
 import de.chrisbecker386.maintainer.data.local.SectionDao
 import de.chrisbecker386.maintainer.data.local.StepDao
+import de.chrisbecker386.maintainer.data.local.TaskCompletedDao
 import de.chrisbecker386.maintainer.data.local.TaskDao
 import de.chrisbecker386.maintainer.data.local.repository.MaintainerRepositoryImpl
-import de.chrisbecker386.maintainer.data.local.repository.TaskRepositoryImpl
 import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
-import de.chrisbecker386.maintainer.domain.repository.TaskRepository
 import javax.inject.Singleton
 
 @Module
@@ -69,8 +67,8 @@ object MaintainerModule {
     }
 
     @Provides
-    fun provideCompletedTaskDao(database: MaintainerDb): CompletedTaskDao {
-        return database.completedTaskDao
+    fun provideCompletedTaskDao(database: MaintainerDb): TaskCompletedDao {
+        return database.taskCompletedDao
     }
 
     @Singleton
@@ -85,27 +83,21 @@ object MaintainerModule {
 
     @Provides
     @Singleton
-    fun provideMaintainerRepository(database: MaintainerDb): MaintainerRepository {
-        return MaintainerRepositoryImpl(database)
-    }
-
-    @Provides
-    @Singleton
-    fun provideTaskRepository(
+    fun provideMaintainerRepository(
         sectionDao: SectionDao,
         machineDao: MachineDao,
         taskDao: TaskDao,
         stepDao: StepDao,
         preconditionDao: PreconditionDao,
-        completedTaskDao: CompletedTaskDao
-    ): TaskRepository {
-        return TaskRepositoryImpl(
+        taskCompletedDao: TaskCompletedDao
+    ): MaintainerRepository {
+        return MaintainerRepositoryImpl(
             sectionDao,
             machineDao,
             taskDao,
             stepDao,
             preconditionDao,
-            completedTaskDao
+            taskCompletedDao
         )
     }
 }

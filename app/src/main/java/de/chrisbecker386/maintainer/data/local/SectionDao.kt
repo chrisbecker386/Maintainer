@@ -20,6 +20,7 @@
 package de.chrisbecker386.maintainer.data.local
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -32,13 +33,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface SectionDao {
 
-    @Query("SELECT * FROM sections")
-    fun getAllSections(): Flow<List<Section>>
-
     @Upsert
-    suspend fun upsertSection(section: Section)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addSection(section: Section)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -48,15 +43,21 @@ interface SectionDao {
     @Query("DELETE FROM sections WHERE section_id = :sectionId")
     suspend fun removeSection(sectionId: Int)
 
+    @Delete
+    suspend fun removeSections(sections: List<Section>)
+
     @Transaction
     @Query("DELETE FROM sections")
     suspend fun removeAllSections()
 
     @Transaction
-    @Query("SELECT * FROM machines WHERE machine_fk_section_id = :sectionId")
-    fun getMachinesForSection(sectionId: Int): Flow<List<Machine>>
-
-    @Transaction
     @Query("SELECT * FROM sections WHERE section_id = :sectionId")
     fun getSection(sectionId: Int): Flow<Section>
+
+    @Query("SELECT * FROM sections")
+    fun getAllSections(): Flow<List<Section>>
+
+    @Transaction
+    @Query("SELECT * FROM machines WHERE machine_fk_section_id = :sectionId")
+    fun getMachinesForSection(sectionId: Int): Flow<List<Machine>>
 }

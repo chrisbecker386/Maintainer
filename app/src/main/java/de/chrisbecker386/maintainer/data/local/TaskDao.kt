@@ -23,6 +23,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import androidx.room.Upsert
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
@@ -33,21 +34,24 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TaskDao {
     @Upsert
-    suspend fun upsertTask(task: Task)
+    suspend fun addTask(task: Task)
 
     @Upsert
-    suspend fun upsertTasks(tasks: List<Task>)
+    suspend fun addTasks(tasks: List<Task>)
+
+    @Update
+    suspend fun updateTask(task: Task)
 
     @Delete
-    suspend fun deleteTask(task: Task)
+    suspend fun removeTask(task: Task)
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE task_id = :taskId")
+    fun getTask(taskId: Int): Flow<Task>
 
     @Transaction
     @Query("SELECT * FROM tasks")
     fun getAllTasks(): Flow<List<Task>>
-
-    @Transaction
-    @Query("SELECT * FROM tasks WHERE task_id = :taskId")
-    fun getTaskById(taskId: Int): Flow<Task>
 
     // TODO Write a right query that returns 2 task they never fulfilled (no entry in task_completed table) or
     // TODO entry is not fulfilled since the last repeating cycle is over
