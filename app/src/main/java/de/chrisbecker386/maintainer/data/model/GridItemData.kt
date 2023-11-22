@@ -25,5 +25,5 @@ data class GridItemData(
     val id: Int,
     val title: String,
     @DrawableRes
-    val icon: Int? = null
+    val imageRes: Int? = null
 )
