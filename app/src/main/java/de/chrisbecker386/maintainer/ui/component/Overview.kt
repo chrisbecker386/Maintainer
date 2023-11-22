@@ -81,7 +81,7 @@ fun OverviewGrid(
                     OverviewGridItem(
                         modifier = Modifier.padding(DIM_XXS),
                         title = items[it].title,
-                        icon = items[it].icon?.let { icon -> ImageVector.vectorResource(id = icon) }
+                        icon = items[it].imageRes?.let { icon -> ImageVector.vectorResource(id = icon) }
                             ?: Icons.Default.QuestionMark,
                         onClick = { onItemClick(items[it].id) }
                     )

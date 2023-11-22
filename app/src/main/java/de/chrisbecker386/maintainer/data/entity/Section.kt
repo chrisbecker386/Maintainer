@@ -39,6 +39,6 @@ data class Section(
     fun toGridItemData(): GridItemData = GridItemData(
         id = id,
         title = title,
-        icon = imageRes
+        imageRes = imageRes
     )
 }
