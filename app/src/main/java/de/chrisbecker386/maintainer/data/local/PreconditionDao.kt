@@ -23,13 +23,15 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import de.chrisbecker386.maintainer.data.entity.Precondition
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PreconditionDao {
     @Insert
-    suspend fun insertPrecondition(precondition: Precondition): Long
+    suspend fun insertPrecondition(precondition: Precondition)
 
     @Update
     suspend fun updatePrecondition(precondition: Precondition)
@@ -37,6 +39,7 @@ interface PreconditionDao {
     @Delete
     suspend fun deletePrecondition(precondition: Precondition)
 
+    @Transaction
     @Query("SELECT * FROM preconditions WHERE precondition_fk_task_id = :taskId")
-    suspend fun getPreconditionsForTask(taskId: Int): List<Precondition>
+    fun getPreconditionsForTask(taskId: Int): Flow<List<Precondition>>
 }

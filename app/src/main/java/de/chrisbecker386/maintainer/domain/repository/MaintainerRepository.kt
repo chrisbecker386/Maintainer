@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 09/05/2023, 12:23
+ * Created by Christopher Becker on 15/05/2023, 16:26
  * Copyright (c) 2023. All rights reserved.
- * Last modified 09/05/2023, 12:23
+ * Last modified 15/05/2023, 16:26
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,45 @@
 
 package de.chrisbecker386.maintainer.domain.repository
 
+import de.chrisbecker386.maintainer.data.entity.Machine
+import de.chrisbecker386.maintainer.data.entity.Section
+import de.chrisbecker386.maintainer.data.entity.Step
+import de.chrisbecker386.maintainer.data.entity.Task
+import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
+import de.chrisbecker386.maintainer.data.entity.relation.TaskWithPreconditionsStepsCompletes
+import kotlinx.coroutines.flow.Flow
+
 interface MaintainerRepository {
-    suspend fun getAllLocalSections()
+
+    suspend fun addSection(section: Section)
+    suspend fun addSections(sections: List<Section>)
+    fun getSection(sectionId: Int): Flow<Section>
+    fun getAllSections(): Flow<List<Section>>
+    fun getMachines(sectionId: Int): Flow<List<Machine>>
+    suspend fun addMachine(machine: Machine)
+    suspend fun addMachines(machines: List<Machine>)
+    suspend fun removeMachine(machine: Machine)
+    suspend fun removeAllMachines()
+    fun getMachine(machineId: Int): Flow<Machine>
+    suspend fun addTask(task: Task)
+    suspend fun addTasks(tasks: List<Task>)
+    suspend fun updateTask(task: Task)
+    suspend fun removeTask(task: Task)
+    fun getTask(taskId: Int): Flow<Task>
+    fun getAllTasks(): Flow<List<Task>>
+    fun getNextOpenTasks(): Flow<List<Task>>
+    fun getTasks(machineId: Int): Flow<List<Task>>
+    fun getTaskWithPreconditionsStepsCompletes(taskId: Int): Flow<TaskWithPreconditionsStepsCompletes>
+    fun getAllTaskWithPreconditionsStepsCompletes(): Flow<List<TaskWithPreconditionsStepsCompletes>>
+    fun getTasksForMachineWithPreconditionsStepsCompletes(machineId: Int): Flow<List<TaskWithPreconditionsStepsCompletes>>
+    suspend fun addTaskComplete(taskCompletedDate: TaskCompletedDate)
+    suspend fun updateTaskCompleted(taskCompletedDate: TaskCompletedDate)
+    suspend fun deleteTaskCompleted(taskCompletedDate: TaskCompletedDate)
+    fun getCompletedTask(taskId: Int): Flow<List<TaskCompletedDate>>
+    suspend fun addStep(step: Step)
+    suspend fun addSteps(steps: List<Step>)
+    suspend fun updateStep(step: Step)
+    suspend fun removeSteps(steps: List<Step>)
+    suspend fun removeAllSteps()
+    fun getSteps(taskId: Int): Flow<List<Step>>
 }

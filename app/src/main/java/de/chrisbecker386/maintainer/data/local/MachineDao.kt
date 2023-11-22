@@ -20,10 +20,10 @@
 package de.chrisbecker386.maintainer.data.local
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
+import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import androidx.room.Upsert
 import de.chrisbecker386.maintainer.data.entity.Machine
 import de.chrisbecker386.maintainer.data.entity.Task
@@ -31,11 +31,18 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MachineDao {
-    @Upsert
-    suspend fun upsertMachine(machine: Machine)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMachines(machines: List<Machine>)
+    @Upsert
+    suspend fun addMachine(machine: Machine)
+
+    @Upsert
+    suspend fun addMachines(machines: List<Machine>)
+
+    @Update
+    suspend fun updateMachine(machine: Machine)
+
+    @Delete
+    suspend fun removeMachine(machine: Machine)
 
     @Transaction
     @Query("DELETE FROM machines")

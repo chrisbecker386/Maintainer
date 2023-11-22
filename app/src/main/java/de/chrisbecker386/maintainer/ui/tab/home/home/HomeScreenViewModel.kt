@@ -26,7 +26,7 @@ import de.chrisbecker386.maintainer.data.model.dummy.devMachines
 import de.chrisbecker386.maintainer.data.model.dummy.devSections
 import de.chrisbecker386.maintainer.data.model.dummy.devSteps
 import de.chrisbecker386.maintainer.data.model.dummy.devTasks
-import de.chrisbecker386.maintainer.domain.repository.TaskRepository
+import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +40,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
-    private val repository: TaskRepository
+    private val repository: MaintainerRepository
 ) :
     ViewModel() {
 
@@ -52,9 +52,9 @@ class HomeScreenViewModel @Inject constructor(
     private fun setDBEntries() {
         CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.Default) { repository.addSections(devSections) }
-            withContext(Dispatchers.Default) { repository.insertMachines(devMachines) }
-            withContext(Dispatchers.Default) { repository.upsertTasks(devTasks) }
-            withContext(Dispatchers.Default) { repository.insertSteps(devSteps) }
+            withContext(Dispatchers.Default) { repository.addMachines(devMachines) }
+            withContext(Dispatchers.Default) { repository.addTasks(devTasks) }
+            withContext(Dispatchers.Default) { repository.addSteps(devSteps) }
         }
     }
 

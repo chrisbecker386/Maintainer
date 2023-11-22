@@ -23,21 +23,23 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface CompletedTaskDao {
+interface TaskCompletedDao {
     @Insert
-    suspend fun insertCompletedTask(taskCompletedDate: TaskCompletedDate)
+    suspend fun addTaskCompleted(taskCompletedDate: TaskCompletedDate)
 
     @Update
-    suspend fun updateCompletedTask(taskCompletedDate: TaskCompletedDate)
+    suspend fun updateTaskCompleted(taskCompletedDate: TaskCompletedDate)
 
     @Delete
-    suspend fun deleteCompletedTask(taskCompletedDate: TaskCompletedDate)
+    suspend fun deleteTaskCompleted(taskCompletedDate: TaskCompletedDate)
 
+    @Transaction
     @Query("SELECT * FROM tasks_completed_dates WHERE task_completed_fk_task_id = :taskId")
-    fun getCompletesForTask(taskId: Int): Flow<List<TaskCompletedDate>>
+    fun getCompletedTask(taskId: Int): Flow<List<TaskCompletedDate>>
 }

@@ -25,7 +25,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
-import de.chrisbecker386.maintainer.domain.repository.TaskRepository
+import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
 import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 import de.chrisbecker386.maintainer.ui.tab.home.task.SingleTaskEvent.StepDone
 import de.chrisbecker386.maintainer.ui.tab.home.task.SingleTaskEvent.TaskDone
@@ -42,7 +42,7 @@ import javax.inject.Inject
 class SingleTaskViewModel
 @Inject
 constructor(
-    private val repository: TaskRepository,
+    private val repository: MaintainerRepository,
     savedStateHandle: SavedStateHandle
 ) :
     ViewModel() {
@@ -91,7 +91,7 @@ constructor(
             is StepDone -> {
                 viewModelScope.launch {
                     val step = event.step.copy(completedDate = Calendar.getInstance().timeInMillis)
-                    repository.updateStepComplete(step)
+                    repository.updateStep(step)
                 }
             }
 
