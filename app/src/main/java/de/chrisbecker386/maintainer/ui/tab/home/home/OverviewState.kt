@@ -22,10 +22,11 @@ package de.chrisbecker386.maintainer.ui.tab.home.home
 import de.chrisbecker386.maintainer.data.entity.Machine
 import de.chrisbecker386.maintainer.data.entity.Section
 import de.chrisbecker386.maintainer.data.entity.Task
+import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 
-data class HomeLandingState(
+data class OverviewState(
+    val shortStatus: ShortStatusState = ShortStatusState(0, 1),
     val nextMachine: Machine? = null,
-    val nextTasks: List<Task> = emptyList(),
+    val nextTasks: List<Task>? = emptyList(),
     val sections: List<Section> = emptyList()
-
 )

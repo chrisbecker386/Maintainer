@@ -25,7 +25,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import de.chrisbecker386.maintainer.ui.tab.home.home.HomeScreen
+import de.chrisbecker386.maintainer.ui.tab.home.home.OverviewScreen
 import de.chrisbecker386.maintainer.ui.tab.home.machine.SingleMachineScreen
 import de.chrisbecker386.maintainer.ui.tab.home.section.SingleSectionScreen
 import de.chrisbecker386.maintainer.ui.tab.home.task.SingleTaskScreen
@@ -43,7 +43,7 @@ fun MaintainerNavGraph(
         modifier = modifier
     ) {
         composable(route = Home.route) {
-            HomeScreen(
+            OverviewScreen(
                 onSectionClick = { careType -> navController.navigateToSingleSection(careType) },
                 onMachineClick = { machineType ->
                     navController.navigateToSingleMachine(machineType)

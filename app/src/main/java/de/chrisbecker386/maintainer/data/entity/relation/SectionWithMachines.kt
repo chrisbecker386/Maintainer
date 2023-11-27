@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 19/04/2023, 10:46
+ * Created by Christopher Becker on 27/11/2023, 13:00
  * Copyright (c) 2023. All rights reserved.
- * Last modified 19/04/2023, 10:46
+ * Last modified 27/11/2023, 13:00
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,18 @@
  *
  */
 
-package de.chrisbecker386.maintainer.data.model
+package de.chrisbecker386.maintainer.data.entity.relation
 
-import android.icu.util.Calendar
+import androidx.room.Embedded
+import androidx.room.Relation
+import de.chrisbecker386.maintainer.data.entity.Machine
+import de.chrisbecker386.maintainer.data.entity.Section
 
-data class RepeatCycle(
-    val frequency: RepeatFrequency,
-    val tact: Long
-) {
-    fun inMillis(): Long {
-        return this.frequency.inMillis() * tact
-    }
-
-    fun isValid(timeInMillis: Long?): Boolean {
-        if (timeInMillis == null) return false
-
-        val now = Calendar.getInstance().timeInMillis
-        val lastPlusFrequency = this.inMillis() + timeInMillis
-
-        return lastPlusFrequency > now
-    }
-}
+data class SectionWithMachines(
+    @Embedded val section: Section,
+    @Relation(
+        parentColumn = "section_id",
+        entityColumn = "machine_fk_section_id"
+    )
+    val machines: List<Machine>
+)

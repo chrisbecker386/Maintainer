@@ -19,6 +19,7 @@
 
 package de.chrisbecker386.maintainer.ui.tab.home.home
 
+import android.icu.util.Calendar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,19 +28,22 @@ import de.chrisbecker386.maintainer.data.model.dummy.devSections
 import de.chrisbecker386.maintainer.data.model.dummy.devSteps
 import de.chrisbecker386.maintainer.data.model.dummy.devTasks
 import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
+import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeScreenViewModel @Inject constructor(
+class OverviewScreenViewModel @Inject constructor(
     private val repository: MaintainerRepository
 ) :
     ViewModel() {
@@ -57,29 +61,49 @@ class HomeScreenViewModel @Inject constructor(
             withContext(Dispatchers.Default) { repository.addSteps(devSteps) }
         }
     }
-
     // TODO to here
+
+    private fun getTime() = Calendar.getInstance().timeInMillis
 
     private val _sections = repository.getAllSections()
 
-    private val _nextTasks = repository.getNextOpenTasks()
+    private val _numberOpenTasks = repository.getNumberOfOpenTasks(getTime()).mapLatest { it }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0)
 
-    private val _nextMachine = _nextTasks.flatMapLatest { task ->
-        repository.getMachine(task.first().machineId)
-    }
+    private val _numberOfAllTasks = repository.getNumberOfAllTasks().mapLatest { it }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0)
 
-    private val _state = MutableStateFlow(HomeLandingState())
+    private val _shortStatus =
+        combine(_numberOpenTasks, _numberOfAllTasks) { open, all ->
+            ShortStatusState(all - open, all)
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), ShortStatusState(0, 0))
+
+    private val _nextMachine =
+        repository.getNextMachine(getTime()).mapLatest { it }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+
+    private val _openTasks = _nextMachine.flatMapLatest { machine ->
+        if (machine == null) {
+            emptyFlow()
+        } else {
+            repository.getOpenTaskForMachine(machine.id, getTime())
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+
+    private val _state = MutableStateFlow(OverviewState())
 
     val state = combine(
         _state,
+        _shortStatus,
         _nextMachine,
-        _nextTasks,
+        _openTasks,
         _sections
-    ) { state, nextMachine, nextTasks, sections ->
+    ) { state, shortStatus, nextMachine, openTasks, sections ->
         state.copy(
+            shortStatus = shortStatus,
             nextMachine = nextMachine,
-            nextTasks = nextTasks,
+            nextTasks = openTasks,
             sections = sections
         )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), HomeLandingState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), OverviewState())
 }

@@ -38,5 +38,14 @@ val devTasks = listOf(
         imageRes = R.drawable.ic_launcher_foreground,
         duration = 5,
         machineId = 1
+    ),
+    Task(
+        id = 3,
+        title = "carTask1",
+        subtitle = null,
+        imageRes = R.drawable.question_mark_48px,
+        duration = 5,
+        machineId = 2
     )
+
 )

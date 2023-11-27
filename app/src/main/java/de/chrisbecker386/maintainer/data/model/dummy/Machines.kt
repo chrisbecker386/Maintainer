@@ -32,9 +32,9 @@ val devMachines = listOf(
     ),
     Machine(
         id = 2,
-        title = "dish washer",
+        title = "tire",
         subtitle = null,
-        imageRes = R.drawable.dishwasher_gen_48px,
+        imageRes = R.drawable.question_mark_48px,
         section = 2
     ),
     Machine(
