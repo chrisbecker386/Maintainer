@@ -27,6 +27,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import de.chrisbecker386.maintainer.data.model.RepeatCycle
 import de.chrisbecker386.maintainer.data.model.RepeatFrequency
+import de.chrisbecker386.maintainer.data.utility.toRepeatFrequency
 
 @Entity(
     tableName = "tasks",
@@ -54,13 +55,13 @@ data class Task(
     @ColumnInfo(name = "task_duration")
     val duration: Int,
     @ColumnInfo(name = "task_repeat_frequency")
-    val repeatFrequency: RepeatFrequency = RepeatFrequency.WEEKLY,
+    val repeatFrequency: Long = RepeatFrequency.WEEKLY.inMillis(),
     @ColumnInfo(name = "task_tact")
-    val tact: Int = 1,
+    val tact: Long = 1L,
     @ColumnInfo(name = "task_fk_machine_id")
     val machineId: Int
 ) {
     fun getRepeatCycle(): RepeatCycle {
-        return RepeatCycle(this.repeatFrequency, this.tact)
+        return RepeatCycle(this.repeatFrequency.toRepeatFrequency(), this.tact)
     }
 }

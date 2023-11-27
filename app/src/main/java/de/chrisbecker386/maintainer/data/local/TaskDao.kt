@@ -53,12 +53,6 @@ interface TaskDao {
     @Query("SELECT * FROM tasks")
     fun getAllTasks(): Flow<List<Task>>
 
-    // TODO Write a right query that returns 2 task they never fulfilled (no entry in task_completed table) or
-    // TODO entry is not fulfilled since the last repeating cycle is over
-    @Transaction
-    @Query("SELECT * FROM tasks ORDER BY task_tact LIMIT 2")
-    fun getNextOpenTasks(): Flow<List<Task>>
-
     @Transaction
     @Query("SELECT * FROM steps WHERE step_fk_task_id = :taskId")
     fun getStepsForTask(taskId: Int): Flow<List<Step>>
@@ -78,4 +72,31 @@ interface TaskDao {
     @Transaction
     @Query("SELECT * FROM tasks WHERE task_fk_machine_id = :machineId")
     fun getTasksForMachineWithPreconditionsStepsCompletes(machineId: Int): Flow<List<TaskWithPreconditionsStepsCompletes>>
+
+    @Transaction
+    @Query(
+        """SELECT * FROM tasks t 
+        LEFT JOIN tasks_completed_dates tcd  
+        ON t.task_id = tcd.task_completed_fk_task_id 
+        WHERE (tcd.task_completed_id IS NULL 
+        OR (tcd.task_completed_date IS NOT NULL 
+        AND tcd.task_completed_date < :moment - t.task_tact * t.task_repeat_frequency)) 
+        AND t.task_fk_machine_id =:machineId"""
+    )
+    fun getOpenTaskForMachine(machineId: Int, moment: Long): Flow<List<Task>>
+
+    @Transaction
+    @Query(
+        """SELECT COUNT(*) FROM  tasks t 
+        LEFT JOIN tasks_completed_dates tcd  
+        ON t.task_id = tcd.task_completed_fk_task_id 
+        WHERE (tcd.task_completed_id IS NULL 
+        OR (tcd.task_completed_date IS NOT NULL 
+        AND tcd.task_completed_date < :moment - t.task_tact * t.task_repeat_frequency))"""
+    )
+    fun getNumberOfOpenTasks(moment: Long): Flow<Int>
+
+    @Transaction
+    @Query("""SELECT COUNT(*) FROM tasks""")
+    fun getNumberOfAllTasks(): Flow<Int>
 }

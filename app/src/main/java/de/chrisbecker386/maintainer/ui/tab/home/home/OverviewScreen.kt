@@ -28,28 +28,26 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import de.chrisbecker386.maintainer.data.model.dummy.devMachines
 import de.chrisbecker386.maintainer.ui.component.NextMaintains
 import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
-import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 
 @Composable
-fun HomeScreen(
+fun OverviewScreen(
     modifier: Modifier = Modifier,
     onSectionClick: (Int) -> Unit = {},
     onMachineClick: (Int) -> Unit = {}
 ) {
-    val viewModel = hiltViewModel<HomeScreenViewModel>()
+    val viewModel = hiltViewModel<OverviewScreenViewModel>()
     val state by viewModel.state.collectAsState()
-    HomeLanding(state = state, onSectionClick = onSectionClick, onMachineClick = onMachineClick)
+    Overview(state = state, onSectionClick = onSectionClick, onMachineClick = onMachineClick)
 }
 
 @Composable
-private fun HomeLanding(
-    state: HomeLandingState,
-    onEvent: (HomeLandingEvent) -> Unit = {},
+private fun Overview(
+    state: OverviewState,
+    onEvent: (OverviewEvent) -> Unit = {},
     onSectionClick: (Int) -> Unit = {},
     onMachineClick: (Int) -> Unit = {}
 ) {
@@ -58,19 +56,19 @@ private fun HomeLanding(
             ShortStatus(
                 Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
                 title = "Maintain Status",
-                state = ShortStatusState(
-                    numerator = 6,
-                    denominator = 11
-                )
+                state = state.shortStatus
             )
         }
         item {
             NextMaintains(
                 Modifier
                     .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS)
-                    .clickable { onMachineClick(devMachines[0].id) },
+                    .clickable {
+                        state.nextMachine?.id
+                            ?.let { onMachineClick(it) }
+                    },
                 machineTitle = state.nextMachine.let { it?.title } ?: "",
-                tasks = state.nextTasks
+                tasks = state.nextTasks ?: emptyList()
             )
         }
         item {

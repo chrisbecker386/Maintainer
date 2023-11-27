@@ -39,17 +39,20 @@ interface MaintainerRepository {
     suspend fun removeMachine(machine: Machine)
     suspend fun removeAllMachines()
     fun getMachine(machineId: Int): Flow<Machine>
+    fun getNextMachine(moment: Long): Flow<Machine?>
     suspend fun addTask(task: Task)
     suspend fun addTasks(tasks: List<Task>)
     suspend fun updateTask(task: Task)
     suspend fun removeTask(task: Task)
     fun getTask(taskId: Int): Flow<Task>
     fun getAllTasks(): Flow<List<Task>>
-    fun getNextOpenTasks(): Flow<List<Task>>
     fun getTasks(machineId: Int): Flow<List<Task>>
     fun getTaskWithPreconditionsStepsCompletes(taskId: Int): Flow<TaskWithPreconditionsStepsCompletes>
     fun getAllTaskWithPreconditionsStepsCompletes(): Flow<List<TaskWithPreconditionsStepsCompletes>>
     fun getTasksForMachineWithPreconditionsStepsCompletes(machineId: Int): Flow<List<TaskWithPreconditionsStepsCompletes>>
+    fun getOpenTaskForMachine(machineId: Int, moment: Long): Flow<List<Task>>
+    fun getNumberOfOpenTasks(moment: Long): Flow<Int>
+    fun getNumberOfAllTasks(): Flow<Int>
     suspend fun addTaskComplete(taskCompletedDate: TaskCompletedDate)
     suspend fun updateTaskCompleted(taskCompletedDate: TaskCompletedDate)
     suspend fun deleteTaskCompleted(taskCompletedDate: TaskCompletedDate)

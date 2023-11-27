@@ -55,4 +55,17 @@ interface MachineDao {
     @Transaction
     @Query("SELECT * FROM machines WHERE machine_id = :machineId")
     fun getMachine(machineId: Int): Flow<Machine>
+
+    @Transaction
+    @Query(
+        """SELECT 
+    m.*
+FROM machines m
+JOIN tasks t ON m.machine_id = t.task_fk_machine_id
+LEFT JOIN tasks_completed_dates tcd ON t.task_id = tcd.task_completed_fk_task_id
+WHERE tcd.task_completed_id IS NULL OR 
+    (tcd.task_completed_date IS NOT NULL AND tcd.task_completed_date < :moment - t.task_tact * t.task_repeat_frequency) LIMIT 1
+    """
+    )
+    fun getNextMachine(moment: Long): Flow<Machine?>
 }

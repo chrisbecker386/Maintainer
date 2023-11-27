@@ -65,6 +65,9 @@ class MaintainerRepositoryImpl(
 
     override fun getMachine(machineId: Int): Flow<Machine> = machineDao.getMachine(machineId)
 
+    override fun getNextMachine(moment: Long): Flow<Machine?> =
+        machineDao.getNextMachine(moment)
+
     override suspend fun addTask(task: Task) = taskDao.addTask(task)
 
     override suspend fun addTasks(tasks: List<Task>) = taskDao.addTasks(tasks)
@@ -76,8 +79,6 @@ class MaintainerRepositoryImpl(
     override fun getTask(taskId: Int): Flow<Task> = taskDao.getTask(taskId)
 
     override fun getAllTasks(): Flow<List<Task>> = taskDao.getAllTasks()
-
-    override fun getNextOpenTasks(): Flow<List<Task>> = taskDao.getNextOpenTasks()
 
     override fun getTasks(machineId: Int): Flow<List<Task>> =
         machineDao.getTasksForMachine(machineId)
@@ -91,6 +92,14 @@ class MaintainerRepositoryImpl(
     override fun getTasksForMachineWithPreconditionsStepsCompletes(machineId: Int):
         Flow<List<TaskWithPreconditionsStepsCompletes>> =
         taskDao.getTasksForMachineWithPreconditionsStepsCompletes(machineId)
+
+    override fun getOpenTaskForMachine(machineId: Int, moment: Long): Flow<List<Task>> =
+        taskDao.getOpenTaskForMachine(machineId, moment)
+
+    override fun getNumberOfOpenTasks(moment: Long): Flow<Int> =
+        taskDao.getNumberOfOpenTasks(moment)
+
+    override fun getNumberOfAllTasks(): Flow<Int> = taskDao.getNumberOfAllTasks()
 
     override suspend fun addTaskComplete(taskCompletedDate: TaskCompletedDate) =
         taskCompletedDao.addTaskCompleted(taskCompletedDate)

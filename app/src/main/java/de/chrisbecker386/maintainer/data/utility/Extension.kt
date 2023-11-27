@@ -20,9 +20,22 @@
 package de.chrisbecker386.maintainer.data.utility
 
 import android.icu.util.Calendar
+import de.chrisbecker386.maintainer.data.model.RepeatFrequency
 
 fun Long.toFormatDateString(format: SimpleDateType): String {
     val cal = Calendar.getInstance()
     cal.timeInMillis = this
     return format.getSimpleDateFormat().format(cal).toString()
+}
+
+fun Long.toRepeatFrequency(): RepeatFrequency {
+    return when (this) {
+        in (0L..1000L) -> RepeatFrequency.SECONDLY
+        in (1001L..60000L) -> RepeatFrequency.MINUTELY
+        in (60001L..3600000L) -> RepeatFrequency.HOURLY
+        in (3600001L..86400000L) -> RepeatFrequency.DAILY
+        in (86400001L..604800000L) -> RepeatFrequency.WEEKLY
+        in (604800001L..2628000000L) -> RepeatFrequency.MINUTELY
+        else -> RepeatFrequency.YEARLY
+    }
 }

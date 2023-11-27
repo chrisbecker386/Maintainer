@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 21/11/2023, 20:38
+ * Created by Christopher Becker on 27/11/2023, 12:57
  * Copyright (c) 2023. All rights reserved.
- * Last modified 21/11/2023, 20:38
+ * Last modified 27/11/2023, 12:57
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,18 @@
  *
  */
 
-package de.chrisbecker386.maintainer.ui.tab.home.home
+package de.chrisbecker386.maintainer.data.entity.relation
 
-interface HomeLandingEvent
+import androidx.room.Embedded
+import androidx.room.Relation
+import de.chrisbecker386.maintainer.data.entity.Machine
+import de.chrisbecker386.maintainer.data.entity.Task
+
+data class MachineWithTasks(
+    @Embedded val machine: Machine,
+    @Relation(
+        parentColumn = "machine_id",
+        entityColumn = "task_fk_machine_id"
+    )
+    val tasks: List<Task>
+)

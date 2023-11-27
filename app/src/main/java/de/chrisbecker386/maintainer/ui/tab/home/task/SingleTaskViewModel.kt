@@ -77,12 +77,12 @@ constructor(
         _shortStatus,
         _steps,
         _isTaskDone
-    ) { state, task, shortStatus, steps, _isTaskDone ->
+    ) { state, task, shortStatus, steps, isTaskDone ->
         state.copy(
             task = task,
             shortStatus = shortStatus,
             steps = steps,
-            isTaskDone = _isTaskDone
+            isTaskDone = isTaskDone
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SingleTaskState())
 
