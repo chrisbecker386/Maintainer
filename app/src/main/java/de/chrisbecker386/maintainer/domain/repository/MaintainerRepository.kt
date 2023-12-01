@@ -53,6 +53,8 @@ interface MaintainerRepository {
     fun getOpenTaskForMachine(machineId: Int, moment: Long): Flow<List<Task>>
     fun getNumberOfOpenTasks(moment: Long): Flow<Int>
     fun getNumberOfAllTasks(): Flow<Int>
+    fun getNumberOfAllTasksBySection(sectionId: Int): Flow<Int>
+    fun getNumberOfAllOpenTasksBySection(sectionId: Int, moment: Long): Flow<Int>
     suspend fun addTaskComplete(taskCompletedDate: TaskCompletedDate)
     suspend fun updateTaskCompleted(taskCompletedDate: TaskCompletedDate)
     suspend fun deleteTaskCompleted(taskCompletedDate: TaskCompletedDate)

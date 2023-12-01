@@ -19,11 +19,14 @@
 
 package de.chrisbecker386.maintainer.ui.tab.home.section
 
+import android.icu.util.Calendar
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
+import de.chrisbecker386.maintainer.ui.model.ShortStatusState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -40,24 +43,37 @@ class SingleSectionViewModel @Inject constructor(
     private val _section =
         repository.getSection(checkNotNull(savedStateHandle.get<Int>("section_type")))
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val _machines = _section.flatMapLatest { section ->
         repository.getMachines(section.id)
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(),
-        emptyList()
-    )
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+
+    private val _allSectionTasks = _section.flatMapLatest { section ->
+        repository.getNumberOfAllTasksBySection(section.id)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0)
+
+    private val _openSectionTasks = _section.flatMapLatest { section ->
+        repository.getNumberOfAllOpenTasksBySection(section.id, getTime())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0)
+
+    private val _shortStatus = combine(_allSectionTasks, _openSectionTasks) { all, open ->
+        ShortStatusState(all - open, all)
+    }
 
     private val _state = MutableStateFlow(SingleSectionState())
 
     val state = combine(
         _state,
         _section,
+        _shortStatus,
         _machines
-    ) { state, section, machines ->
+    ) { state, section, shortStatusState, machines ->
         state.copy(
             section = section,
+            shortStatusState = shortStatusState,
             machines = machines
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SingleSectionState())
+
+    private fun getTime() = Calendar.getInstance().timeInMillis
 }

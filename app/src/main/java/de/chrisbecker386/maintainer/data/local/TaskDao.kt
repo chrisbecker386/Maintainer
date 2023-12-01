@@ -99,4 +99,25 @@ interface TaskDao {
     @Transaction
     @Query("""SELECT COUNT(*) FROM tasks""")
     fun getNumberOfAllTasks(): Flow<Int>
+
+    @Transaction
+    @Query(
+        """SELECT COUNT(task_id) FROM tasks t 
+        JOIN machines m ON t.task_fk_machine_id = m.machine_id 
+        JOIN sections s ON m.machine_fk_section_id = s.section_id
+        WHERE m.machine_id NOT NULL AND s.section_id =:sectionId"""
+    )
+    fun getNumberOfAllTasksBySection(sectionId: Int): Flow<Int>
+
+    @Transaction
+    @Query(
+        """SELECT COUNT(task_id) FROM tasks t 
+        JOIN machines m ON t.task_fk_machine_id = m.machine_id 
+        JOIN sections s ON m.machine_fk_section_id = s.section_id
+        LEFT JOIN tasks_completed_dates tcd ON t.task_id = tcd.task_completed_fk_task_id 
+        WHERE m.machine_id NOT NULL AND s.section_id =:sectionId AND ((tcd.task_completed_id IS NULL 
+        OR (tcd.task_completed_date IS NOT NULL 
+        AND tcd.task_completed_date < :moment - t.task_tact * t.task_repeat_frequency)))"""
+    )
+    fun getNumberOfAllOpenTasksBySection(sectionId: Int, moment: Long): Flow<Int>
 }

@@ -31,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
-import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
 
@@ -57,11 +56,8 @@ private fun SingleSection(
             .padding(start = DIM_XS, end = DIM_XS, top = DIM_XXS, bottom = DIM_XXS)
     ) {
         ShortStatus(
-            title = "Machine Status",
-            state = ShortStatusState(
-                numerator = 2,
-                denominator = 3
-            )
+            title = state.section.title,
+            state = state.shortStatusState
         )
         Spacer(modifier = Modifier.height(DIM_XS))
 
