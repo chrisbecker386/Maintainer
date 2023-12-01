@@ -34,13 +34,12 @@ The goal of this app is to create an app, that helps to maintain machines.
 
 ### :card_index: ERD
 
-[ERD](../main/images/ER_Diagram.png)
+![ERD](../main/images/ER_Diagram.png)
 
 ### :calling: Screens
-
-![Overview](../main/images/Overview.png)
-![Task in Progress](../main/images/Task_In_Progress.png)
-![Task Completed](../main/images/Task_Completed.png)
+| Overview| Task in progress| Task completed|
+|-|-|-|
+|![Overview](../main/images/Overview.png)|![Task in Progress](../main/images/Task_In_Progress.png)|![Task Completed](../main/images/Task_Completed.png)|
 
 ## :computer: Utilities
 

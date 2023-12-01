@@ -19,12 +19,15 @@
 
 package de.chrisbecker386.maintainer.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import de.chrisbecker386.maintainer.ui.tab.home.creation.CreationScreen
 import de.chrisbecker386.maintainer.ui.tab.home.home.OverviewScreen
 import de.chrisbecker386.maintainer.ui.tab.home.machine.SingleMachineScreen
 import de.chrisbecker386.maintainer.ui.tab.home.section.SingleSectionScreen
@@ -32,6 +35,7 @@ import de.chrisbecker386.maintainer.ui.tab.home.task.SingleTaskScreen
 import de.chrisbecker386.maintainer.ui.tab.info.InfoScreen
 import de.chrisbecker386.maintainer.ui.tab.settings.SettingsScreen
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun MaintainerNavGraph(
     navController: NavHostController,
@@ -47,7 +51,11 @@ fun MaintainerNavGraph(
                 onSectionClick = { careType -> navController.navigateToSingleSection(careType) },
                 onMachineClick = { machineType ->
                     navController.navigateToSingleMachine(machineType)
+                },
+                onCreationClick = { creationType, id ->
+                    navController.navigateToCreation(creationType, id)
                 }
+
             )
         }
         composable(route = Info.route) {
@@ -96,6 +104,31 @@ fun MaintainerNavGraph(
                 )
             }
         }
+
+        composable(
+            route = Creation.routeWithArgs,
+            arguments = Creation.arguments
+        ) { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getInt(Creation.creationIdTypeArg)
+            val creationType = navBackStackEntry.arguments?.getSerializable(
+                Creation.creationTypeArg,
+                CreationType::class.java
+            )
+            creationType?.let {
+                if (id != null) {
+                    CreationScreen(
+                        id = id,
+                        creationType = creationType,
+                        navigateUp = { navController.navigateUp() }
+                    )
+                } else {
+                    CreationScreen(
+                        creationType = creationType,
+                        navigateUp = { navController.navigateUp() }
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -120,4 +153,8 @@ private fun NavHostController.navigateToSingleTask(taskType: Int) {
 
 private fun NavHostController.navigateToSingleSection(sectionType: Int) {
     this.navigate("${SingleSection.route}/$sectionType")
+}
+
+private fun NavHostController.navigateToCreation(creationType: CreationType, id: Int?) {
+    this.navigate("${Creation.route}?creation_id_type=$id&creationTypeArg=$creationType")
 }
