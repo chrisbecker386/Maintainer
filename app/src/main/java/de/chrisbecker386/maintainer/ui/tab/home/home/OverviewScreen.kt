@@ -28,6 +28,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import de.chrisbecker386.maintainer.data.model.GridItemData
+import de.chrisbecker386.maintainer.navigation.CreationType
 import de.chrisbecker386.maintainer.ui.component.NextMaintains
 import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
@@ -37,11 +39,17 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 fun OverviewScreen(
     modifier: Modifier = Modifier,
     onSectionClick: (Int) -> Unit = {},
-    onMachineClick: (Int) -> Unit = {}
+    onMachineClick: (Int) -> Unit = {},
+    onCreationClick: (CreationType, Int?) -> Unit = { _, _ -> }
 ) {
     val viewModel = hiltViewModel<OverviewScreenViewModel>()
     val state by viewModel.state.collectAsState()
-    Overview(state = state, onSectionClick = onSectionClick, onMachineClick = onMachineClick)
+    Overview(
+        state = state,
+        onSectionClick = onSectionClick,
+        onMachineClick = onMachineClick,
+        onCreationClick = onCreationClick
+    )
 }
 
 @Composable
@@ -49,7 +57,8 @@ private fun Overview(
     state: OverviewState,
     onEvent: (OverviewEvent) -> Unit = {},
     onSectionClick: (Int) -> Unit = {},
-    onMachineClick: (Int) -> Unit = {}
+    onMachineClick: (Int) -> Unit = {},
+    onCreationClick: (CreationType, Int?) -> Unit = { _, _ -> }
 ) {
     LazyColumn(Modifier.fillMaxWidth()) {
         item {
@@ -72,14 +81,28 @@ private fun Overview(
             )
         }
         item {
+            val modifiedList = mutableListOf<GridItemData>()
+            state.sections.map { it.toGridItemData() }.forEach { modifiedList.add(it) }
+            modifiedList.add(GridItemData(0, "section", null))
+            modifiedList.add(GridItemData(-1, "machine", null))
+            modifiedList.add(GridItemData(-2, "task", null))
+
+            val finalList = modifiedList.toList()
             OverviewGrid(
                 modifier = Modifier.padding(
                     start = DIM_XS,
                     end = DIM_XS,
                     top = DIM_XS
                 ),
-                items = state.sections.map { it.toGridItemData() },
-                onItemClick = { onSectionClick(it) }
+                items = finalList,
+                onItemClick = { it ->
+                    when (it) {
+                        0 -> onCreationClick(CreationType.Section, null)
+                        -1 -> onCreationClick(CreationType.Machine, null)
+                        -2 -> onCreationClick(CreationType.Task, null)
+                        else -> onSectionClick(it)
+                    }
+                }
             )
         }
     }

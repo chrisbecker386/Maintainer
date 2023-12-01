@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 24/04/2023, 14:14
+ * Created by Christopher Becker on 04/12/2023, 09:17
  * Copyright (c) 2023. All rights reserved.
- * Last modified 24/04/2023, 14:14
+ * Last modified 04/12/2023, 09:17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,10 @@
  *
  */
 
-package de.chrisbecker386.maintainer.data.model.interfaces
+package de.chrisbecker386.maintainer.navigation
 
-import de.chrisbecker386.maintainer.data.model.RepeatCycle
-import java.time.LocalDate
-
-interface MaintainObject {
-    val performedDates: List<LocalDate>?
-    val repeatCycle: RepeatCycle
+enum class CreationType {
+    Section,
+    Machine,
+    Task;
 }

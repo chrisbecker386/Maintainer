@@ -78,4 +78,22 @@ object SingleTask : Screen {
     val arguments = listOf(navArgument(taskTypeArg) { type = NavType.IntType })
 }
 
+object Creation : Screen {
+    override val route: String = "creation_screen"
+    override val title: String = "Creation"
+    override val icon = null
+    const val creationIdTypeArg = "creation_id_type"
+    const val creationTypeArg = "creation_type"
+    val routeWithArgs =
+        "$route?creation_id_type={$creationIdTypeArg}&creationTypeArg={$creationTypeArg}"
+    val arguments =
+        listOf(
+            navArgument(creationIdTypeArg) {
+                defaultValue = 0
+                type = NavType.IntType
+            },
+            navArgument(creationTypeArg) { type = NavType.EnumType(CreationType::class.java) }
+        )
+}
+
 val APP_TABS = listOf(Home, Info, Settings)

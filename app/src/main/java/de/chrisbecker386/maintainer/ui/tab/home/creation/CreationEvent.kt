@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 24/04/2023, 14:13
+ * Created by Christopher Becker on 01/12/2023, 16:25
  * Copyright (c) 2023. All rights reserved.
- * Last modified 24/04/2023, 14:13
+ * Last modified 01/12/2023, 16:25
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,13 @@
  *
  */
 
-package de.chrisbecker386.maintainer.data.model.interfaces
+package de.chrisbecker386.maintainer.ui.tab.home.creation
 
-interface ItemObject {
-    val id: Int
-    val title: String
-    val list: List<ItemObject>?
+import androidx.annotation.DrawableRes
+import de.chrisbecker386.maintainer.data.entity.Section
+
+interface CreationEvent {
+    data class TitleChange(val title: String?) : CreationEvent
+    data class ImageChange(@DrawableRes val imageRes: Int?) : CreationEvent
+    data class SectionDone(val section: Section) : CreationEvent
 }
