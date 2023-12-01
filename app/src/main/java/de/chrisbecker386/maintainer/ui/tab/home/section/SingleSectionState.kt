@@ -22,6 +22,7 @@ package de.chrisbecker386.maintainer.ui.tab.home.section
 import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.entity.Machine
 import de.chrisbecker386.maintainer.data.entity.Section
+import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 
 data class SingleSectionState(
     val section: Section = Section(
@@ -29,5 +30,6 @@ data class SingleSectionState(
         title = "",
         imageRes = R.drawable.question_mark_48px
     ),
+    val shortStatusState: ShortStatusState = ShortStatusState(0, 0),
     val machines: List<Machine> = emptyList()
 )

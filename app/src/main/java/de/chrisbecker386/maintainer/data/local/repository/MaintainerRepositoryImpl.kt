@@ -100,6 +100,11 @@ class MaintainerRepositoryImpl(
         taskDao.getNumberOfOpenTasks(moment)
 
     override fun getNumberOfAllTasks(): Flow<Int> = taskDao.getNumberOfAllTasks()
+    override fun getNumberOfAllTasksBySection(sectionId: Int): Flow<Int> =
+        taskDao.getNumberOfAllTasksBySection(sectionId)
+
+    override fun getNumberOfAllOpenTasksBySection(sectionId: Int, moment: Long): Flow<Int> =
+        taskDao.getNumberOfAllOpenTasksBySection(sectionId, moment)
 
     override suspend fun addTaskComplete(taskCompletedDate: TaskCompletedDate) =
         taskCompletedDao.addTaskCompleted(taskCompletedDate)
