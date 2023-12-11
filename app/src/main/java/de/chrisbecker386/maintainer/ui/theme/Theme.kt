@@ -64,7 +64,7 @@ fun MaintainerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = typo,
         shapes = Shapes,
         content = content
     )
