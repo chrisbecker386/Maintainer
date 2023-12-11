@@ -66,83 +66,96 @@ val nunitoSansFont = FontFamily(
         style = FontStyle.Italic
     )
 )
-val Typography = Typography(
+val typo = Typography(
     h1 = TextStyle(
         fontFamily = nunitoSansFont,
         fontWeight = FontWeight.Light,
         fontSize = 53.sp,
+        lineHeight = 57.sp,
         letterSpacing = (-1.5).sp
     ),
     h2 = TextStyle(
         fontFamily = nunitoSansFont,
         fontWeight = FontWeight.Bold,
         fontSize = 37.sp,
+        lineHeight = 41.sp,
         letterSpacing = 0.25.sp
     ),
     h3 = TextStyle(
         fontFamily = nunitoSansFont,
         fontWeight = FontWeight.Medium,
         fontSize = 30.sp,
+        lineHeight = 34.sp,
         letterSpacing = 0.25.sp
     ),
     h4 = TextStyle(
         fontFamily = nunitoSansFont,
         fontWeight = FontWeight.Bold,
         fontSize = 26.sp,
+        lineHeight = 30.sp,
         letterSpacing = 0.25.sp
     ),
     h5 = TextStyle(
         fontFamily = nunitoSansFont,
         fontWeight = FontWeight.Medium,
         fontSize = 24.sp,
+        lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
     h6 = TextStyle(
         fontFamily = nunitoSansFont,
         fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
+        lineHeight = 26.sp,
         letterSpacing = 0.15.sp
     ),
     subtitle1 = TextStyle(
         fontFamily = nunitoSansFont,
         fontWeight = FontWeight.Normal,
         fontSize = 18.sp,
+        lineHeight = 22.sp,
         letterSpacing = 0.15.sp
     ),
     subtitle2 = TextStyle(
         fontFamily = nunitoSansFont,
         fontWeight = FontWeight.Medium,
         fontSize = 15.sp,
+        lineHeight = 19.sp,
         letterSpacing = 0.1.sp
     ),
     body1 = TextStyle(
         fontFamily = nunitoSansFont,
         fontWeight = FontWeight.Normal,
         fontSize = 18.sp,
+        lineHeight = 22.sp,
         letterSpacing = 0.5.sp
     ),
     body2 = TextStyle(
         fontFamily = nunitoSansFont,
         fontWeight = FontWeight.Normal,
         fontSize = 15.sp,
+        lineHeight = 19.sp,
         letterSpacing = 0.25.sp
     ),
     button = TextStyle(
         fontFamily = nunitoSansFont,
         fontWeight = FontWeight.Medium,
         fontSize = 15.sp,
+        lineHeight = 19.sp,
         letterSpacing = 1.25.sp
     ),
     caption = TextStyle(
         fontFamily = nunitoSansFont,
         fontWeight = FontWeight.Normal,
         fontSize = 13.sp,
+        lineHeight = 17.sp,
         letterSpacing = 0.4.sp
     ),
     overline = TextStyle(
         fontFamily = nunitoSansFont,
         fontWeight = FontWeight.Normal,
         fontSize = 11.sp,
+        lineHeight = 15.sp,
         letterSpacing = 1.5.sp
     )
 )
@@ -151,7 +164,11 @@ val Typography = Typography(
 @Composable
 fun PreviewTyping() {
     MaintainerTheme {
-        Column(Modifier.width(intrinsicSize = IntrinsicSize.Max).height(intrinsicSize = IntrinsicSize.Max)) {
+        Column(
+            Modifier
+                .width(intrinsicSize = IntrinsicSize.Max)
+                .height(intrinsicSize = IntrinsicSize.Max)
+        ) {
             val typeLevel = listOf<String>(
                 "h1",
                 "h2",
@@ -184,7 +201,12 @@ fun PreviewTyping() {
                     "overline" -> MaterialTheme.typography.overline
                     else -> MaterialTheme.typography.h6
                 }
-                Text(text = "$type: Nunito Sans ", style = style, maxLines = 1, modifier = Modifier.padding(8.dp))
+                Text(
+                    text = "$type: Nunito Sans ",
+                    style = style,
+                    maxLines = 1,
+                    modifier = Modifier.padding(8.dp)
+                )
             }
         }
     }
