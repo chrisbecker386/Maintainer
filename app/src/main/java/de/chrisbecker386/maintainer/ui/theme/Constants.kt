@@ -20,6 +20,7 @@
 package de.chrisbecker386.maintainer.ui.theme
 
 import androidx.compose.ui.unit.dp
+import de.chrisbecker386.maintainer.R
 
 // dimensions
 /** 0.dp*/
@@ -92,3 +93,15 @@ const val ACCORDION_ANIMATION_DURATION = 200
 // opacity
 /** 0.6f */
 const val TAB_INACTIVE_OPACITY = 0.6f
+
+val ICON_LIST = listOf(
+    R.drawable.bathtub_48px,
+    R.drawable.directions_car_48px,
+    R.drawable.question_mark_48px,
+    R.drawable.dishwasher_gen_48px,
+    R.drawable.computer_48px,
+    R.drawable.coffee_maker_48px,
+    R.drawable.local_laundry_service_48px,
+    R.drawable.kitchen_48px,
+    R.drawable.pedal_bike_48px
+)

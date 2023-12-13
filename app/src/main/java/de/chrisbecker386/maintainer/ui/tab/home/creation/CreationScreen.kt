@@ -19,19 +19,33 @@
 
 package de.chrisbecker386.maintainer.ui.tab.home.creation
 
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
-import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.entity.Section
 import de.chrisbecker386.maintainer.navigation.CreationType
+import de.chrisbecker386.maintainer.ui.component.ImagePickerWithPreview
+import de.chrisbecker386.maintainer.ui.component.RoundedButton
+import de.chrisbecker386.maintainer.ui.component.TextInputField
+import de.chrisbecker386.maintainer.ui.theme.DIM_S
+import de.chrisbecker386.maintainer.ui.theme.DIM_XS
+import de.chrisbecker386.maintainer.ui.theme.ICON_LIST
 
 @Composable
 fun CreationScreen(
@@ -51,32 +65,53 @@ private fun Creation(
     navigateUp: () -> Unit
 ) {
     if (state.isNavigateUp) navigateUp()
-
-    LazyColumn(Modifier.fillMaxWidth()) {
+    val focusManager = LocalFocusManager.current
+    LazyColumn(
+        Modifier
+            .fillMaxWidth()
+            .padding(DIM_XS)
+    ) {
+        item { Text(text = "Create ${state.type?.name}", style = MaterialTheme.typography.h2) }
         item {
-            Text(text = "${state.type?.name}")
-
-            OutlinedTextField(
-                value = state.title ?: "",
-                onValueChange = { inputText ->
-                    onEvent(CreationEvent.TitleChange(inputText))
-                }
+            TextInputField(
+                label = "Section Name",
+                value = "",
+                onValueChange = { onEvent(CreationEvent.TitleChange(title = it)) },
+                enabled = true,
+                sideIcon = null,
+                onSideIconClick = {},
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Words,
+                    autoCorrect = false,
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
             )
-            Text(text = "${state.title}")
 
-            Button(
-                enabled = state.isCreationDone,
-                onClick = {
-                    onEvent(
-                        CreationEvent.SectionDone(
-                            Section(
-                                title = state.title?.trim() ?: "",
-                                imageRes = R.drawable.question_mark_48px
+            ImagePickerWithPreview(
+                title = "Select a Icon",
+                images = ICON_LIST,
+                onImageChange = { onEvent(CreationEvent.ImageChange(imageRes = it)) }
+            )
+
+            if ((state.title?.trim() != null) && (state.imageRes != null)) {
+                Spacer(modifier = Modifier.height(DIM_S))
+                RoundedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = "confirm",
+                    onClick = {
+                        onEvent(
+                            CreationEvent.SectionConfirm(
+                                Section(
+                                    title = state.title,
+                                    imageRes = state.imageRes
+                                )
                             )
                         )
-                    )
-                }
-            ) { Text(text = "Confirm") }
+                    }
+                )
+            }
         }
     }
 }

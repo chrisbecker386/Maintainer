@@ -25,5 +25,5 @@ import de.chrisbecker386.maintainer.data.entity.Section
 interface CreationEvent {
     data class TitleChange(val title: String?) : CreationEvent
     data class ImageChange(@DrawableRes val imageRes: Int?) : CreationEvent
-    data class SectionDone(val section: Section) : CreationEvent
+    data class SectionConfirm(val section: Section) : CreationEvent
 }

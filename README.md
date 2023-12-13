@@ -37,9 +37,12 @@ The goal of this app is to create an app, that helps to maintain machines.
 ![ERD](../main/images/ER_Diagram.png)
 
 ### :calling: Screens
-| Overview| Task in progress| Task completed|
+| Overview | Task in progress | Task completed |
 |-|-|-|
 |![Overview](../main/images/Overview.png)|![Task in Progress](../main/images/Task_In_Progress.png)|![Task Completed](../main/images/Task_Completed.png)|
+|-|-|-|
+| Creation | | |
+|![Creation](../main/images/Creation_Section.png)| | |
 
 ## :computer: Utilities
 
