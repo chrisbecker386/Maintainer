@@ -70,6 +70,12 @@ val DIM_XXL = 60.dp
 /** 72.dp*/
 val DIM_XXXL = 72.dp
 
+/** 100.dp*/
+val DIM_XXXL_PLUS = 100.dp
+
+/** 200.dp*/
+val DIM_BIG_TWO = 200.dp
+
 // durations
 /** 150 */
 const val TAB_FADE_IN_DURATION = 150
