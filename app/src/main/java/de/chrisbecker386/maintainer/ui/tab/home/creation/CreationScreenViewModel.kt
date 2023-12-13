@@ -23,14 +23,17 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import de.chrisbecker386.maintainer.R
+import de.chrisbecker386.maintainer.data.entity.Section
 import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
 import de.chrisbecker386.maintainer.navigation.CreationType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,7 +45,7 @@ class CreationScreenViewModel @Inject constructor(
     private val _id = savedStateHandle.get<Int>("id_type")
     private val _state = MutableStateFlow(CreationState(id = _id, type = _creationType))
     private val _title = MutableStateFlow<String?>(null)
-    private val _imageRes = MutableStateFlow<Int?>(R.drawable.question_mark_48px)
+    private val _imageRes = MutableStateFlow<Int?>(null)
     private val _isSectionDone =
         combine(_title, _imageRes) { title, imageRes ->
             _creationType == CreationType.Section &&
@@ -53,11 +56,16 @@ class CreationScreenViewModel @Inject constructor(
     private val _isCreationDone = combine(_isSectionDone) { section ->
         _isSectionDone.value
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
-    // MutableStateFlow<Boolean>(false)
 
-    val state = combine(_state, _title, _isCreationDone) { state, title, isCreationDone ->
+    val state = combine(
+        _state,
+        _title,
+        _imageRes,
+        _isCreationDone
+    ) { state, title, imageRes, isCreationDone ->
         state.copy(
             title = title,
+            imageRes = imageRes,
             isCreationDone = isCreationDone
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), CreationState())
@@ -68,8 +76,14 @@ class CreationScreenViewModel @Inject constructor(
                 _title.value = event.title
             }
 
-            is CreationEvent.ImageChange -> {}
-            is CreationEvent.SectionDone -> {
+            is CreationEvent.ImageChange -> {
+                _imageRes.value = event.imageRes
+            }
+
+            is CreationEvent.SectionConfirm -> {
+                CoroutineScope(Dispatchers.IO).launch {
+                    repository.addSection(event.section)
+                }
                 _state.update { it.copy(isNavigateUp = true) }
             }
         }
