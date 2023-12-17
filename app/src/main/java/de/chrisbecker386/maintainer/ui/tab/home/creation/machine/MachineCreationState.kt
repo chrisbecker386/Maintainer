@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 01/12/2023, 13:43
+ * Created by Christopher Becker on 16/12/2023, 15:22
  * Copyright (c) 2023. All rights reserved.
- * Last modified 01/12/2023, 13:43
+ * Last modified 16/12/2023, 15:22
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,18 @@
  *
  */
 
-package de.chrisbecker386.maintainer.ui.tab.home.creation
+package de.chrisbecker386.maintainer.ui.tab.home.creation.machine
 
-import de.chrisbecker386.maintainer.data.entity.Precondition
-import de.chrisbecker386.maintainer.data.entity.Step
-import de.chrisbecker386.maintainer.navigation.CreationType
+import androidx.annotation.DrawableRes
 
-data class CreationState(
-    val type: CreationType? = null,
+data class MachineCreationState(
     val id: Int? = null,
-    val title: String? = null,
-    val imageRes: Int? = null,
     val foreignId: Int? = null,
+    val title: String? = null,
     val subtitle: String? = null,
-    val duration: Int? = null,
-    val repeatFrequency: Long? = null,
-    val tact: Long? = null,
-    val steps: List<Step> = emptyList(),
-    val preconditions: List<Precondition> = emptyList(),
+    @DrawableRes
+    val imageRes: Int? = null,
     val isNavigateUp: Boolean = false,
-    val isCreationDone: Boolean = false
+    val isCreationComplete: Boolean = false
+
 )

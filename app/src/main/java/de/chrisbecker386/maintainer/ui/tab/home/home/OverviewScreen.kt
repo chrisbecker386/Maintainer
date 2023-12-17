@@ -29,7 +29,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import de.chrisbecker386.maintainer.data.model.GridItemData
-import de.chrisbecker386.maintainer.navigation.CreationType
 import de.chrisbecker386.maintainer.ui.component.NextMaintains
 import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
@@ -40,7 +39,7 @@ fun OverviewScreen(
     modifier: Modifier = Modifier,
     onSectionClick: (Int) -> Unit = {},
     onMachineClick: (Int) -> Unit = {},
-    onCreationClick: (CreationType, Int?) -> Unit = { _, _ -> }
+    onSectionCreationClick: (Int?) -> Unit = {}
 ) {
     val viewModel = hiltViewModel<OverviewScreenViewModel>()
     val state by viewModel.state.collectAsState()
@@ -48,7 +47,7 @@ fun OverviewScreen(
         state = state,
         onSectionClick = onSectionClick,
         onMachineClick = onMachineClick,
-        onCreationClick = onCreationClick
+        onSectionCreationClick = onSectionCreationClick
     )
 }
 
@@ -58,7 +57,7 @@ private fun Overview(
     onEvent: (OverviewEvent) -> Unit = {},
     onSectionClick: (Int) -> Unit = {},
     onMachineClick: (Int) -> Unit = {},
-    onCreationClick: (CreationType, Int?) -> Unit = { _, _ -> }
+    onSectionCreationClick: (Int?) -> Unit = {}
 ) {
     LazyColumn(Modifier.fillMaxWidth()) {
         item {
@@ -84,8 +83,6 @@ private fun Overview(
             val modifiedList = mutableListOf<GridItemData>()
             state.sections.map { it.toGridItemData() }.forEach { modifiedList.add(it) }
             modifiedList.add(GridItemData(0, "section", null))
-            modifiedList.add(GridItemData(-1, "machine", null))
-            modifiedList.add(GridItemData(-2, "task", null))
 
             val finalList = modifiedList.toList()
             OverviewGrid(
@@ -97,9 +94,7 @@ private fun Overview(
                 items = finalList,
                 onItemClick = { it ->
                     when (it) {
-                        0 -> onCreationClick(CreationType.Section, null)
-                        -1 -> onCreationClick(CreationType.Machine, null)
-                        -2 -> onCreationClick(CreationType.Task, null)
+                        0 -> onSectionCreationClick(null)
                         else -> onSectionClick(it)
                     }
                 }

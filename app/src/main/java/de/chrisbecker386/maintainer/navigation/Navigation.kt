@@ -27,7 +27,9 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import de.chrisbecker386.maintainer.ui.tab.home.creation.CreationScreen
+import de.chrisbecker386.maintainer.ui.tab.home.creation.machine.MachineCreationScreen
+import de.chrisbecker386.maintainer.ui.tab.home.creation.section.SectionCreationScreen
+import de.chrisbecker386.maintainer.ui.tab.home.creation.task.TaskCreationScreen
 import de.chrisbecker386.maintainer.ui.tab.home.home.OverviewScreen
 import de.chrisbecker386.maintainer.ui.tab.home.machine.SingleMachineScreen
 import de.chrisbecker386.maintainer.ui.tab.home.section.SingleSectionScreen
@@ -52,10 +54,9 @@ fun MaintainerNavGraph(
                 onMachineClick = { machineType ->
                     navController.navigateToSingleMachine(machineType)
                 },
-                onCreationClick = { creationType, id ->
-                    navController.navigateToCreation(creationType, id)
+                onSectionCreationClick = { id ->
+                    navController.navigateToSectionCreation(id)
                 }
-
             )
         }
         composable(route = Info.route) {
@@ -73,7 +74,10 @@ fun MaintainerNavGraph(
 
             SingleSectionScreen(
                 sectionType = sectionType,
-                onMachineClick = { machineType -> navController.navigateToSingleMachine(machineType) }
+                onMachineClick = { machineType -> navController.navigateToSingleMachine(machineType) },
+                onMachineCreationClick = { id, foreignId ->
+                    navController.navigateToMachineCreation(id, foreignId)
+                }
             )
         }
 
@@ -85,8 +89,9 @@ fun MaintainerNavGraph(
             if (machineType != null) {
                 SingleMachineScreen(
                     machineType = machineType,
-                    onTaskClick = { taskType ->
-                        navController.navigateToSingleTask(taskType)
+                    onTaskClick = { taskType -> navController.navigateToSingleTask(taskType) },
+                    onTaskCreationClick = { id, foreignId ->
+                        navController.navigateToTaskCreation(id, foreignId)
                     }
                 )
             }
@@ -106,27 +111,45 @@ fun MaintainerNavGraph(
         }
 
         composable(
-            route = Creation.routeWithArgs,
-            arguments = Creation.arguments
+            route = SectionCreation.routeWithArgs,
+            arguments = SectionCreation.arguments
         ) { navBackStackEntry ->
-            val id = navBackStackEntry.arguments?.getInt(Creation.creationIdTypeArg)
-            val creationType = navBackStackEntry.arguments?.getSerializable(
-                Creation.creationTypeArg,
-                CreationType::class.java
+            val id = navBackStackEntry.arguments?.getInt(SectionCreation.sectionIdTypeArg)
+            SectionCreationScreen(
+                id = id,
+                navigateUp = { navController.navigateUp() }
             )
-            creationType?.let {
-                if (id != null) {
-                    CreationScreen(
-                        id = id,
-                        creationType = creationType,
-                        navigateUp = { navController.navigateUp() }
-                    )
-                } else {
-                    CreationScreen(
-                        creationType = creationType,
-                        navigateUp = { navController.navigateUp() }
-                    )
-                }
+        }
+        composable(
+            route = MachineCreation.routeWithArgs,
+            arguments = MachineCreation.arguments
+        ) { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getInt(MachineCreation.machineIdTypeArg)
+            val foreignId =
+                navBackStackEntry.arguments?.getInt(MachineCreation.machineForeignIdTypeArg)
+
+            foreignId?.let { fId ->
+                MachineCreationScreen(
+                    foreignId = fId,
+                    id = id,
+                    navigateUp = { navController.navigateUp() }
+                )
+            }
+        }
+
+        composable(
+            route = TaskCreation.routeWithArgs,
+            arguments = TaskCreation.arguments
+        ) { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getInt(TaskCreation.taskIdTypeArg)
+            val foreignId = navBackStackEntry.arguments?.getInt(TaskCreation.taskForeignIdTypeArg)
+
+            foreignId?.let { fId ->
+                TaskCreationScreen(
+                    foreignId = fId,
+                    id = id,
+                    navigateUp = { navController.navigateUp() }
+                )
             }
         }
     }
@@ -155,6 +178,14 @@ private fun NavHostController.navigateToSingleSection(sectionType: Int) {
     this.navigate("${SingleSection.route}/$sectionType")
 }
 
-private fun NavHostController.navigateToCreation(creationType: CreationType, id: Int?) {
-    this.navigate("${Creation.route}?creation_id_type=$id&creationTypeArg=$creationType")
+private fun NavHostController.navigateToSectionCreation(id: Int?) {
+    this.navigate("${SectionCreation.route}?$id")
+}
+
+private fun NavHostController.navigateToMachineCreation(id: Int?, foreignId: Int) {
+    this.navigate("${MachineCreation.route}?machine_id=$id&machine_foreign_id=$foreignId")
+}
+
+private fun NavHostController.navigateToTaskCreation(id: Int?, foreignId: Int) {
+    this.navigate("${TaskCreation.route}?task_id=$id&task_foreign_id=$foreignId")
 }

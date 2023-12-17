@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import de.chrisbecker386.maintainer.data.model.ApproximateTime
+import de.chrisbecker386.maintainer.ui.component.RoundedButton
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
 import de.chrisbecker386.maintainer.ui.component.TaskContent
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
@@ -41,18 +42,24 @@ import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 @Composable
 fun SingleMachineScreen(
     machineType: Int,
-    onTaskClick: (Int) -> Unit = {}
+    onTaskClick: (Int) -> Unit = {},
+    onTaskCreationClick: (Int?, Int) -> Unit = { _, _ -> }
 ) {
     val viewModel = hiltViewModel<SingleMachineViewModel>()
     val state by viewModel.state.collectAsState()
-    SingleMachine(state = state, onTaskClick = onTaskClick)
+    SingleMachine(
+        state = state,
+        onTaskClick = onTaskClick,
+        onTaskCreationClick = onTaskCreationClick
+    )
 }
 
 @Composable
 private fun SingleMachine(
     state: SingleMachineState,
     onEvent: (SingleMachineEvent) -> Unit = {},
-    onTaskClick: (Int) -> Unit = {}
+    onTaskClick: (Int) -> Unit = {},
+    onTaskCreationClick: (Int?, Int) -> Unit = { _, _ -> }
 ) {
     LazyColumn(Modifier.fillMaxWidth()) {
         item {
@@ -60,6 +67,14 @@ private fun SingleMachine(
                 modifier = Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
                 title = state.machine.title,
                 state = state.shortStatus
+            )
+        }
+        item {
+            RoundedButton(
+                title = "add own",
+                onClick = {
+                    onTaskCreationClick(null, state.machine.id)
+                }
             )
         }
         item {

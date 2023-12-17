@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 01/12/2023, 16:25
+ * Created by Christopher Becker on 16/12/2023, 15:23
  * Copyright (c) 2023. All rights reserved.
- * Last modified 01/12/2023, 16:25
+ * Last modified 16/12/2023, 15:23
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,9 @@
  *
  */
 
-package de.chrisbecker386.maintainer.ui.tab.home.creation
+package de.chrisbecker386.maintainer.ui.tab.home.creation.task
 
-import androidx.annotation.DrawableRes
-import de.chrisbecker386.maintainer.data.entity.Section
-
-interface CreationEvent {
-    data class TitleChange(val title: String?) : CreationEvent
-    data class ImageChange(@DrawableRes val imageRes: Int?) : CreationEvent
-    data class SectionConfirm(val section: Section) : CreationEvent
+interface TaskCreationEvent {
+    data class TitleChange(val title: String) : TaskCreationEvent
+    data class SubtitleChange(val subtitle: String) : TaskCreationEvent
 }

@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 01/12/2023, 13:43
+ * Created by Christopher Becker on 16/12/2023, 15:24
  * Copyright (c) 2023. All rights reserved.
- * Last modified 01/12/2023, 13:43
+ * Last modified 16/12/2023, 15:24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,16 @@
  *
  */
 
-package de.chrisbecker386.maintainer.ui.tab.home.creation
+package de.chrisbecker386.maintainer.ui.tab.home.creation.section
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import de.chrisbecker386.maintainer.data.entity.Section
 import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
-import de.chrisbecker386.maintainer.navigation.CreationType
+import de.chrisbecker386.maintainer.ui.tab.home.creation.section.SectionCreationEvent.ImageChange
+import de.chrisbecker386.maintainer.ui.tab.home.creation.section.SectionCreationEvent.SectionConfirm
+import de.chrisbecker386.maintainer.ui.tab.home.creation.section.SectionCreationEvent.TitleChange
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,46 +42,41 @@ class CreationScreenViewModel @Inject constructor(
     private val repository: MaintainerRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val _creationType = checkNotNull(savedStateHandle.get<CreationType>("creation_type"))
-    private val _id = savedStateHandle.get<Int>("id_type")
-    private val _state = MutableStateFlow(CreationState(id = _id, type = _creationType))
+
+    private val _id = savedStateHandle.get<Int>("id")
+
+    private val _state = MutableStateFlow(SectionCreationState(id = _id))
     private val _title = MutableStateFlow<String?>(null)
     private val _imageRes = MutableStateFlow<Int?>(null)
-    private val _isSectionDone =
-        combine(_title, _imageRes) { title, imageRes ->
-            _creationType == CreationType.Section &&
-                !title.isNullOrEmpty() &&
-                imageRes != null
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
 
-    private val _isCreationDone = combine(_isSectionDone) { section ->
-        _isSectionDone.value
+    private val _isCreationComplete = combine(_title, _imageRes) { title, imageRes ->
+        (title?.trim() != null) && (imageRes != null)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
 
     val state = combine(
         _state,
         _title,
         _imageRes,
-        _isCreationDone
-    ) { state, title, imageRes, isCreationDone ->
-        state.copy(
-            title = title,
-            imageRes = imageRes,
-            isCreationDone = isCreationDone
-        )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), CreationState())
+        _isCreationComplete
+    ) { state, title, imageRes, isCreationComplete ->
+        state.copy(title = title, imageRes = imageRes, isCreationComplete = isCreationComplete)
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        SectionCreationState()
+    )
 
-    fun onEvent(event: CreationEvent) {
+    fun onEvent(event: SectionCreationEvent) {
         when (event) {
-            is CreationEvent.TitleChange -> {
+            is TitleChange -> {
                 _title.value = event.title
             }
 
-            is CreationEvent.ImageChange -> {
+            is ImageChange -> {
                 _imageRes.value = event.imageRes
             }
 
-            is CreationEvent.SectionConfirm -> {
+            is SectionConfirm -> {
                 CoroutineScope(Dispatchers.IO).launch {
                     repository.addSection(event.section)
                 }
