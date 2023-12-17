@@ -78,22 +78,57 @@ object SingleTask : Screen {
     val arguments = listOf(navArgument(taskTypeArg) { type = NavType.IntType })
 }
 
-object Creation : Screen {
-    override val route: String = "creation_screen"
-    override val title: String = "Creation"
+object SectionCreation : Screen {
+    override val route: String = "section_creation_screen"
+    override val title: String = "SectionCreation"
     override val icon = null
-    const val creationIdTypeArg = "creation_id_type"
-    const val creationTypeArg = "creation_type"
+    const val sectionIdTypeArg = "section_id"
     val routeWithArgs =
-        "$route?creation_id_type={$creationIdTypeArg}&creationTypeArg={$creationTypeArg}"
+        "$route?id={$sectionIdTypeArg}"
     val arguments =
         listOf(
-            navArgument(creationIdTypeArg) {
+            navArgument(sectionIdTypeArg) {
                 defaultValue = 0
                 type = NavType.IntType
-            },
-            navArgument(creationTypeArg) { type = NavType.EnumType(CreationType::class.java) }
+            }
         )
+}
+
+object MachineCreation : Screen {
+    override val route: String = "machine_creation_screen"
+    override val title: String = "MachineCreation"
+    override val icon = null
+    const val machineIdTypeArg = "machine_id"
+    const val machineForeignIdTypeArg = "machine_foreign_id"
+    val routeWithArgs =
+        "$route?machine_id={$machineIdTypeArg}&machine_foreign_id={$machineForeignIdTypeArg}"
+    val arguments = listOf(
+        navArgument(machineIdTypeArg) {
+            defaultValue = 0
+            type = NavType.IntType
+        },
+        navArgument(machineForeignIdTypeArg) {
+            type = NavType.IntType
+        }
+    )
+}
+
+object TaskCreation : Screen {
+    override val route: String = "task_creation_screen"
+    override val title: String = "TaskCreation"
+    override val icon: ImageVector? = null
+    const val taskIdTypeArg = "task_id"
+    const val taskForeignIdTypeArg = "task_foreign_id"
+    val routeWithArgs = "$route?task_id={$taskIdTypeArg}&task_foreign_id={$taskForeignIdTypeArg}"
+    val arguments = listOf(
+        navArgument(taskIdTypeArg) {
+            defaultValue = 0
+            type = NavType.IntType
+        },
+        navArgument(taskForeignIdTypeArg) {
+            type = NavType.IntType
+        }
+    )
 }
 
 val APP_TABS = listOf(Home, Info, Settings)
