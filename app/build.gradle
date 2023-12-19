@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.compose.material3:material3:1.1.2'
     def composeBom = platform("$compose_bom")
     implementation composeBom
     androidTestImplementation composeBom

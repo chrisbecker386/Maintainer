@@ -284,14 +284,15 @@ fun MultilineTextInputField(
     modifier: Modifier = Modifier,
     label: String? = null,
     text: String = "",
-    maxChars: Int,
+    maxChars: Int? = 30,
     onValueChange: (String) -> Unit = {},
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default
 ) {
     val hasFocus = remember { mutableStateOf(false) }
     val textValue = remember { mutableStateOf(text) }
-    val textCounter = remember { mutableStateOf("${textValue.value.length}/$maxChars") }
+    val textCounter =
+        remember { mutableStateOf("${textValue.value.length}/$maxChars") }
 
     val counterText: (Int) -> Unit = { textCounter.value = "$it/$maxChars " }
 
@@ -307,10 +308,7 @@ fun MultilineTextInputField(
                 modifier = Modifier.padding(bottom = DIM_XXXS),
                 text = label,
                 color = colors.onBackground,
-                fontSize = typography.h6.fontSize,
-                lineHeight = typography.h6.lineHeight,
-                fontFamily = typography.h6.fontFamily,
-                fontWeight = typography.h6.fontWeight
+                style = typography.h6
             )
         }
         Row(
@@ -350,21 +348,22 @@ fun MultilineTextInputField(
                 keyboardActions = keyboardActions
             )
         }
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = DIM_XXXS),
-            contentAlignment = Alignment.TopEnd
-        ) {
-            Text(
-                text = textCounter.value,
-                color = if (textValue.value.length > maxChars) colors.onError else colors.onBackground,
-                fontSize = typography.subtitle2.fontSize,
-                lineHeight = typography.subtitle2.lineHeight,
-                fontFamily = typography.subtitle2.fontFamily,
-                fontWeight = typography.subtitle2.fontWeight
-            )
+        maxChars?.let {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = DIM_XXXS),
+                contentAlignment = Alignment.TopEnd
+            ) {
+                Text(
+                    text = textCounter.value,
+                    color = if (textValue.value.length > it) colors.onError else colors.onBackground,
+                    fontSize = typography.subtitle2.fontSize,
+                    lineHeight = typography.subtitle2.lineHeight,
+                    fontFamily = typography.subtitle2.fontFamily,
+                    fontWeight = typography.subtitle2.fontWeight
+                )
+            }
         }
     }
 }

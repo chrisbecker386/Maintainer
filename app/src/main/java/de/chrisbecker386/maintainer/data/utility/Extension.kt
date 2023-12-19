@@ -21,6 +21,7 @@ package de.chrisbecker386.maintainer.data.utility
 
 import android.icu.util.Calendar
 import de.chrisbecker386.maintainer.data.model.RepeatFrequency
+import java.lang.Math.abs
 
 fun Long.toFormatDateString(format: SimpleDateType): String {
     val cal = Calendar.getInstance()
@@ -38,4 +39,8 @@ fun Long.toRepeatFrequency(): RepeatFrequency {
         in (604800001L..2628000000L) -> RepeatFrequency.MINUTELY
         else -> RepeatFrequency.YEARLY
     }
+}
+
+fun Float.sameValueAs(other: Float): Boolean {
+    return (abs(this - other) < 0.004)
 }
