@@ -132,7 +132,6 @@ fun SingleLineTextInputField(
                         onValueChange(inputText)
                     },
                     modifier = Modifier
-                        .background(colors.background)
                         .constrainAs(textRef) {
                             top.linkTo(parent.top)
                             start.linkTo(parent.start)
@@ -320,8 +319,6 @@ fun MultilineTextInputField(
                     brush = if (hasFocus.value) SolidColor(colors.primary) else SolidColor(colors.onError),
                     shape = RectangleShape
                 )
-                .background(colors.background)
-
         ) {
             BasicTextField(
                 modifier = Modifier
@@ -420,7 +417,7 @@ fun PreviewTextFields() {
         Column(
             Modifier
                 .fillMaxSize(1f)
-                .background(colors.background)
+                .background(colors.onBackground)
         ) {
             Text(text = "Single line TF", color = colors.onBackground)
             SingleLineTextInputField(

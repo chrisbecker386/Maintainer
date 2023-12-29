@@ -69,7 +69,7 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
-fun StepWithDetails(modifier: Modifier = Modifier, step: Step, task: Task) {
+fun StepWithDetails(modifier: Modifier = Modifier, step: Step, task: Task? = null) {
     Row(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -93,7 +93,7 @@ fun StepWithDetails(modifier: Modifier = Modifier, step: Step, task: Task) {
                                 ),
                             Alignment.Center
                         ) {
-                            if (step.isValid(task.getRepeatCycle())) {
+                            if (task != null && step.isValid(task.getRepeatCycle())) {
                                 Image(
                                     imageVector = Icons.Default.Check,
                                     contentDescription = "Check",

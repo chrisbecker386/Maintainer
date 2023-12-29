@@ -21,6 +21,7 @@ package de.chrisbecker386.maintainer.ui.theme
 
 import androidx.compose.ui.unit.dp
 import de.chrisbecker386.maintainer.R
+import de.chrisbecker386.maintainer.data.entity.Step
 
 // dimensions
 /** 0.dp*/
@@ -94,9 +95,14 @@ const val ACCORDION_ANIMATION_DURATION = 200
 /** 0.6f */
 const val TAB_INACTIVE_OPACITY = 0.6f
 
+/** buttons percentage of RoundCornerShape  */
+const val BUTTON_CORNER_SHAPE = 25
+
 const val MAINTAINER_APP: String = "MAINTAINER_APP"
 const val IS_APP_CONFIGURED_TAG = "isAppConfigured"
 const val IS_APP_CONFIGURED_DEFAULT = false
+
+val DEFAULT_STEP = Step(order = 0, title = "", taskId = 0)
 
 val ICON_LIST = listOf(
     R.drawable.bathtub_48px,

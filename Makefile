@@ -5,19 +5,16 @@ check:
 	./gradlew ktlintCheck
 
 testAll:
-    ./gradlew test
+	./gradlew test
 
 testRelease:
-    ./gradlew testRelease
+	./gradlew testRelease
 
 testDebug:
-    ./gradlew testDebug
+	./gradlew testDebug
 
 testReleaseUnit:
-    ./gradlew :app:testReleaseUnitTest
+	./gradlew :app:testReleaseUnitTest
 
 testDebugUnit:
-    ./gradlew :app:testDebugUnitTest --info
-
-
-
+	./gradlew :app:testDebugUnitTest --info

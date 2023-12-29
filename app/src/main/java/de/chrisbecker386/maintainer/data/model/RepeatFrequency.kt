@@ -22,14 +22,19 @@ package de.chrisbecker386.maintainer.data.model
 enum class RepeatFrequency(val text: String, private val shortText: String, val value: Long) {
     SECONDLY("second", "sec", 1000L),
     MINUTELY("minute", "min", 60000L),
-    HOURLY("hour", "h", 3600000L),
-    DAILY("day", "d", 86400000L),
+    HOURLY("hour", "hr", 3600000L),
+    DAILY("day", "day", 86400000L),
     WEEKLY("week", "wk", 604800000L),
     MONTHLY("month", "mo", 2628000000L),
-    YEARLY("year", "y", 31540000000L);
+    YEARLY("year", "yr", 31540000000L);
 
+    override fun toString(): String = this.shortText
     fun inMillis(): Long {
         return this.value
     }
-    override fun toString(): String = this.shortText
+
+    companion object {
+        val entries = RepeatFrequency.values().toList()
+        fun getIndex(entry: RepeatFrequency): Int = RepeatFrequency.values().indexOf(entry)
+    }
 }

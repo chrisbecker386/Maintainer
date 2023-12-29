@@ -32,6 +32,7 @@ import androidx.compose.material.Slider
 import androidx.compose.material.SliderColors
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,8 +51,8 @@ fun StepsSlider(
     modifier: Modifier = Modifier,
     /*items must contain at least 2 items */
     items: List<Any>,
-    state: StepSliderState,
-    onEvent: (StepSliderEvent) -> Unit = {},
+    index: Int = 0,
+    onValueChange: (Any) -> Unit = {},
     stepSliderColors: StepSliderColors = StepSliderColors(
         thumbColor = colors.primary,
         disabledThumbColor = colors.onError,
@@ -65,7 +66,9 @@ fun StepsSlider(
         disabledInactiveTickColor = Color.Red
     )
 ) {
-    if (items.size < 2) throw Exception("list must have at least 2 items")
+    LaunchedEffect(items) {
+        if (items.size < 2) throw Exception("list must have at least 2 items")
+    }
 
     fun indexToPosition(index: Int): Float =
         when (index) {
@@ -80,26 +83,20 @@ fun StepsSlider(
     }
 
     fun toDoubleList(items: List<Any>): List<Double> {
-        val mList = mutableListOf<Double>()
-        mList.add(0.0)
+        val mList = mutableListOf(0.0)
         val innerTicks = items.size - 1
         for (i in 1..innerTicks) {
             mList.add((100.0 / innerTicks.toDouble() * i.toDouble()))
         }
-        Log.d("floatList", mList.toString())
         return mList.toList()
     }
 
-    var currentIndex by remember { mutableStateOf(state.index) }
+    var currentIndex by remember { mutableStateOf(index) }
     var stepAsFloat by remember { mutableStateOf(indexToPosition(currentIndex)) }
-
-    val stepAsDoubles = toDoubleList(items)
+    val stepAsDoubles by remember { mutableStateOf(toDoubleList(items)) }
 
     Column(
-        Modifier
-//            .background(colors.background)
-            .fillMaxWidth()
-            .padding(DIM_S)
+        modifier = modifier.fillMaxWidth()
     ) {
         Slider(
             modifier = Modifier.fillMaxWidth(),
@@ -107,9 +104,9 @@ fun StepsSlider(
             onValueChange = { value ->
                 stepAsFloat = value
                 if (stepAsDoubles.firstOrNull { value.sameValueAs(it.toFloat()) } != null) {
-                    val index = positionToIndex(value, stepAsDoubles)
-                    currentIndex = index
-                    onEvent(StepSliderEvent.IndexChange(index, items[index]))
+                    val localIndex = positionToIndex(value, stepAsDoubles)
+                    currentIndex = localIndex
+                    onValueChange(items[localIndex])
                 }
             },
             valueRange = 0f..100f,
@@ -202,20 +199,10 @@ class StepSliderColors(
     }
 }
 
-data class StepSliderState(
-    val index: Int = 0
-)
-
-interface StepSliderEvent {
-    data class StepChange(val step: Float) : StepSliderEvent
-    data class IndexChange(val index: Int, val item: Any) : StepSliderEvent
-}
-
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewStepsSlider() {
-    val list = listOf("i1", "i2", "i3", "i4", "i5", "i6")
-    val list2 = listOf(
+    val testList = listOf(
         Pair(1, "sec"),
         Pair(2, "min"),
         Pair(3, "h"),
@@ -223,16 +210,8 @@ fun PreviewStepsSlider() {
         Pair(5, "week")
     )
 
-    fun onEvent(event: StepSliderEvent) {
-        when (event) {
-            is StepSliderEvent.StepChange -> {
-                Log.d("previewSlider", event.step.toString())
-            }
-
-            is StepSliderEvent.IndexChange -> {
-                Log.d("previewSlider2", "${event.index} ${event.item}")
-            }
-        }
+    fun onEvent(item: Any) {
+        Log.d("StepSlider onEventItem", "$item")
     }
 
     MaintainerTheme {
@@ -241,9 +220,9 @@ fun PreviewStepsSlider() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(DIM_S),
-                state = StepSliderState(index = 2),
-                onEvent = ::onEvent,
-                items = list2
+                index = 2,
+                onValueChange = ::onEvent,
+                items = testList
             )
         }
     }

@@ -52,11 +52,11 @@ data class Step(
     @DrawableRes
     val imageRes: Int? = null,
     @ColumnInfo(name = "step_description")
-    val description: String?,
+    val description: String? = null,
     @ColumnInfo(name = "step_completed")
     val completedDate: Long? = null,
     @ColumnInfo(name = "step_fk_task_id")
-    val taskId: Int
+    val taskId: Int = 0
 ) {
     fun isValid(repeatCycle: RepeatCycle): Boolean {
         return repeatCycle.isValid(completedDate)
