@@ -59,4 +59,20 @@ The goal of this app is to create an app, that helps to maintain machines.
     make format
 ```
 
-   
+### run all tests
+
+```
+    make testAll
+```
+
+### run unit test debug
+
+```
+    make testDebugUnit
+```
+
+### run unit test relase
+
+```
+    make testReleaseUnit
+```

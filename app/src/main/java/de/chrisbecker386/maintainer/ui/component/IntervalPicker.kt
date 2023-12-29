@@ -23,42 +23,53 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.data.model.RepeatFrequency
-import de.chrisbecker386.maintainer.ui.component.basic.StepSliderEvent
-import de.chrisbecker386.maintainer.ui.component.basic.StepSliderState
+import de.chrisbecker386.maintainer.data.model.RepeatFrequency.Companion.entries
 import de.chrisbecker386.maintainer.ui.component.basic.StepsSlider
-import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
 fun IntervalPicker(
     modifier: Modifier = Modifier,
-    state: StepSliderState,
-    onEvent: (StepSliderEvent) -> Unit = {}
+    withHeader: Boolean = false,
+    interval: RepeatFrequency = RepeatFrequency.WEEKLY,
+    onEvent: (RepeatFrequency) -> Unit = {}
 ) {
+    var currentRepeatFrequency by remember {
+        mutableStateOf(interval)
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(DIM_S)
     ) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = RepeatFrequency.values()[state.index].name,
-            style = typography.h2,
-            color = colors.onBackground
-        )
+        if (withHeader) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = currentRepeatFrequency.text,
+                style = typography.h2,
+                color = colors.onBackground
+            )
+        }
         StepsSlider(
             modifier = Modifier.fillMaxWidth(),
-            items = RepeatFrequency.values().toList(),
-            state = state,
-            onEvent = onEvent
+            items = entries,
+            index = RepeatFrequency.getIndex(interval),
+            onValueChange = {
+                it as RepeatFrequency
+                currentRepeatFrequency = it
+                onEvent(it)
+            }
         )
     }
 }
@@ -68,7 +79,7 @@ fun IntervalPicker(
 fun PreviewIntervalPicker() {
     MaintainerTheme {
         IntervalPicker(
-            state = StepSliderState(3),
+            interval = RepeatFrequency.WEEKLY,
             modifier = Modifier.background(color = colors.background)
         )
     }

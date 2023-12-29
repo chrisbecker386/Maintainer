@@ -48,6 +48,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.R
@@ -94,7 +95,13 @@ fun ImagePickerWithPreview(
                 horizontalAlignment = Alignment.Start
 
             ) {
-                Text(text = title, color = colors.onBackground, style = typography.h4)
+                if (title.isNotEmpty()) {
+                    Text(
+                        text = title,
+                        color = colors.onBackground,
+                        style = typography.h4
+                    )
+                }
                 Spacer(modifier = Modifier.padding(DIM_XXXS))
                 Row(
                     Modifier.fillMaxWidth(),
@@ -114,7 +121,8 @@ fun ImagePickerWithPreview(
                         Image(
                             modifier = Modifier.size(DIM_BIG_TWO),
                             painter = painterResource(id = selectedImage),
-                            contentDescription = ""
+                            contentDescription = "",
+                            colorFilter = ColorFilter.tint(colors.onBackground)
                         )
                     }
                 }
