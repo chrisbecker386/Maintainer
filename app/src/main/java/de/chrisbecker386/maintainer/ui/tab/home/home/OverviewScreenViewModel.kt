@@ -28,6 +28,7 @@ import de.chrisbecker386.maintainer.data.model.dummy.devSections
 import de.chrisbecker386.maintainer.data.model.dummy.devSteps
 import de.chrisbecker386.maintainer.data.model.dummy.devTasks
 import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
+import de.chrisbecker386.maintainer.provider.interfaces.SharedPreferencesProvider
 import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,13 +45,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OverviewScreenViewModel @Inject constructor(
+    private val sharePrefs: SharedPreferencesProvider,
     private val repository: MaintainerRepository
 ) :
     ViewModel() {
 
-    // TODO only for dev! has to removed as soon as item creation is added!
     init {
-        setDBEntries()
+        if (!sharePrefs.isAppConfigured()) {
+            setDBEntries()
+            sharePrefs.writeIsAppConfigured()
+        }
     }
 
     private fun setDBEntries() {
@@ -61,7 +65,6 @@ class OverviewScreenViewModel @Inject constructor(
             withContext(Dispatchers.Default) { repository.addSteps(devSteps) }
         }
     }
-    // TODO to here
 
     private fun getTime() = Calendar.getInstance().timeInMillis
 

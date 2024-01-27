@@ -19,8 +19,6 @@
 
 package de.chrisbecker386.maintainer.navigation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -37,7 +35,6 @@ import de.chrisbecker386.maintainer.ui.tab.home.task.SingleTaskScreen
 import de.chrisbecker386.maintainer.ui.tab.info.InfoScreen
 import de.chrisbecker386.maintainer.ui.tab.settings.SettingsScreen
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun MaintainerNavGraph(
     navController: NavHostController,
