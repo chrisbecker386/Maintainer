@@ -39,7 +39,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object MaintainerModule {
+object LocalDbModule {
 
     @Provides
     fun provideSectionDao(database: MaintainerDb): SectionDao {

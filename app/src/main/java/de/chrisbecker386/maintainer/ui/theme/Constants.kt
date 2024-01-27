@@ -94,6 +94,10 @@ const val ACCORDION_ANIMATION_DURATION = 200
 /** 0.6f */
 const val TAB_INACTIVE_OPACITY = 0.6f
 
+const val MAINTAINER_APP: String = "MAINTAINER_APP"
+const val IS_APP_CONFIGURED_TAG = "isAppConfigured"
+const val IS_APP_CONFIGURED_DEFAULT = false
+
 val ICON_LIST = listOf(
     R.drawable.bathtub_48px,
     R.drawable.directions_car_48px,

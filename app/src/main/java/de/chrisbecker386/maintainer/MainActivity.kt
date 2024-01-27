@@ -43,6 +43,7 @@ import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -63,8 +64,6 @@ class MainActivity : ComponentActivity() {
                 topBar = {
                     MaintainerAppBar(
                         title = currentScreen.title,
-//                        showBackButton = currentScreen == Screen.Home,
-//                        showContextMenu = currentScreen == Screen.Settings,
                         modifier = Modifier.height(DIM_XXL)
                     )
                 },
