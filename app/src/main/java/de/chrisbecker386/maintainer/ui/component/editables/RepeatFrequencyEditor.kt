@@ -55,37 +55,54 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 /**
  * Composable for editing repeat frequency settings.
  *
  * @param modifier Modifier for styling and layout adjustments.
- * @param startDate Initial start date for the repetition.
- * @param startTime Initial start time for the repetition.
- * @param repeatFrequency Initial repeat frequency in milliseconds.
- * @param onDateChange Lambda invoked when the start date changes.
- * @param onTimeChange Lambda invoked when the start time changes.
- * @param onRepeatFrequencyChange Lambda invoked when the repeat frequency changes.
+ * @param startDateTime Initial epoch seconds for the date and time.
+ * @param repeatFrequencyAndTact Initial repeat frequency in milliseconds.
+ * @param onDateTimeChange Lambda invoked when the date and time change.
+ * @param onRepeatFrequencyAndTactChange Lambda invoked when the repeat frequency changes.
  * @param content Optional composable lambda for additional content.
  */
 @Composable
 fun RepeatFrequencyEditor(
     modifier: Modifier = Modifier,
-    startDate: LocalDate = LocalDate.now(),
-    startTime: LocalTime = LocalTime.now(),
-    repeatFrequency: Long? = null,
-    onDateChange: (LocalDate) -> Unit = {},
-    onTimeChange: (LocalTime) -> Unit = {},
-    onRepeatFrequencyChange: (Long) -> Unit = {},
+    startDateTime: Long = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond(),
+    repeatFrequencyAndTact: Pair<Long?, Int> = Pair(null, 1),
+    onDateTimeChange: (Long) -> Unit = {},
+    onRepeatFrequencyAndTactChange: (Pair<Long, Int>) -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
-    var dateState: LocalDate by rememberSaveable { mutableStateOf(startDate) }
-    var timeState: LocalTime by rememberSaveable { mutableStateOf(startTime) }
+    val zoneOffSet = ZoneId.systemDefault().rules.getOffset(LocalDateTime.now())
+
+    var dateState: LocalDate by rememberSaveable {
+        mutableStateOf(
+            LocalDateTime.ofEpochSecond(
+                startDateTime,
+                0,
+                zoneOffSet
+            ).toLocalDate()
+        )
+    }
+
+    var timeState: LocalTime by rememberSaveable {
+        mutableStateOf(
+            LocalDateTime.ofEpochSecond(
+                startDateTime,
+                0,
+                zoneOffSet
+            ).toLocalTime()
+        )
+    }
 
     var localRepeatFrequency by rememberSaveable {
-        mutableStateOf(repeatFrequency?.toRepeatFrequency() ?: RepeatFrequency.WEEKLY)
+        mutableStateOf(repeatFrequencyAndTact.first?.toRepeatFrequency() ?: RepeatFrequency.WEEKLY)
     }
     var repeatFrequencyCount by rememberSaveable { mutableIntStateOf(1) }
 
@@ -101,6 +118,9 @@ fun RepeatFrequencyEditor(
         val dateFormat = DateTimeFormatter.ofPattern("EEE, dd. MMM")
         return localDate.format(dateFormat)
     }
+
+    fun getAsEpochSeconds(localDate: LocalDate, localTime: LocalTime): Long =
+        LocalDateTime.of(localDate, localTime).atZone(ZoneId.systemDefault()).toEpochSecond()
 
     Card(
         modifier = modifier
@@ -187,8 +207,14 @@ fun RepeatFrequencyEditor(
                 NumberPickerVertical(
                     value = repeatFrequencyCount,
                     onValueChange = {
-                        repeatFrequencyCount += it
-                        onRepeatFrequencyChange(localRepeatFrequency.value * it)
+                        val newCount = repeatFrequencyCount + it
+                        repeatFrequencyCount = newCount
+                        onRepeatFrequencyAndTactChange(
+                            Pair(
+                                localRepeatFrequency.value,
+                                newCount
+                            )
+                        )
                     }
                 )
             }
@@ -197,7 +223,7 @@ fun RepeatFrequencyEditor(
                 interval = localRepeatFrequency,
                 onValueChange = {
                     localRepeatFrequency = it
-                    onRepeatFrequencyChange(it.value)
+                    onRepeatFrequencyAndTactChange(Pair(it.value, 1))
                     repeatFrequencyCount = 1
                 }
             )
@@ -233,7 +259,7 @@ fun RepeatFrequencyEditor(
                     localDate = dateState,
                     onConfirm = {
                         dateState = it
-                        onDateChange(it)
+                        onDateTimeChange(getAsEpochSeconds(it, timeState))
                         showDatePicker = false
                     },
                     onDismissRequest = { showDatePicker = false }
@@ -244,7 +270,7 @@ fun RepeatFrequencyEditor(
                     localTime = timeState,
                     onConfirm = {
                         timeState = it
-                        onTimeChange(it)
+                        onDateTimeChange(getAsEpochSeconds(dateState, it))
                         showTimePicker = false
                     },
                     onDismissRequest = { showTimePicker = false }

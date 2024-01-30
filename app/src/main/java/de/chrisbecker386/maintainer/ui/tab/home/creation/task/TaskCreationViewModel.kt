@@ -24,8 +24,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
-import de.chrisbecker386.maintainer.ui.tab.home.creation.task.TaskCreationEvent.SubtitleChange
-import de.chrisbecker386.maintainer.ui.tab.home.creation.task.TaskCreationEvent.TitleChange
+import de.chrisbecker386.maintainer.ui.tab.home.creation.task.TaskCreationEvent.TitlesChange
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -43,27 +42,33 @@ class TaskCreationViewModel @Inject constructor(
     private val _id = savedStateHandle.get<Int?>("task_id")
     private val _foreignId = checkNotNull(savedStateHandle.get<Int>("task_foreign_id"))
 
-    private val _title = MutableStateFlow<String?>(null)
-    private val _subtitle = MutableStateFlow<String?>(null)
+    // title and subtitle of task
+    private val _titles = MutableStateFlow<Pair<String?, String?>>(Pair(null, null))
+
+    // imageRes of the task
     private val _imageRes = MutableStateFlow<Int?>(null)
+
+    // repeat and multiple times Frequency
+    private val _repeatFrequencyAndTact = MutableStateFlow<Pair<Long?, Int>>(Pair(null, 1))
+
     private val _state = MutableStateFlow(TaskCreationState(id = _id, foreignId = _foreignId))
 
     private val _isCreationComplete =
-        combine(_title, _imageRes) { title, imageRes ->
-            (title?.trim() != null) && (imageRes != null)
+        combine(_titles, _imageRes) { titles, imageRes ->
+            (!titles.first?.trim().isNullOrBlank()) && (imageRes != null)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
 
     val state = combine(
         _state,
-        _title,
-        _subtitle,
+        _titles,
         _imageRes,
+        _repeatFrequencyAndTact,
         _isCreationComplete
-    ) { state, title, subtitle, imageRes, isCreationComplete ->
+    ) { state, titles, imageRes, repeatFrequencyAndTact, isCreationComplete ->
         state.copy(
-            title = title,
-            subtitle = subtitle,
+            titles = titles,
             imageRes = imageRes,
+            repeatFrequencyAndTact = repeatFrequencyAndTact,
             isCreationComplete = isCreationComplete
         )
     }
@@ -75,8 +80,9 @@ class TaskCreationViewModel @Inject constructor(
 
     fun onEvent(event: TaskCreationEvent) {
         when (event) {
-            is TitleChange -> { _subtitle.value = event.title }
-            is SubtitleChange -> { _subtitle.value = event.subtitle }
+            is TitlesChange -> {
+                _titles.value = event.titleAndSubTitle
+            }
         }
     }
 }

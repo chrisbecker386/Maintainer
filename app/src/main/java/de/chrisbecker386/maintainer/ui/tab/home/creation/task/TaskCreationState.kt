@@ -19,20 +19,16 @@
 
 package de.chrisbecker386.maintainer.ui.tab.home.creation.task
 
-import de.chrisbecker386.maintainer.data.entity.Precondition
 import de.chrisbecker386.maintainer.data.entity.Step
 
 data class TaskCreationState(
     val id: Int? = null,
     val foreignId: Int? = null,
-    val title: String? = null,
-    val subtitle: String? = null,
+    val titles: Pair<String?, String?> = Pair(null, null),
     val imageRes: Int? = null,
-    val duration: Int? = null,
+    val repeatFrequencyAndTact: Pair<Long?, Int> = Pair(null, 1),
+    val startDateTime: Long? = null,
     val steps: List<Step> = emptyList(),
-    val repeatFrequency: Long? = null,
-    val tact: Long? = null,
-    val preconditions: List<Precondition> = emptyList(),
     val isNavigateUp: Boolean = false,
     val isCreationComplete: Boolean = false
 )
