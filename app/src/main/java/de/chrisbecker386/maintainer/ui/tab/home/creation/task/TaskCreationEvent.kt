@@ -20,6 +20,5 @@
 package de.chrisbecker386.maintainer.ui.tab.home.creation.task
 
 interface TaskCreationEvent {
-    data class TitleChange(val title: String) : TaskCreationEvent
-    data class SubtitleChange(val subtitle: String) : TaskCreationEvent
+    data class TitlesChange(val titleAndSubTitle: Pair<String?, String?>) : TaskCreationEvent
 }

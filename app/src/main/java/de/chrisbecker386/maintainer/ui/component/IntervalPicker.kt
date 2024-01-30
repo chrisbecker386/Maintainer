@@ -43,7 +43,7 @@ fun IntervalPicker(
     modifier: Modifier = Modifier,
     withHeader: Boolean = false,
     interval: RepeatFrequency = RepeatFrequency.WEEKLY,
-    onEvent: (RepeatFrequency) -> Unit = {}
+    onValueChange: (RepeatFrequency) -> Unit = {}
 ) {
     var currentRepeatFrequency by remember {
         mutableStateOf(interval)
@@ -68,7 +68,7 @@ fun IntervalPicker(
             onValueChange = {
                 it as RepeatFrequency
                 currentRepeatFrequency = it
-                onEvent(it)
+                onValueChange(it)
             }
         )
     }
