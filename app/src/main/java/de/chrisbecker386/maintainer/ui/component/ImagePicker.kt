@@ -51,7 +51,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.ui.theme.DIM_BIG_TWO
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
@@ -61,17 +60,19 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXL
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
+import de.chrisbecker386.maintainer.ui.theme.ICON_LIST
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
 fun ImagePickerWithPreview(
     modifier: Modifier = Modifier,
     title: String = "no title",
-    images: List<Int>,
+    images: List<Int> = ICON_LIST,
+    imageRes: Int = ICON_LIST.first(),
     onImageChange: (Int) -> Unit = {}
 
 ) {
-    var selectedImage: Int by remember { mutableStateOf(R.drawable.block_48px) }
+    var selectedImage: Int by remember { mutableStateOf(imageRes) }
 
     Column {
         Card(
@@ -193,17 +194,13 @@ fun ImagePickerHorizontal(
 @Preview(showBackground = false, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewImageSelection() {
-    val items = listOf(
-        R.drawable.bathtub_48px,
-        R.drawable.computer_48px,
-        R.drawable.dishwasher_gen_48px,
-        R.drawable.question_mark_48px,
-        R.drawable.ic_launcher_foreground,
-        R.drawable.directions_car_48px
-    )
     MaintainerTheme {
         Column(Modifier.fillMaxSize()) {
-            ImagePickerWithPreview(modifier = Modifier.fillMaxWidth(1f), images = items)
+            ImagePickerWithPreview(
+                modifier = Modifier.fillMaxWidth(),
+                images = ICON_LIST,
+                imageRes = ICON_LIST.first()
+            )
         }
     }
 }

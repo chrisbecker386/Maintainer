@@ -105,9 +105,9 @@ const val IS_APP_CONFIGURED_DEFAULT = false
 val DEFAULT_STEP = Step(order = 0, title = "", taskId = 0)
 
 val ICON_LIST = listOf(
+    R.drawable.question_mark_48px,
     R.drawable.bathtub_48px,
     R.drawable.directions_car_48px,
-    R.drawable.question_mark_48px,
     R.drawable.dishwasher_gen_48px,
     R.drawable.computer_48px,
     R.drawable.coffee_maker_48px,

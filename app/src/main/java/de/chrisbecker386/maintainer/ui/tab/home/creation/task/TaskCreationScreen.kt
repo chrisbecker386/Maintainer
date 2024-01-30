@@ -30,10 +30,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import de.chrisbecker386.maintainer.data.model.RepeatFrequency
 import de.chrisbecker386.maintainer.ui.component.ImagePickerWithPreview
 import de.chrisbecker386.maintainer.ui.component.editables.DualTextInput
 import de.chrisbecker386.maintainer.ui.component.editables.RepeatFrequencyEditor
@@ -41,6 +45,8 @@ import de.chrisbecker386.maintainer.ui.component.editables.StepsEditor
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.ICON_LIST
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Composable
 fun TaskCreationScreen(
@@ -61,6 +67,32 @@ private fun TaskCreation(
 ) {
     if (state.isNavigateUp) navigateUp()
 
+    // TODO if all requirements are fulfilled enable create/update Button
+    // TODO an update add Button
+
+    // TODO [x] place all data from vm here
+    // TODO [x] save all data local in this composable
+    var titles by rememberSaveable { mutableStateOf(state.titles) }
+    var imageRes by rememberSaveable { mutableStateOf(state.imageRes) }
+
+    var repeatFrequencyAndTact by rememberSaveable {
+        mutableStateOf(
+            Pair(
+                state.repeatFrequencyAndTact.first ?: RepeatFrequency.WEEKLY.value,
+                1
+            )
+        )
+    }
+
+    var startDateTime by rememberSaveable {
+        mutableLongStateOf(
+            state.startDateTime ?: LocalDateTime.now().atZone(
+                ZoneId.systemDefault()
+            ).toEpochSecond()
+        )
+    }
+    var steps by rememberSaveable { mutableStateOf(state.steps) }
+
     Column(
         Modifier
             .fillMaxWidth()
@@ -75,23 +107,38 @@ private fun TaskCreation(
             // task declaration
             item {
                 DualTextInput(
-                    fields = Pair("", ""),
+                    fields = titles,
                     labels = Pair("name", "subtitle"),
                     onValueChange = { first, second ->
-                        onEvent(TaskCreationEvent.TitleChange(first ?: ""))
-                        onEvent(TaskCreationEvent.SubtitleChange(second ?: ""))
+                        titles = titles.copy(first, second)
                     }
                 )
             }
             // image picker
-            // TODO add functionality to the viewmodel with the params
-            item { ImagePickerWithPreview(title = "", images = ICON_LIST) }
+            item {
+                ImagePickerWithPreview(
+                    title = "",
+                    images = ICON_LIST,
+                    imageRes = imageRes ?: ICON_LIST.first(),
+                    onImageChange = { imageRes = it }
+                )
+            }
             // repeat frequency
-            // TODO add functionality to the viewmodel with the params
-            item { RepeatFrequencyEditor() }
+            item {
+                RepeatFrequencyEditor(
+                    startDateTime = startDateTime,
+                    repeatFrequencyAndTact = repeatFrequencyAndTact,
+                    onDateTimeChange = { startDateTime = it },
+                    onRepeatFrequencyAndTactChange = { repeatFrequencyAndTact = it }
+                )
+            }
             // steps
-            //TODO add functionality to the viewmodel with the params
-            item { StepsEditor() }
+            item {
+                StepsEditor(
+                    steps = steps,
+                    onValueChange = { steps = it }
+                )
+            }
         }
     }
 }
