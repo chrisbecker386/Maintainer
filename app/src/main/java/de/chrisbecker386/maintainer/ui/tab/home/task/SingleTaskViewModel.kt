@@ -47,9 +47,9 @@ constructor(
 ) :
     ViewModel() {
 
-    private val _task = repository.getTask(checkNotNull(savedStateHandle.get<Int>("task_type")))
+    private val _task = repository.getTaskFlow(checkNotNull(savedStateHandle.get<Int>("task_type")))
 
-    private val _steps = _task.flatMapLatest { task -> repository.getSteps(task.id) }.stateIn(
+    private val _steps = _task.flatMapLatest { task -> repository.getStepsFlow(task.id) }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(),
         emptyList()

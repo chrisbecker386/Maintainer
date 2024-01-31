@@ -19,6 +19,25 @@
 
 package de.chrisbecker386.maintainer.ui.tab.home.creation.task
 
+import de.chrisbecker386.maintainer.data.entity.Step
+import de.chrisbecker386.maintainer.data.entity.Task
+import de.chrisbecker386.maintainer.data.model.RepeatFrequency
+import de.chrisbecker386.maintainer.ui.theme.ICON_LIST
+
 interface TaskCreationEvent {
-    data class TitlesChange(val titleAndSubTitle: Pair<String?, String?>) : TaskCreationEvent
+    object AcceptError : TaskCreationEvent
+    data class UpsertTask(
+        val task: Task = Task(
+            id = 0,
+            title = "",
+            subtitle = null,
+            imageRes = ICON_LIST.first(),
+            duration = 0,
+            repeatFrequency = RepeatFrequency.WEEKLY.value,
+            tact = 1,
+            machineId = 0
+        ),
+        val startDateTime: Long? = null,
+        val steps: List<Step> = emptyList()
+    ) : TaskCreationEvent
 }

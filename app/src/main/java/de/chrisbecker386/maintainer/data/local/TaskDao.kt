@@ -47,7 +47,15 @@ interface TaskDao {
 
     @Transaction
     @Query("SELECT * FROM tasks WHERE task_id = :taskId")
-    fun getTask(taskId: Int): Flow<Task>
+    fun getTaskFlow(taskId: Int): Flow<Task>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE task_id = :taskId")
+    suspend fun getTask(taskId: Int): Task
+
+    @Transaction
+    @Query("SELECT max(task_id) FROM tasks")
+    suspend fun getLastTaskId(): Int
 
     @Transaction
     @Query("SELECT * FROM tasks")

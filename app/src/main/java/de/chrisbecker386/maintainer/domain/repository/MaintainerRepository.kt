@@ -44,9 +44,13 @@ interface MaintainerRepository {
     suspend fun addTasks(tasks: List<Task>)
     suspend fun updateTask(task: Task)
     suspend fun removeTask(task: Task)
-    fun getTask(taskId: Int): Flow<Task>
+    fun getTaskFlow(taskId: Int): Flow<Task>
+    suspend fun getTask(taskId: Int): Task
     fun getAllTasks(): Flow<List<Task>>
-    fun getTasks(machineId: Int): Flow<List<Task>>
+    fun getTasksFlow(machineId: Int): Flow<List<Task>>
+
+    suspend fun getLastTaskId(): Int
+
     fun getTaskWithPreconditionsStepsCompletes(taskId: Int): Flow<TaskWithPreconditionsStepsCompletes>
     fun getAllTaskWithPreconditionsStepsCompletes(): Flow<List<TaskWithPreconditionsStepsCompletes>>
     fun getTasksForMachineWithPreconditionsStepsCompletes(machineId: Int): Flow<List<TaskWithPreconditionsStepsCompletes>>
@@ -58,11 +62,15 @@ interface MaintainerRepository {
     suspend fun addTaskComplete(taskCompletedDate: TaskCompletedDate)
     suspend fun updateTaskCompleted(taskCompletedDate: TaskCompletedDate)
     suspend fun deleteTaskCompleted(taskCompletedDate: TaskCompletedDate)
-    fun getCompletedTask(taskId: Int): Flow<List<TaskCompletedDate>>
+    fun getCompletedTaskFlow(taskId: Int): Flow<List<TaskCompletedDate>>
+    suspend fun getCompletedTask(taskId: Int): List<TaskCompletedDate>
     suspend fun addStep(step: Step)
     suspend fun addSteps(steps: List<Step>)
     suspend fun updateStep(step: Step)
     suspend fun removeSteps(steps: List<Step>)
+    suspend fun removeStepsByTaskId(taskId: Int)
     suspend fun removeAllSteps()
-    fun getSteps(taskId: Int): Flow<List<Step>>
+    fun getStepsFlow(taskId: Int): Flow<List<Step>>
+
+    suspend fun getSteps(taskId: Int): List<Step>
 }

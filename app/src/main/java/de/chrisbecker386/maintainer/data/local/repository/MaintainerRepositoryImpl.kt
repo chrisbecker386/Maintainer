@@ -76,12 +76,15 @@ class MaintainerRepositoryImpl(
 
     override suspend fun removeTask(task: Task) = taskDao.removeTask(task)
 
-    override fun getTask(taskId: Int): Flow<Task> = taskDao.getTask(taskId)
+    override fun getTaskFlow(taskId: Int): Flow<Task> = taskDao.getTaskFlow(taskId)
+    override suspend fun getTask(taskId: Int): Task = taskDao.getTask(taskId)
 
     override fun getAllTasks(): Flow<List<Task>> = taskDao.getAllTasks()
 
-    override fun getTasks(machineId: Int): Flow<List<Task>> =
+    override fun getTasksFlow(machineId: Int): Flow<List<Task>> =
         machineDao.getTasksForMachine(machineId)
+
+    override suspend fun getLastTaskId(): Int = taskDao.getLastTaskId()
 
     override fun getTaskWithPreconditionsStepsCompletes(taskId: Int) =
         taskDao.getTaskWithPreconditionsStepsCompletes(taskId)
@@ -115,7 +118,10 @@ class MaintainerRepositoryImpl(
     override suspend fun deleteTaskCompleted(taskCompletedDate: TaskCompletedDate) =
         taskCompletedDao.deleteTaskCompleted(taskCompletedDate)
 
-    override fun getCompletedTask(taskId: Int): Flow<List<TaskCompletedDate>> =
+    override fun getCompletedTaskFlow(taskId: Int): Flow<List<TaskCompletedDate>> =
+        taskCompletedDao.getCompletedTaskFlow(taskId)
+
+    override suspend fun getCompletedTask(taskId: Int): List<TaskCompletedDate> =
         taskCompletedDao.getCompletedTask(taskId)
 
     override suspend fun addStep(step: Step) = stepDao.addStep(step)
@@ -125,8 +131,10 @@ class MaintainerRepositoryImpl(
     override suspend fun updateStep(step: Step) = stepDao.updateStep(step)
 
     override suspend fun removeSteps(steps: List<Step>) = stepDao.removeSteps(steps)
+    override suspend fun removeStepsByTaskId(taskId: Int) = stepDao.removeStepsByTaskId(taskId)
 
     override suspend fun removeAllSteps() = stepDao.removeAllSteps()
 
-    override fun getSteps(taskId: Int): Flow<List<Step>> = stepDao.getSteps(taskId)
+    override fun getStepsFlow(taskId: Int): Flow<List<Step>> = stepDao.getStepsFlow(taskId)
+    override suspend fun getSteps(taskId: Int): List<Step> = stepDao.getSteps(taskId)
 }
