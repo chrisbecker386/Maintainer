@@ -41,5 +41,9 @@ interface TaskCompletedDao {
 
     @Transaction
     @Query("SELECT * FROM tasks_completed_dates WHERE task_completed_fk_task_id = :taskId")
-    fun getCompletedTask(taskId: Int): Flow<List<TaskCompletedDate>>
+    fun getCompletedTaskFlow(taskId: Int): Flow<List<TaskCompletedDate>>
+
+    @Transaction
+    @Query("SELECT * FROM tasks_completed_dates WHERE task_completed_fk_task_id = :taskId")
+    suspend fun getCompletedTask(taskId: Int): List<TaskCompletedDate>
 }

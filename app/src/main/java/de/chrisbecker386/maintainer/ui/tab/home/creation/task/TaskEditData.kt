@@ -20,15 +20,23 @@
 package de.chrisbecker386.maintainer.ui.tab.home.creation.task
 
 import de.chrisbecker386.maintainer.data.entity.Step
+import de.chrisbecker386.maintainer.data.entity.Task
+import de.chrisbecker386.maintainer.data.model.RepeatFrequency
+import de.chrisbecker386.maintainer.ui.theme.ICON_LIST
 
-data class TaskCreationState(
+data class TaskEditData(
     val id: Int? = null,
     val foreignId: Int? = null,
-    val titles: Pair<String?, String?> = Pair(null, null),
-    val imageRes: Int? = null,
-    val repeatFrequencyAndTact: Pair<Long?, Int> = Pair(null, 1),
+    val task: Task = Task(
+        id = 0,
+        title = "",
+        subtitle = null,
+        imageRes = ICON_LIST.first(),
+        duration = 0,
+        repeatFrequency = RepeatFrequency.WEEKLY.value,
+        tact = 1,
+        machineId = 0
+    ),
     val startDateTime: Long? = null,
-    val steps: List<Step> = emptyList(),
-    val isNavigateUp: Boolean = false,
-    val isCreationComplete: Boolean = false
+    val steps: List<Step> = emptyList()
 )

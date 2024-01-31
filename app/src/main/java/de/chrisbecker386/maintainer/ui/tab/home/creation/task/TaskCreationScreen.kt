@@ -32,13 +32,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import de.chrisbecker386.maintainer.data.model.RepeatFrequency
+import de.chrisbecker386.maintainer.data.model.DataResourceState
 import de.chrisbecker386.maintainer.ui.component.ImagePickerWithPreview
+import de.chrisbecker386.maintainer.ui.component.RoundedButton
+import de.chrisbecker386.maintainer.ui.component.basic.CircularLoadIndicator
+import de.chrisbecker386.maintainer.ui.component.basic.MessageFullScreen
 import de.chrisbecker386.maintainer.ui.component.editables.DualTextInput
 import de.chrisbecker386.maintainer.ui.component.editables.RepeatFrequencyEditor
 import de.chrisbecker386.maintainer.ui.component.editables.StepsEditor
@@ -55,51 +59,56 @@ fun TaskCreationScreen(
     navigateUp: () -> Unit = {}
 ) {
     val viewModel = hiltViewModel<TaskCreationViewModel>()
-    val state by viewModel.state.collectAsState()
-    TaskCreation(state = state, onEvent = viewModel::onEvent, navigateUp = navigateUp)
+    val state by viewModel.taskEditState.collectAsState()
+
+    when (state) {
+        is DataResourceState.Error -> {
+            MessageFullScreen(
+                title = "Error",
+                message = (state as DataResourceState.Error).message,
+                onClick = { viewModel.onEvent(TaskCreationEvent.AcceptError) }
+            )
+        }
+
+        is DataResourceState.Loading -> {
+            CircularLoadIndicator()
+        }
+
+        is DataResourceState.Idle -> TaskCreation(
+            state = (state as DataResourceState.Idle<TaskEditData>).data,
+            onEvent = viewModel::onEvent,
+            navigateUp = navigateUp
+        )
+
+        is DataResourceState.Success -> MessageFullScreen(
+            title = "Success",
+            message = "Task was successful added to db",
+            onClick = { navigateUp() }
+        )
+    }
 }
 
 @Composable
 private fun TaskCreation(
-    state: TaskCreationState,
+    state: TaskEditData,
     onEvent: (TaskCreationEvent) -> Unit = {},
     navigateUp: () -> Unit = {}
 ) {
-    if (state.isNavigateUp) navigateUp()
-
-    // TODO if all requirements are fulfilled enable create/update Button
-    // TODO an update add Button
-
-    // TODO [x] place all data from vm here
-    // TODO [x] save all data local in this composable
-    var titles by rememberSaveable { mutableStateOf(state.titles) }
-    var imageRes by rememberSaveable { mutableStateOf(state.imageRes) }
-
-    var repeatFrequencyAndTact by rememberSaveable {
-        mutableStateOf(
-            Pair(
-                state.repeatFrequencyAndTact.first ?: RepeatFrequency.WEEKLY.value,
-                1
-            )
-        )
-    }
-
+    var task by remember { mutableStateOf(state.task) }
+    var steps by rememberSaveable { mutableStateOf(state.steps) }
     var startDateTime by rememberSaveable {
         mutableLongStateOf(
-            state.startDateTime ?: LocalDateTime.now().atZone(
-                ZoneId.systemDefault()
-            ).toEpochSecond()
+            state.startDateTime
+                ?: LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond()
         )
     }
-    var steps by rememberSaveable { mutableStateOf(state.steps) }
 
     Column(
-        Modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(DIM_XS)
     ) {
         Text(text = "Create Task", style = MaterialTheme.typography.h2)
-
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(DIM_XS)
@@ -107,10 +116,10 @@ private fun TaskCreation(
             // task declaration
             item {
                 DualTextInput(
-                    fields = titles,
+                    fields = Pair(task.title, task.subtitle),
                     labels = Pair("name", "subtitle"),
                     onValueChange = { first, second ->
-                        titles = titles.copy(first, second)
+                        task = task.copy(title = first ?: "", subtitle = second)
                     }
                 )
             }
@@ -119,17 +128,19 @@ private fun TaskCreation(
                 ImagePickerWithPreview(
                     title = "",
                     images = ICON_LIST,
-                    imageRes = imageRes ?: ICON_LIST.first(),
-                    onImageChange = { imageRes = it }
+                    imageRes = task.imageRes ?: ICON_LIST.first(),
+                    onImageChange = { task = task.copy(imageRes = it) }
                 )
             }
             // repeat frequency
             item {
                 RepeatFrequencyEditor(
                     startDateTime = startDateTime,
-                    repeatFrequencyAndTact = repeatFrequencyAndTact,
+                    repeatFrequencyAndTact = Pair(task.repeatFrequency, task.tact.toInt()),
                     onDateTimeChange = { startDateTime = it },
-                    onRepeatFrequencyAndTactChange = { repeatFrequencyAndTact = it }
+                    onRepeatFrequencyAndTactChange = {
+                        task = task.copy(repeatFrequency = it.first, tact = it.second.toLong())
+                    }
                 )
             }
             // steps
@@ -137,6 +148,26 @@ private fun TaskCreation(
                 StepsEditor(
                     steps = steps,
                     onValueChange = { steps = it }
+                )
+            }
+            // add/update Button
+            item {
+                RoundedButton(
+                    title = if ((state.id == null) || (state.id == 0)) {
+                        "add"
+                    } else {
+                        "update"
+                    },
+                    enable = task.title.isNotEmpty() && steps.isNotEmpty(),
+                    onClick = {
+                        onEvent(
+                            TaskCreationEvent.UpsertTask(
+                                task = task,
+                                startDateTime = startDateTime,
+                                steps = steps
+                            )
+                        )
+                    }
                 )
             }
         }
@@ -147,6 +178,6 @@ private fun TaskCreation(
 @Composable
 fun PreviewTaskCreationScreen() {
     MaintainerTheme {
-        TaskCreation(TaskCreationState())
+        TaskCreation(TaskEditData())
     }
 }

@@ -46,10 +46,18 @@ interface StepDao {
     suspend fun removeSteps(steps: List<Step>)
 
     @Transaction
+    @Query("DELETE FROM steps WHERE step_fk_task_id =:taskId")
+    suspend fun removeStepsByTaskId(taskId: Int)
+
+    @Transaction
     @Query("DELETE FROM steps")
     suspend fun removeAllSteps()
 
     @Transaction
     @Query("SELECT * FROM steps WHERE step_fk_task_id = :taskId")
-    fun getSteps(taskId: Int): Flow<List<Step>>
+    fun getStepsFlow(taskId: Int): Flow<List<Step>>
+
+    @Transaction
+    @Query("SELECT * FROM steps WHERE step_fk_task_id = :taskId")
+    suspend fun getSteps(taskId: Int): List<Step>
 }
