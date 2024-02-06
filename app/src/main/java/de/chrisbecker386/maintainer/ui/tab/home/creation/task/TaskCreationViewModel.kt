@@ -60,7 +60,6 @@ class TaskCreationViewModel @Inject constructor(
             title = "",
             subtitle = null,
             imageRes = ICON_LIST.first(),
-            duration = 0,
             repeatFrequency = RepeatFrequency.WEEKLY.value,
             tact = 1,
             machineId = _foreignId
@@ -209,7 +208,6 @@ class TaskCreationViewModel @Inject constructor(
                     order = it.order,
                     title = it.title,
                     description = it.description,
-                    imageRes = it.imageRes,
                     completedDate = it.completedDate,
                     taskId = taskId
                 )

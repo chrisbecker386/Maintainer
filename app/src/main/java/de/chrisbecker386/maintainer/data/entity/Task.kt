@@ -52,8 +52,6 @@ data class Task(
     @ColumnInfo(name = "task_imageRes")
     @DrawableRes
     val imageRes: Int,
-    @ColumnInfo(name = "task_duration")
-    val duration: Int,
     @ColumnInfo(name = "task_repeat_frequency")
     val repeatFrequency: Long = RepeatFrequency.WEEKLY.inMillis(),
     @ColumnInfo(name = "task_tact")

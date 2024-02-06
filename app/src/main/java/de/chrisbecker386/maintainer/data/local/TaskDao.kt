@@ -27,8 +27,7 @@ import androidx.room.Update
 import androidx.room.Upsert
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
-import de.chrisbecker386.maintainer.data.entity.relation.TaskWithPreconditionsSteps
-import de.chrisbecker386.maintainer.data.entity.relation.TaskWithPreconditionsStepsCompletes
+import de.chrisbecker386.maintainer.data.entity.relation.TaskWithStepsCompletes
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -67,19 +66,15 @@ interface TaskDao {
 
     @Transaction
     @Query("SELECT * FROM tasks")
-    fun getAllTaskWithPreconditionsStepsCompletes(): Flow<List<TaskWithPreconditionsStepsCompletes>>
+    fun getAllTaskWithStepsCompletes(): Flow<List<TaskWithStepsCompletes>>
 
     @Transaction
     @Query("SELECT * FROM tasks WHERE task_id = :taskId")
-    fun getTaskWithPreconditionsSteps(taskId: Int): Flow<TaskWithPreconditionsSteps>
-
-    @Transaction
-    @Query("SELECT * FROM tasks WHERE task_id = :taskId")
-    fun getTaskWithPreconditionsStepsCompletes(taskId: Int): Flow<TaskWithPreconditionsStepsCompletes>
+    fun getTaskWithStepsCompletes(taskId: Int): Flow<TaskWithStepsCompletes>
 
     @Transaction
     @Query("SELECT * FROM tasks WHERE task_fk_machine_id = :machineId")
-    fun getTasksForMachineWithPreconditionsStepsCompletes(machineId: Int): Flow<List<TaskWithPreconditionsStepsCompletes>>
+    fun getTasksForMachineWithStepsCompletes(machineId: Int): Flow<List<TaskWithStepsCompletes>>
 
     @Transaction
     @Query(

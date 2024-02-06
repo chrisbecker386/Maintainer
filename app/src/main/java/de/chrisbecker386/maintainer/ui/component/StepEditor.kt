@@ -158,7 +158,6 @@ fun PreviewStepEditor() {
                     id = 0,
                     order = 0,
                     title = "",
-                    imageRes = null,
                     description = null,
                     completedDate = null,
                     taskId = 0

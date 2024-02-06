@@ -19,7 +19,6 @@
 
 package de.chrisbecker386.maintainer.data.entity
 
-import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -48,9 +47,6 @@ data class Step(
     val order: Int,
     @ColumnInfo(name = "step_title")
     val title: String,
-    @ColumnInfo(name = "step_image")
-    @DrawableRes
-    val imageRes: Int? = null,
     @ColumnInfo(name = "step_description")
     val description: String? = null,
     @ColumnInfo(name = "step_completed")

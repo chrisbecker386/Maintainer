@@ -149,7 +149,6 @@ fun StepsEditor(
                                     order = localSteps.size + 1,
                                     id = 0,
                                     title = step.title,
-                                    imageRes = step.imageRes,
                                     description = step.description,
                                     completedDate = step.completedDate,
                                     taskId = step.taskId

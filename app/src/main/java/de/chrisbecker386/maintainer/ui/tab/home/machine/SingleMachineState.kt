@@ -21,7 +21,7 @@ package de.chrisbecker386.maintainer.ui.tab.home.machine
 
 import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.entity.Machine
-import de.chrisbecker386.maintainer.data.entity.relation.TaskWithPreconditionsStepsCompletes
+import de.chrisbecker386.maintainer.data.entity.relation.TaskWithStepsCompletes
 import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 
 data class SingleMachineState(
@@ -33,6 +33,6 @@ data class SingleMachineState(
         section = 0
     ),
     val shortStatus: ShortStatusState = ShortStatusState(0, 0),
-    val openTasks: List<TaskWithPreconditionsStepsCompletes> = emptyList(),
-    val closedTasks: List<TaskWithPreconditionsStepsCompletes> = emptyList()
+    val openTasks: List<TaskWithStepsCompletes> = emptyList(),
+    val closedTasks: List<TaskWithStepsCompletes> = emptyList()
 )

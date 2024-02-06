@@ -32,7 +32,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import de.chrisbecker386.maintainer.data.model.ApproximateTime
 import de.chrisbecker386.maintainer.ui.component.RoundedButton
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
 import de.chrisbecker386.maintainer.ui.component.TaskContent
@@ -90,9 +89,7 @@ private fun SingleMachine(
                     .clickable { onTaskClick(state.openTasks[index].task.id) }
                     .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
                 title = state.openTasks[index].task.title,
-                subtitle = state.openTasks[index].task.subtitle ?: "none",
-                approximateTime = ApproximateTime.MIN_45,
-                preconditions = state.openTasks[index].preconditions.size,
+                subtitle = state.openTasks[index].task.subtitle ?: "",
                 numberOfSteps = state.openTasks[index].steps.size
             )
         }
@@ -109,9 +106,7 @@ private fun SingleMachine(
                     .clickable { onTaskClick(state.closedTasks[index].task.id) }
                     .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
                 title = state.closedTasks[index].task.title,
-                subtitle = state.closedTasks[index].task.subtitle ?: "none",
-                approximateTime = ApproximateTime.MIN_45,
-                preconditions = state.closedTasks[index].preconditions.size,
+                subtitle = state.closedTasks[index].task.subtitle ?: "",
                 numberOfSteps = state.closedTasks[index].steps.size
             )
         }

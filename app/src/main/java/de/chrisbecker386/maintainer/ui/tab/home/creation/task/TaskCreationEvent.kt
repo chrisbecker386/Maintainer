@@ -32,7 +32,6 @@ interface TaskCreationEvent {
             title = "",
             subtitle = null,
             imageRes = ICON_LIST.first(),
-            duration = 0,
             repeatFrequency = RepeatFrequency.WEEKLY.value,
             tact = 1,
             machineId = 0
