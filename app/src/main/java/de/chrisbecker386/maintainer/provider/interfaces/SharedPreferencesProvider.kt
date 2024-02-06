@@ -21,6 +21,5 @@ package de.chrisbecker386.maintainer.provider.interfaces
 
 interface SharedPreferencesProvider {
     fun isAppConfigured(): Boolean
-
     fun writeIsAppConfigured(appIsConfigured: Boolean = true): Boolean
 }

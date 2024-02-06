@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 15/05/2023, 10:22
+ * Created by Christopher Becker on 15/05/2023, 11:21
  * Copyright (c) 2023. All rights reserved.
- * Last modified 15/05/2023, 10:22
+ * Last modified 15/05/2023, 11:21
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,20 +21,30 @@ package de.chrisbecker386.maintainer.data.entity.relation
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import de.chrisbecker386.maintainer.data.entity.Precondition
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
+import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
 
-data class TaskWithPreconditionsSteps(
+data class TaskWithStepsCompletes(
     @Embedded val task: Task,
-    @Relation(
-        parentColumn = "task_id",
-        entityColumn = "precondition_fk_task_id"
-    )
-    val preconditions: List<Precondition>,
     @Relation(
         parentColumn = "task_id",
         entityColumn = "step_fk_task_id"
     )
-    val steps: List<Step>
-)
+    val steps: List<Step>,
+    @Relation(
+        parentColumn = "task_id",
+        entityColumn = "task_completed_fk_task_id"
+    )
+    val completes: List<TaskCompletedDate>
+) {
+    fun isValid(): Boolean = this.task.getRepeatCycle().isValid(getLatestCompleteOrNull())
+
+    private fun getLatestCompleteOrNull(): Long? {
+        return if (this.completes.isEmpty()) {
+            null
+        } else {
+            this.completes.maxByOrNull { it.date }?.date
+        }
+    }
+}

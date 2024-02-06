@@ -28,7 +28,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import de.chrisbecker386.maintainer.data.local.MachineDao
 import de.chrisbecker386.maintainer.data.local.MaintainerDb
-import de.chrisbecker386.maintainer.data.local.PreconditionDao
 import de.chrisbecker386.maintainer.data.local.SectionDao
 import de.chrisbecker386.maintainer.data.local.StepDao
 import de.chrisbecker386.maintainer.data.local.TaskCompletedDao
@@ -62,11 +61,6 @@ object LocalDbModule {
     }
 
     @Provides
-    fun providePreconditionDao(database: MaintainerDb): PreconditionDao {
-        return database.preconditionDao
-    }
-
-    @Provides
     fun provideCompletedTaskDao(database: MaintainerDb): TaskCompletedDao {
         return database.taskCompletedDao
     }
@@ -88,7 +82,6 @@ object LocalDbModule {
         machineDao: MachineDao,
         taskDao: TaskDao,
         stepDao: StepDao,
-        preconditionDao: PreconditionDao,
         taskCompletedDao: TaskCompletedDao
     ): MaintainerRepository {
         return MaintainerRepositoryImpl(
@@ -96,7 +89,6 @@ object LocalDbModule {
             machineDao,
             taskDao,
             stepDao,
-            preconditionDao,
             taskCompletedDao
         )
     }

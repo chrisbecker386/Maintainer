@@ -36,14 +36,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Ballot
-import androidx.compose.material.icons.filled.FactCheck
-import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import de.chrisbecker386.maintainer.data.model.ApproximateTime
 import de.chrisbecker386.maintainer.ui.theme.DIM_M_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
@@ -57,8 +54,6 @@ fun TaskContent(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String,
-    approximateTime: ApproximateTime,
-    preconditions: Int,
     numberOfSteps: Int
 
 ) {
@@ -85,11 +80,6 @@ fun TaskContent(
                     style = MaterialTheme.typography.body1
                 )
 
-                RowWithIconText(icon = Icons.Default.Timer, text = approximateTime.approxAsString)
-                RowWithIconText(
-                    icon = Icons.Default.FactCheck,
-                    text = "$preconditions preconditions"
-                )
                 RowWithIconText(icon = Icons.Default.Ballot, text = "$numberOfSteps steps")
                 Spacer(modifier = Modifier.height(DIM_XXS))
             }
@@ -129,8 +119,6 @@ fun PreviewTaskContent() {
             Modifier.fillMaxWidth(),
             title = "task_title",
             subtitle = "task_sub_title",
-            approximateTime = ApproximateTime.MIN_5,
-            preconditions = 2,
             numberOfSteps = 4
         )
     }
