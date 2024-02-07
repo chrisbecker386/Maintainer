@@ -31,14 +31,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import de.chrisbecker386.maintainer.navigation.APP_TABS
-import de.chrisbecker386.maintainer.navigation.Home
+import de.chrisbecker386.maintainer.navigation.APP_SCREENS
 import de.chrisbecker386.maintainer.navigation.MaintainerAppBar
-import de.chrisbecker386.maintainer.navigation.MaintainerBottomBar
 import de.chrisbecker386.maintainer.navigation.MaintainerNavGraph
-import de.chrisbecker386.maintainer.navigation.navigateSingleTopTo
+import de.chrisbecker386.maintainer.navigation.Overview
+import de.chrisbecker386.maintainer.navigation.navigateToSettings
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXL
-import de.chrisbecker386.maintainer.ui.theme.DIM_XXXL
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @AndroidEntryPoint
@@ -58,25 +56,22 @@ class MainActivity : ComponentActivity() {
             val currentBackStack by navController.currentBackStackEntryAsState()
             val currentDestination = currentBackStack?.destination
             val currentScreen =
-                APP_TABS.find { it.route == currentDestination?.route } ?: Home
+                APP_SCREENS.find {
+                    // route without Args
+                    (it.route == currentDestination?.route) ||
+                        // route with Args
+                        (it.route == currentDestination?.route?.split("/")?.first())
+                } ?: Overview
 
             Scaffold(
                 topBar = {
                     MaintainerAppBar(
+                        modifier = Modifier.height(DIM_XXL),
                         title = currentScreen.title,
-                        modifier = Modifier.height(DIM_XXL)
-                    )
-                },
-                bottomBar = {
-                    MaintainerBottomBar(
-                        allTabScreens = APP_TABS,
-                        currentTab = currentScreen,
-                        onSelected = { newDestination ->
-                            navController.navigateSingleTopTo(
-                                newDestination.route
-                            )
-                        },
-                        modifier = Modifier.height(DIM_XXXL)
+                        showBackButton = currentScreen.title != Overview.title,
+                        showContextMenu = true,
+                        onBackButtonClick = { navController.navigateUp() },
+                        onContextMenuClick = { navController.navigateToSettings() }
                     )
                 }
             ) { innerPadding ->

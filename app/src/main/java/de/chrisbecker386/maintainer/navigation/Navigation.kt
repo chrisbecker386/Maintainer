@@ -42,10 +42,10 @@ fun MaintainerNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Home.route,
+        startDestination = Overview.route,
         modifier = modifier
     ) {
-        composable(route = Home.route) {
+        composable(route = Overview.route) {
             OverviewScreen(
                 onSectionClick = { careType -> navController.navigateToSingleSection(careType) },
                 onMachineClick = { machineType ->
@@ -162,6 +162,10 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         launchSingleTop = true
         restoreState = true
     }
+
+fun NavHostController.navigateToSettings() {
+    this.navigate(Settings.route)
+}
 
 private fun NavHostController.navigateToSingleMachine(machineType: Int) {
     this.navigate("${SingleMachine.route}/$machineType")
