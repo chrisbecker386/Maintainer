@@ -33,9 +33,9 @@ interface Screen {
     val icon: ImageVector?
 }
 
-object Home : Screen {
-    override val route: String = "home_screen"
-    override val title: String = "home"
+object Overview : Screen {
+    override val route: String = "overview_screen"
+    override val title: String = "Overview"
     override val icon: ImageVector = Icons.Default.Home
 }
 
@@ -131,4 +131,13 @@ object TaskCreation : Screen {
     )
 }
 
-val APP_TABS = listOf(Home, Info, Settings)
+val APP_SCREENS = listOf(
+    Overview,
+    Settings,
+    SingleSection,
+    SingleMachine,
+    SingleTask,
+    SectionCreation,
+    MachineCreation,
+    TaskCreation
+)

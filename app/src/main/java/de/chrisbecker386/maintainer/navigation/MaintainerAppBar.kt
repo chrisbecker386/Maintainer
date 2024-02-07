@@ -30,7 +30,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -75,8 +75,8 @@ fun MaintainerAppBar(
             if (showContextMenu) {
                 IconButton(onClick = onContextMenuClick) {
                     Icon(
-                        imageVector = Icons.Default.MoreVert,
-                        contentDescription = stringResource(R.string.menu)
+                        imageVector = Icons.Filled.Settings,
+                        contentDescription = stringResource(R.string.settings)
                     )
                 }
             }
