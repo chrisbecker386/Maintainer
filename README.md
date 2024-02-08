@@ -11,6 +11,7 @@ Regular maintenance prevents repairs and prolongs the life of our machines.
 - [Info](#compass-info)
     - [ERD](#card_index-erd)
     - [Screens](#calling_screens)
+    - [AppIcon](#milkyway-appicon)
 - [Utilities](#computer-utilities)
     - [Makefile](#information_source-makefile)
 
@@ -42,6 +43,10 @@ The goal of this app is to create an app, that helps to maintain machines.
 |![Overview](../main/images/Overview.png)|![Task in Progress](../main/images/Task_In_Progress.png)|![Task Completed](../main/images/Task_Completed.png)|
 | Creation | | |
 |![Creation](../main/images/Creation_Section.png)| | |
+
+### :milky_way: AppIcon
+[app icon from](https://www.flaticon.com/free-icons/maintenance")
+Maintenance icons created by Iconjam - Flaticon
 
 ## :computer: Utilities
 

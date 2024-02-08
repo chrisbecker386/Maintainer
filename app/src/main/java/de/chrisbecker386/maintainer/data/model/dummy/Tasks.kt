@@ -34,7 +34,7 @@ val devTasks = listOf(
         id = 2,
         title = "unclogging",
         subtitle = null,
-        imageRes = R.drawable.ic_launcher_foreground,
+        imageRes = R.drawable.coffee_maker_48px,
         machineId = 1
     ),
     Task(
