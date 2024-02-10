@@ -41,6 +41,7 @@ import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 @Composable
 fun IntervalPicker(
     modifier: Modifier = Modifier,
+    enable: Boolean = true,
     withHeader: Boolean = false,
     interval: RepeatFrequency = RepeatFrequency.WEEKLY,
     onValueChange: (RepeatFrequency) -> Unit = {}
@@ -63,6 +64,7 @@ fun IntervalPicker(
         }
         StepsSlider(
             modifier = Modifier.fillMaxWidth(),
+            enable = enable,
             items = entries,
             index = RepeatFrequency.getIndex(interval),
             onValueChange = {

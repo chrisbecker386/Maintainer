@@ -115,3 +115,8 @@ val ICON_LIST = listOf(
     R.drawable.kitchen_48px,
     R.drawable.pedal_bike_48px
 )
+
+const val ALARM_TITLE = "ALARM_TITLE"
+const val ALARM_MESSAGE = "ALARM_MESSAGE"
+const val ALARM_TITLE_NOTIFICATION = "ALARM_TITLE_NOTIFICATION"
+const val ALARM_MESSAGE_NOTIFICATION = "ALARM_MESSAGE_NOTIFICATION"

@@ -44,26 +44,32 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.data.utility.sameValueAs
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
+import de.chrisbecker386.maintainer.ui.theme.DisabledGray
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
 fun StepsSlider(
     modifier: Modifier = Modifier,
+    enable: Boolean = true,
     /*items must contain at least 2 items */
     items: List<Any>,
     index: Int = 0,
     onValueChange: (Any) -> Unit = {},
     stepSliderColors: StepSliderColors = StepSliderColors(
-        thumbColor = colors.primary,
-        disabledThumbColor = colors.onError,
+        thumbColor = if (enable) {
+            colors.primary
+        } else {
+            DisabledGray
+        },
+        disabledThumbColor = DisabledGray,
         activeTrackColor = colors.onBackground,
         inactiveTrackColor = colors.onBackground,
         disabledActiveTrackColor = Color.LightGray,
         disabledInactiveTrackColor = Color.LightGray,
         activeTickColor = colors.background,
         inactiveTickColor = colors.background,
-        disabledActiveTickColor = Color.Red,
-        disabledInactiveTickColor = Color.Red
+        disabledActiveTickColor = colors.background,
+        disabledInactiveTickColor = colors.background
     )
 ) {
     LaunchedEffect(items) {
@@ -100,6 +106,7 @@ fun StepsSlider(
     ) {
         Slider(
             modifier = Modifier.fillMaxWidth(),
+            enabled = enable,
             value = stepAsFloat,
             onValueChange = { value ->
                 stepAsFloat = value

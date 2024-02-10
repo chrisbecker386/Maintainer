@@ -23,6 +23,7 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,8 +36,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.MaterialTheme.typography
@@ -65,8 +68,10 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import de.chrisbecker386.maintainer.data.entity.Step
+import de.chrisbecker386.maintainer.ui.screens.settings.MaintainerPermission
 import de.chrisbecker386.maintainer.ui.theme.BUTTON_CORNER_SHAPE
 import de.chrisbecker386.maintainer.ui.theme.DEFAULT_STEP
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
@@ -367,6 +372,61 @@ fun AddStepDialog(
             }
         }
     }
+}
+
+@Composable
+fun PermissionDialog(
+    permission: MaintainerPermission,
+    isPermanentlyDeclined: Boolean,
+    onDismiss: () -> Unit,
+    onAccept: () -> Unit,
+    onGoToAppSettingsClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        shape = RoundedCornerShape(12),
+        buttons = {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Divider()
+                Text(
+                    text = if (isPermanentlyDeclined) {
+                        "Grant permission"
+                    } else {
+                        "OK"
+                    },
+                    style = typography.h6,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            if (isPermanentlyDeclined) {
+                                onGoToAppSettingsClick()
+                            } else {
+                                onAccept()
+                            }
+                        }
+                        .padding(16.dp)
+                )
+            }
+        },
+        title = {
+            Text(text = "Permission required", style = typography.h3)
+        },
+        text = {
+            Text(
+                text = if (isPermanentlyDeclined) {
+                    permission.permanentDeclinedText
+                } else {
+                    permission.description
+                },
+                style = typography.body1
+            )
+        },
+        modifier = modifier
+    )
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = false)

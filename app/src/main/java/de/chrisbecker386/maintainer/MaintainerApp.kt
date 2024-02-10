@@ -20,7 +20,31 @@
 package de.chrisbecker386.maintainer
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import dagger.hilt.android.HiltAndroidApp
+import de.chrisbecker386.maintainer.service.ReminderNotificationService
 
 @HiltAndroidApp
-class MaintainerApp : Application()
+class MaintainerApp : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        val notifyService = createNotificationReminderChannel()
+    }
+
+    private fun createNotificationReminderChannel() {
+        val reminderChannel =
+            with(ReminderNotificationService) {
+                NotificationChannel(
+                    REMINDER_CHANNEL_ID,
+                    DISPLAYED_NAME,
+                    IMPORTANCE_LEVEL
+                )
+            }
+        reminderChannel.description = ReminderNotificationService.DESCRIPTION
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(reminderChannel)
+    }
+}

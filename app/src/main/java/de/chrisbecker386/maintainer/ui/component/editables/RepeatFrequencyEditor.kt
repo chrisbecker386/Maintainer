@@ -28,8 +28,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -48,11 +50,13 @@ import de.chrisbecker386.maintainer.ui.component.MaintainerDatePickerDialog
 import de.chrisbecker386.maintainer.ui.component.MaintainerTimePickerDialog
 import de.chrisbecker386.maintainer.ui.component.basic.NumberPickerVertical
 import de.chrisbecker386.maintainer.ui.theme.BUTTON_CORNER_SHAPE
+import de.chrisbecker386.maintainer.ui.theme.BaseGray
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_S_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
+import de.chrisbecker386.maintainer.ui.theme.DisabledGray
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -64,6 +68,7 @@ import java.time.format.DateTimeFormatter
  * Composable for editing repeat frequency settings.
  *
  * @param modifier Modifier for styling and layout adjustments.
+ * @param title Title of the element
  * @param startDateTime Initial epoch seconds for the date and time.
  * @param repeatFrequencyAndTact Initial repeat frequency in milliseconds.
  * @param onDateTimeChange Lambda invoked when the date and time change.
@@ -73,6 +78,8 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun RepeatFrequencyEditor(
     modifier: Modifier = Modifier,
+    enable: Boolean = true,
+    title: String = "repeat frequency",
     startDateTime: Long = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond(),
     repeatFrequencyAndTact: Pair<Long?, Int> = Pair(null, 1),
     onDateTimeChange: (Long) -> Unit = {},
@@ -135,7 +142,13 @@ fun RepeatFrequencyEditor(
         border = BorderStroke(
             width = DIM_XXXXS,
             color = MaterialTheme.colors.onBackground
-        )
+        ),
+        backgroundColor = if (enable) {
+            colors.background
+        } else {
+            BaseGray
+        }
+
     ) {
         Column(
             Modifier
@@ -146,7 +159,7 @@ fun RepeatFrequencyEditor(
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "repeat frequency",
+                text = title,
                 style = MaterialTheme.typography.body1,
                 color = MaterialTheme.colors.onBackground
             )
@@ -169,8 +182,10 @@ fun RepeatFrequencyEditor(
                     color = MaterialTheme.colors.onBackground
                 )
                 Button(
+                    enabled = enable,
                     onClick = { showDatePicker = !showDatePicker },
-                    shape = RoundedCornerShape(BUTTON_CORNER_SHAPE)
+                    shape = RoundedCornerShape(BUTTON_CORNER_SHAPE),
+                    colors = ButtonDefaults.buttonColors(disabledBackgroundColor = DisabledGray)
                 ) {
                     Text(
                         text = "set",
@@ -205,6 +220,7 @@ fun RepeatFrequencyEditor(
                     )
                 }
                 NumberPickerVertical(
+                    enable = enable,
                     value = repeatFrequencyCount,
                     onValueChange = {
                         val newCount = repeatFrequencyCount + it
@@ -220,6 +236,7 @@ fun RepeatFrequencyEditor(
             }
             IntervalPicker(
                 modifier = Modifier.fillMaxWidth(),
+                enable = enable,
                 interval = localRepeatFrequency,
                 onValueChange = {
                     localRepeatFrequency = it
@@ -244,8 +261,10 @@ fun RepeatFrequencyEditor(
                     color = MaterialTheme.colors.onBackground
                 )
                 Button(
+                    enabled = enable,
                     onClick = { showTimePicker = !showTimePicker },
-                    shape = RoundedCornerShape(25)
+                    shape = RoundedCornerShape(25),
+                    colors = ButtonDefaults.buttonColors(disabledBackgroundColor = DisabledGray)
                 ) {
                     Text(
                         text = "set",
@@ -285,6 +304,6 @@ fun RepeatFrequencyEditor(
 @Composable
 fun PreviewRepeatFrequencyEditor() {
     MaintainerTheme {
-        RepeatFrequencyEditor()
+        RepeatFrequencyEditor(enable = false)
     }
 }

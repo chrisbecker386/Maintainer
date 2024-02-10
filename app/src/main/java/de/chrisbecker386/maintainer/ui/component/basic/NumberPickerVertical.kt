@@ -52,11 +52,13 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_M
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_S_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXS
+import de.chrisbecker386.maintainer.ui.theme.DisabledGray
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
 fun NumberPickerVertical(
     modifier: Modifier = Modifier,
+    enable: Boolean = true,
     step: Int = 1,
     value: Int = 0,
     onValueChange: (Int) -> Unit = {}
@@ -71,10 +73,14 @@ fun NumberPickerVertical(
                 modifier = Modifier
                     .size(DIM_L)
                     .background(
-                        color = colors.primary,
+                        color = if (enable) {
+                            colors.primary
+                        } else {
+                            DisabledGray
+                        },
                         shape = RoundedCornerShape(DIM_S_PLUS)
                     )
-                    .clickable { onValueChange(1) },
+                    .clickable { if (enable) onValueChange(1) },
                 contentAlignment = Alignment.Center
             ) {
                 Image(
@@ -88,10 +94,14 @@ fun NumberPickerVertical(
                 modifier = Modifier
                     .size(DIM_L)
                     .background(
-                        color = colors.primary,
+                        color = if (enable) {
+                            colors.primary
+                        } else {
+                            DisabledGray
+                        },
                         shape = RoundedCornerShape(DIM_S_PLUS)
                     )
-                    .clickable { onValueChange(-1) },
+                    .clickable { if (enable) onValueChange(-1) },
                 contentAlignment = Alignment.Center
             ) {
                 Image(

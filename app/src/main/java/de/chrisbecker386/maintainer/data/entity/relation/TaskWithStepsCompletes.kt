@@ -24,6 +24,8 @@ import androidx.room.Relation
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
+import de.chrisbecker386.maintainer.data.utility.SimpleDateType
+import de.chrisbecker386.maintainer.data.utility.toFormatDateString
 
 data class TaskWithStepsCompletes(
     @Embedded val task: Task,
@@ -47,4 +49,10 @@ data class TaskWithStepsCompletes(
             this.completes.maxByOrNull { it.date }?.date
         }
     }
+
+    override fun toString(): String = "\n${this.task.title}, ${
+    this.completes.last().date.toFormatDateString(
+        SimpleDateType.FULL_DATE_EUROPE
+    )
+    }"
 }

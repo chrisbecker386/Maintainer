@@ -25,15 +25,15 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import de.chrisbecker386.maintainer.ui.tab.home.creation.machine.MachineCreationScreen
-import de.chrisbecker386.maintainer.ui.tab.home.creation.section.SectionCreationScreen
-import de.chrisbecker386.maintainer.ui.tab.home.creation.task.TaskCreationScreen
-import de.chrisbecker386.maintainer.ui.tab.home.home.OverviewScreen
-import de.chrisbecker386.maintainer.ui.tab.home.machine.SingleMachineScreen
-import de.chrisbecker386.maintainer.ui.tab.home.section.SingleSectionScreen
-import de.chrisbecker386.maintainer.ui.tab.home.task.SingleTaskScreen
-import de.chrisbecker386.maintainer.ui.tab.info.InfoScreen
-import de.chrisbecker386.maintainer.ui.tab.settings.SettingsScreen
+import de.chrisbecker386.maintainer.ui.screens.home.creation.machine.MachineCreationScreen
+import de.chrisbecker386.maintainer.ui.screens.home.creation.section.SectionCreationScreen
+import de.chrisbecker386.maintainer.ui.screens.home.creation.task.TaskCreationScreen
+import de.chrisbecker386.maintainer.ui.screens.home.machine.SingleMachineScreen
+import de.chrisbecker386.maintainer.ui.screens.home.overview.OverviewScreen
+import de.chrisbecker386.maintainer.ui.screens.home.section.SingleSectionScreen
+import de.chrisbecker386.maintainer.ui.screens.home.task.SingleTaskScreen
+import de.chrisbecker386.maintainer.ui.screens.info.InfoScreen
+import de.chrisbecker386.maintainer.ui.screens.settings.SettingsScreen
 
 @Composable
 fun MaintainerNavGraph(
