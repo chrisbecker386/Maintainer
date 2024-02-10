@@ -45,7 +45,10 @@ val BaseBlue = Color(0xFF0A5C7F)
 val MediumBlue = Color(0xFF1C86A4)
 val LightBlue = Color(0xFF7ECED0)
 
-val BaseGray = Color(0xFF333936)
+val DarkGray = Color(0x12444444)
+
+val DisabledGray = Color(0xFF333333)
+val BaseGray = Color(0xFF444444)
 val MediumGray = Color(0xFF676867)
 val LightGray = Color(0xFFB3AFB2)
 

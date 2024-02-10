@@ -25,6 +25,7 @@ import android.icu.text.SimpleDateFormat
 enum class SimpleDateType {
     FULL_DATE_AND_TIME,
     FULL_DATE,
+    FULL_DATE_EUROPE,
     FULL_TIME;
 
     @SuppressLint("SimpleDateFormat")
@@ -32,6 +33,7 @@ enum class SimpleDateType {
         return when (this) {
             FULL_DATE_AND_TIME -> SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS")
             FULL_DATE -> SimpleDateFormat("yyyy-MM-dd")
+            FULL_DATE_EUROPE -> SimpleDateFormat("dd.MM.yyyy")
             FULL_TIME -> SimpleDateFormat("HH:mm:ss:SSS")
         }
     }
