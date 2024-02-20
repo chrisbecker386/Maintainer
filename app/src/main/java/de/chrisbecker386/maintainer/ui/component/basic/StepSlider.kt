@@ -186,9 +186,7 @@ class StepSliderColors(
         if (activeTickColor != other.activeTickColor) return false
         if (inactiveTickColor != other.inactiveTickColor) return false
         if (disabledActiveTickColor != other.disabledActiveTickColor) return false
-        if (disabledInactiveTickColor != other.disabledInactiveTickColor) return false
-
-        return true
+        return disabledInactiveTickColor == other.disabledInactiveTickColor
     }
 
     override fun hashCode(): Int {

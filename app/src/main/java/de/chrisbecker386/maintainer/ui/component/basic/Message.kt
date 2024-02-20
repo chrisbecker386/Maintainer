@@ -28,7 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import de.chrisbecker386.maintainer.ui.component.RoundedButton
+import de.chrisbecker386.maintainer.ui.component.BaseButton
 import de.chrisbecker386.maintainer.ui.theme.typo
 
 @Composable
@@ -45,7 +45,7 @@ fun MessageFullScreen(
         ) {
             Text(text = title, style = typo.h2, color = MaterialTheme.colors.onBackground)
             Text(text = message, style = typo.body1, color = MaterialTheme.colors.onBackground)
-            RoundedButton(title = "Ok", onClick = onClick)
+            BaseButton(text = "Ok", onClick = onClick)
         }
     }
 }

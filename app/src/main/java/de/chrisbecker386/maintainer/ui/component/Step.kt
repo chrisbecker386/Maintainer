@@ -21,7 +21,6 @@ package de.chrisbecker386.maintainer.ui.component
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -34,11 +33,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ExpandLess
@@ -58,14 +55,13 @@ import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.model.dummy.devSteps
 import de.chrisbecker386.maintainer.data.model.dummy.devTasks
 import de.chrisbecker386.maintainer.ui.theme.ACCORDION_ANIMATION_DURATION
+import de.chrisbecker386.maintainer.ui.theme.DIM_L
 import de.chrisbecker386.maintainer.ui.theme.DIM_L_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_M
-import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_XL
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
-import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
@@ -100,80 +96,50 @@ fun StepWithDetails(modifier: Modifier = Modifier, step: Step, task: Task? = nul
                                     colorFilter = ColorFilter.tint(color = MaterialTheme.colors.background)
                                 )
                             } else {
-                                Text(
-                                    text = step.order.toString(),
-                                    style = MaterialTheme.typography.subtitle1,
-                                    color = MaterialTheme.colors.background
-                                )
+                                SubtitleText(text = step.order.toString())
                             }
                         }
                         Spacer(modifier = Modifier.width(DIM_S))
-                        Card(
-                            Modifier
-                                .padding(top = DIM_M)
-                                .fillMaxWidth(),
-                            shape = RoundedCornerShape(
-                                topEnd = DIM_S,
-                                bottomStart = DIM_S,
-                                bottomEnd = DIM_S
-                            ),
-                            elevation = DIM_NO,
-                            border = BorderStroke(
-                                width = DIM_XXXXS,
-                                color = MaterialTheme.colors.onBackground
-                            )
-                        ) {
-                            Column(Modifier) {
-                                ConstraintLayout(
+                        StepCard(modifier = Modifier.padding(top = DIM_M)) {
+                            ConstraintLayout(
+                                modifier = Modifier
+                                    .fillMaxWidth().height(DIM_L)
+                            ) {
+                                val (labelRef, iconRef) = createRefs()
+                                SubtitleText(
                                     modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(DIM_L_PLUS)
-                                ) {
-                                    val (labelRef, iconRef) = createRefs()
-                                    Text(
-                                        modifier = Modifier
-                                            .padding(start = DIM_XS)
-                                            .constrainAs(labelRef) {
-                                                start.linkTo(parent.start)
-                                                top.linkTo(parent.top)
-                                                bottom.linkTo(parent.bottom)
-                                            },
-                                        text = step.title,
-                                        style = MaterialTheme.typography.subtitle1,
-                                        color = MaterialTheme.colors.onBackground
-                                    )
-                                    step.description?.let {
-                                        ExpandButton(
-                                            modifier = Modifier.constrainAs(iconRef) {
-                                                end.linkTo(parent.end)
-                                                top.linkTo(parent.top)
-                                                bottom.linkTo(parent.bottom)
-                                            },
-                                            expanded = expanded,
-                                            onClick = { expanded = !expanded }
-                                        )
-                                    }
-                                }
+                                        .padding(start = DIM_XS)
+                                        .constrainAs(labelRef) {
+                                            start.linkTo(parent.start)
+                                            top.linkTo(parent.top)
+                                            bottom.linkTo(parent.bottom)
+                                        },
+                                    text = step.title
+                                )
                                 step.description?.let {
-                                    if (expanded) {
-                                        Row(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(
-                                                    start = DIM_XS,
-                                                    end = DIM_XL,
-                                                    top = DIM_XXS,
-                                                    bottom = DIM_XS
-                                                )
-                                        ) {
-                                            Text(
-                                                modifier = Modifier,
-                                                text = it,
-                                                style = MaterialTheme.typography.body2,
-                                                color = MaterialTheme.colors.onBackground
+                                    ExpandButton(
+                                        modifier = Modifier.constrainAs(iconRef) {
+                                            end.linkTo(parent.end)
+                                            top.linkTo(parent.top)
+                                            bottom.linkTo(parent.bottom)
+                                        },
+                                        expanded = expanded,
+                                        onClick = { expanded = !expanded }
+                                    )
+                                }
+                            }
+                            step.description?.let {
+                                if (expanded) {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(
+                                                start = DIM_XS,
+                                                end = DIM_XL,
+                                                top = DIM_XXS,
+                                                bottom = DIM_XS
                                             )
-                                        }
-                                    }
+                                    ) { BodyText2(text = it) }
                                 }
                             }
                         }
@@ -206,7 +172,7 @@ private fun ExpandButton(
 fun PreviewStep() {
     MaintainerTheme {
         Column {
-            StepWithDetails(step = devSteps[0], task = devTasks[0])
+            StepWithDetails(step = devSteps[1], task = devTasks[0])
         }
     }
 }

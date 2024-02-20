@@ -25,8 +25,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,8 +37,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import de.chrisbecker386.maintainer.data.model.DataResourceState
+import de.chrisbecker386.maintainer.ui.component.BaseButton
+import de.chrisbecker386.maintainer.ui.component.HeadlineBold
 import de.chrisbecker386.maintainer.ui.component.ImagePickerWithPreview
-import de.chrisbecker386.maintainer.ui.component.RoundedButton
 import de.chrisbecker386.maintainer.ui.component.basic.CircularLoadIndicator
 import de.chrisbecker386.maintainer.ui.component.basic.MessageFullScreen
 import de.chrisbecker386.maintainer.ui.component.editables.DualTextInput
@@ -74,15 +73,15 @@ fun TaskCreationScreen(
             CircularLoadIndicator()
         }
 
-        is DataResourceState.Idle -> TaskCreation(
-            state = (state as DataResourceState.Idle<TaskEditData>).data,
+        is DataResourceState.Success -> TaskCreation(
+            state = (state as DataResourceState.Success<TaskEditData>).data,
             onEvent = viewModel::onEvent,
             navigateUp = navigateUp
         )
 
-        is DataResourceState.Success -> MessageFullScreen(
-            title = "Success",
-            message = "Task was successful added to db",
+        is DataResourceState.Finished -> MessageFullScreen(
+            title = (state as DataResourceState.Finished).title ?: "success title",
+            message = (state as DataResourceState.Finished).text ?: "success text",
             onClick = { navigateUp() }
         )
     }
@@ -108,7 +107,7 @@ private fun TaskCreation(
             .fillMaxWidth()
             .padding(DIM_XS)
     ) {
-        Text(text = "Create Task", style = MaterialTheme.typography.h2)
+        HeadlineBold(text = "Create Task")
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(DIM_XS)
@@ -128,7 +127,7 @@ private fun TaskCreation(
                 ImagePickerWithPreview(
                     title = "",
                     images = ICON_LIST,
-                    imageRes = task.imageRes ?: ICON_LIST.first(),
+                    imageRes = task.imageRes,
                     onImageChange = { task = task.copy(imageRes = it) }
                 )
             }
@@ -152,8 +151,8 @@ private fun TaskCreation(
             }
             // add/update Button
             item {
-                RoundedButton(
-                    title = if ((state.id == null) || (state.id == 0)) {
+                BaseButton(
+                    text = if ((state.id == null) || (state.id == 0)) {
                         "add"
                     } else {
                         "update"

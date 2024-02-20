@@ -25,9 +25,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import de.chrisbecker386.maintainer.data.model.DataResourceState
-import de.chrisbecker386.maintainer.data.model.DataResourceState.Companion.idle
-import de.chrisbecker386.maintainer.data.model.DataResourceState.Companion.loading
-import de.chrisbecker386.maintainer.data.model.DataResourceState.Companion.success
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -41,6 +39,8 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(@ApplicationContext context: Context) : ViewModel() {
 
     private val _permissionQueue = MutableStateFlow<List<MaintainerPermission>>(emptyList())
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val _isPermissionQueueEmpty = _permissionQueue.mapLatest { queue -> queue.isEmpty() }
     private val _settingsDataDefault = MutableStateFlow(SettingsData())
 
@@ -57,21 +57,25 @@ class SettingsViewModel @Inject constructor(@ApplicationContext context: Context
         }
     private val _error = MutableStateFlow<Throwable?>(null)
     private val _isLoading = MutableStateFlow(false)
-    private val _isSuccess = MutableStateFlow(false)
+    private val _isFinished = MutableStateFlow(false)
 
     val settingsState: StateFlow<DataResourceState<SettingsData>> = combine(
         _settingsData,
-        _error,
         _isLoading,
-        _isSuccess
-    ) { settingsData, error, isLoading, isSuccess ->
+        _error,
+        _isFinished
+    ) { settingsData, isLoading, error, isFinished ->
         when {
-            isLoading -> loading(data = null)
-            error != null -> DataResourceState.error(error.message ?: "", error)
-            isSuccess -> success()
-            else -> idle(settingsData)
+            isLoading -> DataResourceState.Loading(settingsData, null)
+            error != null -> DataResourceState.Error(settingsData, error.message ?: "", error)
+            isFinished -> DataResourceState.Finished(settingsData, null, null)
+            else -> DataResourceState.Success(settingsData)
         }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), loading(data = null))
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000L),
+        DataResourceState.Loading(SettingsData(), null)
+    )
 
     init {
         viewModelScope.launch {
@@ -81,6 +85,7 @@ class SettingsViewModel @Inject constructor(@ApplicationContext context: Context
             )
         }
     }
+
     fun onEvent(event: SettingsEvent) {
         when (event) {
             is SettingsEvent.AcceptError -> acceptError()
@@ -98,7 +103,7 @@ class SettingsViewModel @Inject constructor(@ApplicationContext context: Context
             list.removeFirst()
             list.toList()
         } else {
-            emptyList<MaintainerPermission>()
+            emptyList()
         }
         viewModelScope.launch { _permissionQueue.emit(newList) }
     }

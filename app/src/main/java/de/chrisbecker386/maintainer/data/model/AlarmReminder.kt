@@ -20,8 +20,8 @@
 package de.chrisbecker386.maintainer.data.model
 
 import de.chrisbecker386.maintainer.data.utility.SimpleDateType
+import de.chrisbecker386.maintainer.data.utility.getRepeatFrequencyWithTact
 import de.chrisbecker386.maintainer.data.utility.toFormatDateString
-import de.chrisbecker386.maintainer.data.utility.toRepeatFrequency
 
 data class AlarmReminder(
     val firstExecutionTime: Long,
@@ -31,6 +31,6 @@ data class AlarmReminder(
 ) {
     companion object {
         fun getInfo(firstExecutionTime: Long, repeatInterval: Long): String =
-            "firstExecution: ${(firstExecutionTime * 1000).toFormatDateString(SimpleDateType.FULL_DATE_AND_TIME)}\nrepeatInterval: ${repeatInterval.toRepeatFrequency().text}"
+            "firstExecution: ${(firstExecutionTime * 1000).toFormatDateString(SimpleDateType.FULL_DATE_AND_TIME)}\nrepeatInterval: every ${repeatInterval.getRepeatFrequencyWithTact().second} ${repeatInterval.getRepeatFrequencyWithTact().first.text}"
     }
 }

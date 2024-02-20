@@ -30,7 +30,7 @@ import de.chrisbecker386.maintainer.ui.theme.ALARM_MESSAGE
 import de.chrisbecker386.maintainer.ui.theme.ALARM_TITLE
 
 class AndroidAlarmScheduler(private val context: Context) : AlarmScheduler {
-    companion object { const val TAG = "AndroidAlarmScheduler" }
+    private val tag = AndroidAlarmScheduler::class.simpleName
 
     private val alarmManager = context.getSystemService(AlarmManager::class.java)
 
@@ -41,7 +41,7 @@ class AndroidAlarmScheduler(private val context: Context) : AlarmScheduler {
         }
         val itemHashCode = item.title.hashCode()
 
-        Log.d(TAG, "schedule hasCode: $itemHashCode")
+        Log.d(tag, "schedule hasCode: $itemHashCode")
 
         alarmManager.setRepeating(
             AlarmManager.RTC,
@@ -64,7 +64,7 @@ class AndroidAlarmScheduler(private val context: Context) : AlarmScheduler {
 
         val itemHashCode = item.title.hashCode()
 
-        Log.d(TAG, "cancel hasCode: $itemHashCode")
+        Log.d(tag, "cancel hasCode: $itemHashCode")
 
         alarmManager.cancel(
             PendingIntent.getBroadcast(

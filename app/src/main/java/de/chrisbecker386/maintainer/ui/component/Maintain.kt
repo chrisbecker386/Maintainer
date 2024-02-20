@@ -19,10 +19,8 @@
 
 package de.chrisbecker386.maintainer.ui.component
 
-import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,9 +33,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,68 +42,36 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.model.dummy.devMachines
 import de.chrisbecker386.maintainer.data.model.dummy.devTasks
 import de.chrisbecker386.maintainer.ui.theme.DIM_M
-import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
-import de.chrisbecker386.maintainer.ui.theme.DIM_S_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XL
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
-import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
 fun NextMaintains(
-    modifier: Modifier = Modifier,
     machineTitle: String,
-    tasks: List<Task>
+    tasks: List<Task>,
+    modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(
-                topStart = DIM_S,
-                topEnd = DIM_S,
-                bottomStart = DIM_S_PLUS,
-                bottomEnd = DIM_S_PLUS
-            ),
-            elevation = DIM_NO,
-            border = BorderStroke(
-                width = DIM_XXXXS,
-                color = MaterialTheme.colors.onBackground
-            )
-
-        ) {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(DIM_XS)
-            ) {
-                Text(
-                    text = "next maintains",
-                    style = MaterialTheme.typography.h2,
-                    color = MaterialTheme.colors.onBackground
-                )
-                Text(
-                    text = machineTitle,
-                    style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.onBackground
-                )
-                Spacer(modifier = Modifier.height(DIM_S))
-                tasks.forEachIndexed { index, task ->
-                    if (index < 2) {
-                        NextMaintainItem(
-                            graphic = task.imageRes,
-                            title = task.title,
-                            isMaintained = index == 0
-                        )
-                        if (index == 0) {
-                            Spacer(modifier = Modifier.height(DIM_XS))
-                        }
+        UnevenCard {
+            HeadlineBold(text = "next maintains")
+            BodyText(text = machineTitle)
+            Spacer(modifier = Modifier.height(DIM_S))
+            tasks.forEachIndexed { index, task ->
+                if (index < 2) {
+                    NextMaintainItem(
+                        graphic = task.imageRes,
+                        title = task.title
+                    )
+                    if (index == 0 && tasks.size > 1) {
+                        Spacer(modifier = Modifier.height(DIM_XS))
                     }
                 }
             }
@@ -115,63 +79,40 @@ fun NextMaintains(
     }
 }
 
-@SuppressLint("PrivateResource")
 @Composable
-fun NextMaintainItem(
-    modifier: Modifier = Modifier,
+private fun NextMaintainItem(
     @DrawableRes
     graphic: Int?,
     title: String,
-    lastMaintained: String = "26.04.2023",
-    isMaintained: Boolean
+    lastMaintained: String = "26.04.2023"
 ) {
-    Box(modifier = modifier) {
-        Card(
-            modifier =
+    EvenCard {
+        Row(
             Modifier
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(DIM_S),
-            border = BorderStroke(
-                width = DIM_XXXXS,
-                color = MaterialTheme.colors.onBackground
-            )
+                .fillMaxWidth()
+                .padding(top = DIM_S, bottom = DIM_S, start = DIM_M),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = DIM_S, bottom = DIM_S, start = DIM_M),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    modifier = Modifier
-                        .size(DIM_XL)
-                        .clip(
-                            RoundedCornerShape(DIM_XXS)
-                        ),
-                    painter = painterResource(
-                        id = graphic
-                            ?: com.google.android.material.R.drawable.mtrl_ic_checkbox_unchecked
+            Image(
+                modifier = Modifier
+                    .size(DIM_XL)
+                    .clip(
+                        RoundedCornerShape(DIM_XXS)
                     ),
-                    contentDescription = title,
-                    contentScale = ContentScale.Crop,
-                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground)
-                )
-                Spacer(modifier = Modifier.width(DIM_XS))
-                Column(
-                    Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = lastMaintained,
-                        style = MaterialTheme.typography.body2,
-                        color = MaterialTheme.colors.onBackground
-                    )
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.h3,
-                        color = MaterialTheme.colors.onBackground
-                    )
-                }
+                painter = painterResource(
+                    id = graphic ?: R.drawable.block_48px
+                ),
+                contentDescription = title,
+                contentScale = ContentScale.Crop,
+                colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground)
+            )
+            Spacer(modifier = Modifier.width(DIM_XS))
+            Column(
+                Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.Center
+            ) {
+                BodyText2(text = lastMaintained)
+                HeadlineSlim(text = title)
             }
         }
     }
@@ -180,13 +121,5 @@ fun NextMaintainItem(
 @Preview(uiMode = UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun PreviewNextMaintains() {
-    MaintainerTheme {
-        NextMaintains(
-            Modifier
-                .fillMaxWidth()
-                .padding(DIM_XS),
-            devMachines.first().title,
-            devTasks
-        )
-    }
+    MaintainerTheme { NextMaintains(devMachines.first().title, devTasks) }
 }

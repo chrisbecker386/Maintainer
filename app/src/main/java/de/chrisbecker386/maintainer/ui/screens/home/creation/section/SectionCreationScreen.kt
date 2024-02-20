@@ -26,8 +26,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,8 +37,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.entity.Section
+import de.chrisbecker386.maintainer.ui.component.BaseButton
+import de.chrisbecker386.maintainer.ui.component.HeadlineBold
 import de.chrisbecker386.maintainer.ui.component.ImagePickerWithPreview
-import de.chrisbecker386.maintainer.ui.component.RoundedButton
 import de.chrisbecker386.maintainer.ui.component.TextInputField
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
@@ -70,7 +69,7 @@ private fun SectionCreation(
             .fillMaxWidth()
             .padding(DIM_XS)
     ) {
-        item { Text(text = "Create Section", style = MaterialTheme.typography.h2) }
+        item { HeadlineBold(text = "Create Section") }
         item {
             TextInputField(
                 label = "Section Name",
@@ -96,9 +95,8 @@ private fun SectionCreation(
 
             if (state.isCreationComplete) {
                 Spacer(modifier = Modifier.height(DIM_S))
-                RoundedButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    title = "confirm",
+                BaseButton(
+                    text = "confirm",
                     onClick = {
                         onEvent(
                             SectionCreationEvent.SectionConfirm(

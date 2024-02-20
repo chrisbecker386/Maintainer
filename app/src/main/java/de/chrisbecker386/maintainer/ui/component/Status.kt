@@ -20,20 +20,16 @@
 package de.chrisbecker386.maintainer.ui.component
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Handyman
 import androidx.compose.runtime.Composable
@@ -44,81 +40,68 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import de.chrisbecker386.maintainer.data.model.dummy.devTasks
 import de.chrisbecker386.maintainer.ui.model.ShortStatusState
-import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
-import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
 fun ShortStatus(
-    modifier: Modifier = Modifier,
     title: String = "",
     state: ShortStatusState
 ) {
-    Box(modifier = modifier) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(DIM_XS),
-            elevation = DIM_NO,
-            border = BorderStroke(width = DIM_XXXXS, color = MaterialTheme.colors.onBackground)
+    EvenCard {
+        Column(
+            Modifier.padding(
+                top = DIM_S,
+                bottom = DIM_S,
+                start = DIM_XS,
+                end = DIM_XS
+            )
         ) {
-            Column(
-                Modifier.padding(
-                    top = DIM_S,
-                    bottom = DIM_S,
-                    start = DIM_XS,
-                    end = DIM_XS
-                )
-            ) {
-                Row {
-                    ConstraintLayout(Modifier.fillMaxWidth()) {
-                        val (leftTextRef, rightIcon, rightText) = createRefs()
-                        Text(
-                            modifier = Modifier.constrainAs(leftTextRef) {
-                                start.linkTo(parent.start)
-                                top.linkTo(parent.top)
-                                bottom.linkTo(parent.bottom)
-                            },
-                            text = title,
-                            style = MaterialTheme.typography.body1
+            Row {
+                ConstraintLayout(Modifier.fillMaxWidth()) {
+                    val (leftTextRef, rightIcon, rightText) = createRefs()
+                    BodyText(
+                        modifier = Modifier.constrainAs(leftTextRef) {
+                            start.linkTo(parent.start)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                        },
+                        text = title
 
-                        )
-                        Text(
-                            modifier = Modifier.constrainAs(rightText) {
-                                end.linkTo(parent.end)
+                    )
+                    BodyText(
+                        modifier = Modifier.constrainAs(rightText) {
+                            end.linkTo(parent.end)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                        },
+                        text = state.toString()
+                    )
+                    Image(
+                        modifier = Modifier
+                            .constrainAs(rightIcon) {
+                                end.linkTo(rightText.start)
                                 top.linkTo(parent.top)
                                 bottom.linkTo(parent.bottom)
-                            },
-                            text = state.toString(),
-                            style = MaterialTheme.typography.body1
-                        )
-                        Image(
-                            modifier = Modifier
-                                .constrainAs(rightIcon) {
-                                    end.linkTo(rightText.start)
-                                    top.linkTo(parent.top)
-                                    bottom.linkTo(parent.bottom)
-                                }
-                                .padding(end = DIM_XXS),
-                            imageVector = Icons.Default.Handyman,
-                            contentDescription = "repair",
-                            colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground)
-                        )
-                    }
+                            }
+                            .padding(end = DIM_XXS),
+                        imageVector = Icons.Default.Handyman,
+                        contentDescription = "repair",
+                        colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground)
+                    )
                 }
-                Spacer(modifier = Modifier.height(DIM_XXS))
-                LinearProgressIndicator(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(DIM_XXS),
-                    progress = state.getProgress(),
-                    color = MaterialTheme.colors.primary,
-                    strokeCap = StrokeCap.Round
-                )
             }
+            Spacer(modifier = Modifier.height(DIM_XXS))
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(DIM_XXS),
+                progress = state.getProgress(),
+                color = MaterialTheme.colors.primary,
+                strokeCap = StrokeCap.Round
+            )
         }
     }
 }
@@ -129,13 +112,13 @@ fun PreviewMaintainObjectStatus() {
     MaintainerTheme {
         Column {
             ShortStatus(
-                Modifier.padding(DIM_XS),
                 title = "Maintain Status",
                 state = ShortStatusState(
                     numerator = 2,
                     denominator = 7
                 )
             )
+            Spacer(modifier = Modifier.size(DIM_XS))
             NextMaintains(
                 machineTitle = "machine",
                 tasks = devTasks

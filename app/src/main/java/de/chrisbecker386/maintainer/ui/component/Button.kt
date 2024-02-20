@@ -22,14 +22,17 @@ package de.chrisbecker386.maintainer.ui.component
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonColors
@@ -44,6 +47,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
@@ -60,7 +64,9 @@ import de.chrisbecker386.maintainer.ui.theme.BaseOrange
 import de.chrisbecker386.maintainer.ui.theme.DIM_L
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
+import de.chrisbecker386.maintainer.ui.theme.DIM_XL
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
+import de.chrisbecker386.maintainer.ui.theme.DIM_XXXS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.LightBlue
 import de.chrisbecker386.maintainer.ui.theme.LightOrange
@@ -74,7 +80,7 @@ fun RoundedButton(
     style: TextStyle = typography.body1,
     position: Arrangement.Horizontal = Arrangement.Center,
     backgroundColor: Color = colors.background,
-    borderStroke: BorderStroke = BorderStroke(width = DIM_XXXXS, color = colors.onBackground),
+    borderStroke: BorderStroke? = BorderStroke(width = DIM_XXXXS, color = colors.onBackground),
     cornerPercent: Int = 50,
     painterSource: Painter? = null,
     contentPadding: PaddingValues = PaddingValues(DIM_S, DIM_XS),
@@ -85,7 +91,7 @@ fun RoundedButton(
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         enabled = enable,
         elevation = null,
         shape = RoundedCornerShape(cornerPercent),
@@ -99,11 +105,8 @@ fun RoundedButton(
         contentPadding = contentPadding,
         interactionSource = interactionSource
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = position // here
             ) {
@@ -124,6 +127,14 @@ fun RoundedButton(
                 }
                 Text(title, style = style)
             }
+
+            Box(
+                modifier = Modifier
+                    .height(DIM_XXXS)
+                    .width(DIM_XL)
+                    .clip(RoundedCornerShape(50))
+                    .background(colors.primary)
+            )
         }
     }
 }
@@ -191,9 +202,7 @@ class ButtonColorsImpl(
         if (backgroundColor != other.backgroundColor) return false
         if (contentColor != other.contentColor) return false
         if (disabledBackgroundColor != other.disabledBackgroundColor) return false
-        if (disabledContentColor != other.disabledContentColor) return false
-
-        return true
+        return disabledContentColor == other.disabledContentColor
     }
 
     override fun hashCode(): Int {

@@ -24,6 +24,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -410,34 +411,33 @@ private fun Modifier.drawLine(
     )
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Composable
 fun PreviewTextFields() {
     MaintainerTheme {
         Column(
             Modifier
-                .fillMaxSize(1f)
-                .background(colors.onBackground)
+                .fillMaxSize()
+                .background(colors.background)
+                .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
+            verticalArrangement = Arrangement.spacedBy(DIM_XS)
         ) {
-            Text(text = "Single line TF", color = colors.onBackground)
+            BodyText("Single line TF")
             SingleLineTextInputField(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(DIM_XS),
+                    .fillMaxWidth(),
                 label = "TextField"
             )
-            Text("TextField", color = colors.onBackground)
+            BodyText("TextField")
             TextInputField(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(DIM_XS),
+                    .fillMaxWidth(),
                 label = "TextField"
             )
-            Text("Multi line TF", color = colors.onBackground)
+            BodyText("Multi line TF")
             MultilineTextInputField(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(DIM_XS),
+                    .fillMaxWidth(),
                 label = "TextField",
                 text = "some chars",
                 maxChars = 30

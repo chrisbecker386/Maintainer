@@ -21,12 +21,10 @@ package de.chrisbecker386.maintainer.ui.screens.home.task
 
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -61,35 +59,34 @@ private fun SingleTask(
     navigateUp: () -> Unit
 ) {
     if (state.isTaskDone) onEvent(SingleTaskEvent.TaskDone(state.task))
-    if (state.showDialog) ConfirmDialog(onConfirm = navigateUp, title = "Task Completed", text = "You have completed this task! \uD83D\uDCAA")
+    if (state.showDialog) {
+        ConfirmDialog(
+            onConfirm = navigateUp,
+            title = "Task Completed",
+            text = "You have completed this task! \uD83D\uDCAA"
+        )
+    }
 
-    LazyColumn(Modifier.fillMaxWidth()) {
+    LazyColumn(
+        Modifier
+            .fillMaxWidth()
+            .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
+        verticalArrangement = Arrangement.spacedBy(DIM_XS)
+    ) {
         item {
             ShortStatus(
-                modifier = Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
                 title = state.task.title,
                 state = state.shortStatus
             )
         }
         items(count = state.steps.size) { index ->
             StepWithDetails(
-                Modifier
-                    .clickable { onEvent(SingleTaskEvent.StepDone(state.steps[index])) }
-                    .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
+                Modifier.clickable { onEvent(SingleTaskEvent.StepDone(state.steps[index])) },
                 step = state.steps[index],
                 task = state.task
             )
         }
     }
-}
-
-@Composable
-fun DoneDialog(navigateUp: () -> Unit) {
-    AlertDialog(onDismissRequest = { navigateUp() }, buttons = {
-        Button(onClick = { navigateUp() }) {
-            Text(text = "Ok")
-        }
-    })
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)

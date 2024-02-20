@@ -25,8 +25,8 @@ enum class RepeatFrequency(val text: String, private val shortText: String, val 
     HOURLY("hour", "hr", 3600000L),
     DAILY("day", "day", 86400000L),
     WEEKLY("week", "wk", 604800000L),
-    MONTHLY("month", "mo", 2628000000L),
-    YEARLY("year", "yr", 31540000000L);
+    MONTHLY("month", "mo", 2628333333L), // 1/12 of a year
+    YEARLY("year", "yr", 31556952000L); // 365.2421988 days
 
     override fun toString(): String = this.shortText
     fun inMillis(): Long {

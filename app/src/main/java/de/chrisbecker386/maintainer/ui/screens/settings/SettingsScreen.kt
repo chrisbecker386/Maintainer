@@ -26,11 +26,13 @@ import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
@@ -46,12 +48,14 @@ import de.chrisbecker386.maintainer.data.model.AlarmReminder
 import de.chrisbecker386.maintainer.data.model.DataResourceState
 import de.chrisbecker386.maintainer.data.model.RepeatFrequency
 import de.chrisbecker386.maintainer.service.AndroidAlarmScheduler
+import de.chrisbecker386.maintainer.ui.component.BaseButton
 import de.chrisbecker386.maintainer.ui.component.PermissionDialog
-import de.chrisbecker386.maintainer.ui.component.RoundedButton
 import de.chrisbecker386.maintainer.ui.component.basic.CircularLoadIndicator
 import de.chrisbecker386.maintainer.ui.component.basic.MessageFullScreen
 import de.chrisbecker386.maintainer.ui.component.editables.RepeatFrequencyEditor
 import de.chrisbecker386.maintainer.ui.theme.ALARM_TITLE_NOTIFICATION
+import de.chrisbecker386.maintainer.ui.theme.DIM_M
+import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -70,8 +74,8 @@ fun SettingsScreen() {
             )
         }
 
-        is DataResourceState.Idle -> SettingsInternal(
-            state = (state as DataResourceState.Idle<SettingsData>).data,
+        is DataResourceState.Success -> SettingsInternal(
+            state = (state as DataResourceState.Success<SettingsData>).data,
             onEvent = viewModel::onEvent
         )
 
@@ -79,7 +83,7 @@ fun SettingsScreen() {
             CircularLoadIndicator()
         }
 
-        is DataResourceState.Success -> TODO()
+        is DataResourceState.Finished -> TODO()
     }
 }
 
@@ -125,7 +129,11 @@ fun SettingsInternal(
 
     val scheduler = AndroidAlarmScheduler(LocalContext.current)
 
-    Column(Modifier.fillMaxSize()) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(start = DIM_XS, end = DIM_XS)
+    ) {
         RepeatFrequencyEditor(
             modifier = Modifier
                 .fillMaxWidth()
@@ -142,16 +150,16 @@ fun SettingsInternal(
             onDateTimeChange = { firstNotifyExecution = it },
             onRepeatFrequencyAndTactChange = { repeatFrequency = it }
         ) {
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                RoundedButton(
-                    modifier = Modifier.fillMaxWidth(0.5f),
-                    title = "cancel",
-                    onClick = { getCurrentAlarmItem().let(scheduler::cancel) }
-                )
-                RoundedButton(
-                    modifier = Modifier.fillMaxWidth(0.5f),
-                    title = "start",
+            Spacer(modifier = Modifier.size(DIM_XS))
+            Row(Modifier.fillMaxWidth()) {
+                BaseButton(
+                    text = "start",
                     onClick = { getCurrentAlarmItem().let(scheduler::schedule) }
+                )
+                Spacer(modifier = Modifier.size(DIM_M))
+                BaseButton(
+                    text = "cancel",
+                    onClick = { getCurrentAlarmItem().let(scheduler::cancel) }
                 )
             }
         }
