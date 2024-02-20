@@ -20,18 +20,10 @@
 package de.chrisbecker386.maintainer.data.model
 
 sealed class DataResourceState<out T> {
-    data class Loading<out T>(val data: T? = null) : DataResourceState<T>()
-    data class Idle<out T>(val data: T) : DataResourceState<T>()
-    data class Error(val message: String, val throwable: Throwable? = null) :
-        DataResourceState<Nothing>()
-    data class Success(val title: String?, val text: String?) : DataResourceState<Nothing>()
-
-    companion object {
-        fun <T> loading(data: T? = null): DataResourceState<T> = Loading(data)
-        fun <T> idle(data: T): DataResourceState<T> = Idle(data)
-        fun error(message: String, throwable: Throwable? = null): DataResourceState<Nothing> =
-            Error(message, throwable)
-        fun success(message: String? = null, text: String? = null): DataResourceState<Nothing> =
-            Success(message, text)
-    }
+    data class Loading<out T>(val data: T, val percentage: Int? = null) : DataResourceState<T>()
+    data class Success<out T>(val data: T) : DataResourceState<T>()
+    data class Error<out T>(val data: T, val message: String, val throwable: Throwable? = null) :
+        DataResourceState<T>()
+    data class Finished<out T>(val data: T, val title: String?, val text: String?) :
+        DataResourceState<T>()
 }

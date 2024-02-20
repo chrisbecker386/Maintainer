@@ -19,21 +19,15 @@
 
 package de.chrisbecker386.maintainer.ui.component
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Ballot
 import androidx.compose.runtime.Composable
@@ -42,11 +36,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.ui.theme.DIM_M_PLUS
-import de.chrisbecker386.maintainer.ui.theme.DIM_NO
-import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
-import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
@@ -55,34 +46,13 @@ fun TaskContent(
     title: String,
     subtitle: String,
     numberOfSteps: Int
-
 ) {
     Box(modifier = modifier) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(DIM_S),
-            elevation = DIM_NO,
-            border = BorderStroke(width = DIM_XXXXS, color = MaterialTheme.colors.onBackground)
-        ) {
-            Column(
-                Modifier
-                    .padding(horizontal = DIM_XS, vertical = DIM_XXS)
-            ) {
-                Text(
-                    text = title,
-                    color = MaterialTheme.colors.onBackground,
-                    style = MaterialTheme.typography.h2
-                )
-                Text(
-                    text = subtitle,
-                    color = MaterialTheme.colors.onBackground,
-                    style = MaterialTheme.typography.body1
-                )
-
-                RowWithIconText(icon = Icons.Default.Ballot, text = "$numberOfSteps steps")
-                Spacer(modifier = Modifier.height(DIM_XXS))
-            }
+        EvenCard {
+            HeadlineBold(title)
+            BodyText(subtitle)
+            RowWithIconText(icon = Icons.Default.Ballot, text = "$numberOfSteps steps")
+            Spacer(modifier = Modifier.height(DIM_XXS))
         }
     }
 }
@@ -103,11 +73,7 @@ fun RowWithIconText(
             )
         } ?: Spacer(modifier = Modifier.width(DIM_M_PLUS))
         Spacer(Modifier.width(DIM_XS))
-        Text(
-            text = text,
-            style = MaterialTheme.typography.body1,
-            color = MaterialTheme.colors.onBackground
-        )
+        BodyText(text)
     }
 }
 
@@ -115,11 +81,6 @@ fun RowWithIconText(
 @Composable
 fun PreviewTaskContent() {
     MaintainerTheme {
-        TaskContent(
-            Modifier.fillMaxWidth(),
-            title = "task_title",
-            subtitle = "task_sub_title",
-            numberOfSteps = 4
-        )
+        TaskContent(title = "task_title", subtitle = "task_sub_title", numberOfSteps = 4)
     }
 }

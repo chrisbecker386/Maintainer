@@ -36,11 +36,23 @@ fun Long.toRepeatFrequency(): RepeatFrequency {
         in (60001L..3600000L) -> RepeatFrequency.HOURLY
         in (3600001L..86400000L) -> RepeatFrequency.DAILY
         in (86400001L..604800000L) -> RepeatFrequency.WEEKLY
-        in (604800001L..2628000000L) -> RepeatFrequency.MINUTELY
-        else -> RepeatFrequency.YEARLY
+        in (604800001L..2628333333L) -> RepeatFrequency.MONTHLY // 1/12 of a year
+        else -> RepeatFrequency.YEARLY // 365.2421988 days
     }
+}
+
+fun Long.getRepeatFrequencyWithTact(): Pair<RepeatFrequency, Int> {
+    RepeatFrequency.values().forEach { repeatFrequency ->
+        if (this % repeatFrequency.value == 0L) {
+            return Pair(repeatFrequency, (this / repeatFrequency.value).toInt())
+        }
+    }
+
+    return Pair(RepeatFrequency.SECONDLY, (this / RepeatFrequency.SECONDLY.value).toInt())
 }
 
 fun Float.sameValueAs(other: Float): Boolean {
     return (abs(this - other) < 0.004)
 }
+
+fun Int.isEven(): Boolean = (this % 2) == 1

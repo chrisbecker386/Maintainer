@@ -21,7 +21,6 @@ package de.chrisbecker386.maintainer.ui.component
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,10 +36,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Text
@@ -72,13 +69,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.ui.screens.settings.MaintainerPermission
-import de.chrisbecker386.maintainer.ui.theme.BUTTON_CORNER_SHAPE
 import de.chrisbecker386.maintainer.ui.theme.DEFAULT_STEP
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
-import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 import java.time.Instant
 import java.time.LocalDate
@@ -105,43 +100,17 @@ fun ConfirmDialog(
             }
         }
     ) {
-        Card(
-            modifier = Modifier.fillMaxWidth(1f),
-            shape = RoundedCornerShape(DIM_S),
-            border = BorderStroke(
-                width = DIM_XXXXS,
-                color = colors.onBackground
-            ),
-            elevation = DIM_NO
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS, bottom = DIM_XS),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = title,
-                    style = typography.h4,
-                    color = colors.onBackground
-                )
-                Text(
-                    text = text,
-                    style = typography.body1,
-                    color = colors.onBackground
-                )
-                Spacer(modifier = Modifier.height(DIM_XS))
-                Button(onClick = {
+        EvenCard(horizontalAlignment = Alignment.CenterHorizontally) {
+            HeadlineBoldMedium(title)
+            BodyText(text = text)
+            Spacer(modifier = Modifier.height(DIM_XS))
+            Row(horizontalArrangement = Arrangement.End) {
+                BaseButton(text = confirmText, onClick = {
                     if (isConfirmClickable) {
                         isConfirmClickable = false
                         onConfirm()
                     }
-                }, shape = RoundedCornerShape(DIM_XS)) {
-                    Text(
-                        text = confirmText,
-                        style = typography.body1,
-                        color = colors.onBackground
-                    )
-                }
+                })
             }
         }
     }
@@ -182,17 +151,8 @@ fun MaintainerTimePickerDialog(
                 ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = title,
-                    style = typography.h4,
-                    color = colors.onBackground
-                )
-                Text(
-                    text = text,
-                    style = typography.body1,
-                    color = colors.onBackground,
-                    textAlign = TextAlign.Center
-                )
+                HeadlineBoldMedium(text = title)
+                BodyText(text)
                 Spacer(modifier = Modifier.size(DIM_S))
                 TimePicker(
                     state = timeState,
@@ -210,15 +170,9 @@ fun MaintainerTimePickerDialog(
                     )
                 )
                 Spacer(modifier = Modifier.height(DIM_XXS))
-                Button(onClick = {
+                BaseButton(text = confirmText, onClick = {
                     onConfirm(getLocalTime())
-                }, shape = RoundedCornerShape(BUTTON_CORNER_SHAPE)) {
-                    Text(
-                        text = confirmText,
-                        style = typography.body1,
-                        color = colors.onBackground
-                    )
-                }
+                })
                 Spacer(modifier = Modifier.height(DIM_XS))
             }
         }
@@ -279,16 +233,7 @@ fun MaintainerDatePickerDialog(
                     disabledSelectedDayContentColor = colors.onBackground
                 )
             )
-            Button(
-                onClick = { onConfirm(getLocalDate()) },
-                shape = RoundedCornerShape(BUTTON_CORNER_SHAPE)
-            ) {
-                Text(
-                    text = confirmText,
-                    style = typography.body1,
-                    color = colors.onBackground
-                )
-            }
+            BaseButton(text = confirmText, onClick = { onConfirm(getLocalDate()) })
         }
     }
 }
@@ -306,69 +251,41 @@ fun AddStepDialog(
 
     Dialog(onDismissRequest = onDismissRequest) {
         val focusManager = LocalFocusManager.current
-        Card(
-            modifier = Modifier.fillMaxWidth(1f),
-            shape = RoundedCornerShape(12),
-            backgroundColor = colors.background,
-            elevation = DIM_NO
-        ) {
-            Column(
-                modifier = Modifier.padding(
-                    start = DIM_XS,
-                    end = DIM_XS,
-                    top = DIM_XS,
-                    bottom = DIM_XS
+        UnevenCard {
+            BodyText("tasks")
+            TextInputField(
+                modifier = Modifier.fillMaxWidth(),
+                label = "headline",
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Words,
+                    autoCorrect = false,
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
                 ),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(DIM_XXS),
-                    text = "tasks",
-                    style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.onBackground
-                )
-                TextInputField(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = "headline",
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Words,
-                        autoCorrect = false,
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Next) }
-                    ),
-                    value = currentStep.title,
-                    onValueChange = { currentStep = currentStep.copy(title = it) },
-                    enabled = true
-                )
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Next) }
+                ),
+                value = currentStep.title,
+                onValueChange = { currentStep = currentStep.copy(title = it) },
+                enabled = true
+            )
+            MultilineTextInputField(
+                modifier = Modifier.fillMaxWidth(),
+                label = "detailed description",
+                text = currentStep.description ?: "",
+                maxChars = null,
+                onValueChange = { currentStep = currentStep.copy(description = it) },
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Words,
+                    autoCorrect = false,
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+            )
 
-                MultilineTextInputField(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = "detailed description",
-                    text = currentStep.description ?: "",
-                    maxChars = null,
-                    onValueChange = { currentStep = currentStep.copy(description = it) },
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Words,
-                        autoCorrect = false,
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
-                )
-
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                    Button(
-                        modifier = Modifier.padding(DIM_XXS),
-                        onClick = { onConfirm(currentStep) }
-                    ) {
-                        Text(text = "Ok")
-                    }
-                }
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                BaseButton(text = confirmText, onClick = { onConfirm(currentStep) })
             }
         }
     }
@@ -413,16 +330,15 @@ fun PermissionDialog(
             }
         },
         title = {
-            Text(text = "Permission required", style = typography.h3)
+            HeadlineSlim(text = "Permission required")
         },
         text = {
-            Text(
+            BodyText(
                 text = if (isPermanentlyDeclined) {
                     permission.permanentDeclinedText
                 } else {
                     permission.description
-                },
-                style = typography.body1
+                }
             )
         },
         modifier = modifier
@@ -434,6 +350,7 @@ fun PermissionDialog(
 @Composable
 fun PreviewDialog() {
     MaintainerTheme {
+//        ConfirmDialog()
         AddStepDialog(step = DEFAULT_STEP)
     }
 }

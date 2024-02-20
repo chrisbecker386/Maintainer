@@ -43,6 +43,7 @@ import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -54,7 +55,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.ui.theme.DIM_BIG_TWO
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
-import de.chrisbecker386.maintainer.ui.theme.DIM_S_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXL
@@ -72,82 +72,55 @@ fun ImagePickerWithPreview(
     onImageChange: (Int) -> Unit = {}
 
 ) {
-    var selectedImage: Int by remember { mutableStateOf(imageRes) }
+    var selectedImage: Int by remember { mutableIntStateOf(imageRes) }
 
-    Column {
+    UnevenCard {
+        if (title.isNotEmpty()) {
+            Text(
+                text = title,
+                color = colors.onBackground,
+                style = typography.h4
+            )
+        }
+        Spacer(modifier = Modifier.padding(DIM_XXXS))
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            EvenCard(
+                modifier = Modifier
+                    .size(DIM_BIG_TWO)
+                    .padding(top = DIM_XXS, bottom = DIM_XS)
+            ) {
+                Image(
+                    modifier = Modifier.size(DIM_BIG_TWO),
+                    painter = painterResource(id = selectedImage),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(colors.onBackground)
+                )
+            }
+        }
         Card(
-            modifier = modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(
-                topStart = DIM_S,
-                topEnd = DIM_S,
-                bottomStart = DIM_S_PLUS,
-                bottomEnd = DIM_S_PLUS
-            ),
-            elevation = DIM_NO,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = DIM_XS),
             border = BorderStroke(
                 width = DIM_XXXXS,
                 color = colors.onBackground
-            )
+            ),
+            shape = RoundedCornerShape(DIM_S),
+            elevation = DIM_NO,
+            backgroundColor = colors.background
         ) {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(DIM_XS),
-                horizontalAlignment = Alignment.Start
-
-            ) {
-                if (title.isNotEmpty()) {
-                    Text(
-                        text = title,
-                        color = colors.onBackground,
-                        style = typography.h4
-                    )
+            ImagePickerHorizontal(
+                modifier = Modifier.padding(all = DIM_XS),
+                images = images,
+                onImageChange = {
+                    selectedImage = it
+                    onImageChange(it)
                 }
-                Spacer(modifier = Modifier.padding(DIM_XXXS))
-                Row(
-                    Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Card(
-                        modifier = Modifier
-                            .size(DIM_BIG_TWO)
-                            .padding(top = DIM_XXS, bottom = DIM_XS),
-                        border = BorderStroke(
-                            width = DIM_XXXXS,
-                            color = colors.onBackground
-                        ),
-                        shape = RoundedCornerShape(DIM_S)
-                    ) {
-                        Image(
-                            modifier = Modifier.size(DIM_BIG_TWO),
-                            painter = painterResource(id = selectedImage),
-                            contentDescription = "",
-                            colorFilter = ColorFilter.tint(colors.onBackground)
-                        )
-                    }
-                }
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = DIM_XS),
-                    border = BorderStroke(
-                        width = DIM_XXXXS,
-                        color = colors.onBackground
-                    ),
-                    shape = RoundedCornerShape(DIM_S),
-                    elevation = DIM_NO
-                ) {
-                    ImagePickerHorizontal(
-                        modifier = Modifier.padding(all = DIM_XS),
-                        images = images,
-                        onImageChange = {
-                            selectedImage = it
-                            onImageChange(it)
-                        }
-                    )
-                }
-            }
+            )
         }
     }
 }
@@ -178,7 +151,8 @@ fun ImagePickerHorizontal(
                     color = if (index == currentImage) colors.primary else colors.onBackground
                 ),
                 shape = RoundedCornerShape(DIM_XS),
-                elevation = DIM_NO
+                elevation = DIM_NO,
+                backgroundColor = colors.background
             ) {
                 Icon(
                     modifier = Modifier.padding(DIM_XS),

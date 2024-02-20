@@ -20,16 +20,12 @@
 package de.chrisbecker386.maintainer.ui.component.editables
 
 import android.content.res.Configuration
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -44,14 +40,12 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.ui.component.AddStepDialog
+import de.chrisbecker386.maintainer.ui.component.BaseButton
 import de.chrisbecker386.maintainer.ui.component.StepWithDetails
-import de.chrisbecker386.maintainer.ui.theme.BUTTON_CORNER_SHAPE
+import de.chrisbecker386.maintainer.ui.component.UnevenCard
 import de.chrisbecker386.maintainer.ui.theme.DEFAULT_STEP
-import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
-import de.chrisbecker386.maintainer.ui.theme.DIM_S_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
-import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 /**
@@ -73,21 +67,7 @@ fun StepsEditor(
     val localSteps by rememberSaveable { mutableStateOf(steps.toMutableList()) }
 
     var showTaskDialog by remember { mutableStateOf(false) }
-    Card(
-        modifier = modifier
-            .fillMaxWidth(),
-        shape = RoundedCornerShape(
-            topStart = DIM_S,
-            topEnd = DIM_S,
-            bottomStart = DIM_S_PLUS,
-            bottomEnd = DIM_S_PLUS
-        ),
-        elevation = DIM_NO,
-        border = BorderStroke(
-            width = DIM_XXXXS,
-            color = MaterialTheme.colors.onBackground
-        )
-    ) {
+    UnevenCard {
         Column(
             Modifier
                 .fillMaxWidth()
@@ -111,16 +91,10 @@ fun StepsEditor(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                Button(
-                    onClick = { showTaskDialog = !showTaskDialog },
-                    shape = RoundedCornerShape(BUTTON_CORNER_SHAPE)
-                ) {
-                    Text(
-                        text = "add",
-                        style = MaterialTheme.typography.body1,
-                        color = MaterialTheme.colors.onBackground
-                    )
-                }
+                BaseButton(
+                    text = "add",
+                    onClick = { showTaskDialog = !showTaskDialog }
+                )
             }
 
             if (localSteps.size > 0) {

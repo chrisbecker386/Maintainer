@@ -19,7 +19,7 @@
 
 package de.chrisbecker386.maintainer.ui.component
 
-import androidx.compose.foundation.BorderStroke
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -29,10 +29,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.runtime.Composable
@@ -44,49 +41,33 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.model.GridItemData
+import de.chrisbecker386.maintainer.data.utility.isEven
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
-import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXL
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
-import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 @Composable
 fun OverviewGrid(
-    modifier: Modifier = Modifier,
     items: List<GridItemData> = emptyList(),
     onItemClick: (Int) -> Unit = {}
 ) {
-    Box(modifier = modifier.fillMaxWidth()) {
-        Card(
-            Modifier
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(DIM_S),
-            border = BorderStroke(
-                width = DIM_XXXXS,
-                color = MaterialTheme.colors.onBackground
-            ),
-            elevation = DIM_NO
-        ) {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(start = DIM_XXS, end = DIM_XXS, top = DIM_XXS, bottom = DIM_XXS)
-            ) {
-                NonLazyGrid(
-                    columns = 2,
-                    itemCount = items.size
-                ) {
-                    OverviewGridItem(
-                        modifier = Modifier.padding(DIM_XXS),
-                        title = items[it].title,
-                        icon = items[it].imageRes?.let { icon -> ImageVector.vectorResource(id = icon) }
-                            ?: Icons.Default.QuestionMark,
-                        onClick = { onItemClick(items[it].id) }
-                    )
-                }
-            }
+    val numberOfColumns = 2
+    EvenCard {
+        NonLazyGrid(
+            columns = numberOfColumns,
+            itemCount = items.size
+        ) { index ->
+            val modifier = Modifier.padding(start = if (index.isEven()) DIM_XS else DIM_NO)
+                .padding(top = if (index >= numberOfColumns) DIM_XS else DIM_NO)
+            OverviewGridItem(
+                modifier = modifier,
+                title = items[index].title,
+                icon = items[index].imageRes?.let { icon -> ImageVector.vectorResource(id = icon) }
+                    ?: Icons.Default.QuestionMark,
+                onClick = { onItemClick(items[index].id) }
+            )
         }
     }
 }
@@ -99,17 +80,7 @@ fun OverviewGridItem(
     onClick: () -> Unit = {}
 ) {
     Box(modifier = modifier) {
-        Card(
-            Modifier
-                .fillMaxWidth()
-                .clickable { onClick() },
-            shape = RoundedCornerShape(DIM_XS),
-            border = BorderStroke(
-                width = DIM_XXXXS,
-                color = MaterialTheme.colors.onBackground
-            ),
-            elevation = DIM_NO
-        ) {
+        EvenCard(Modifier.clickable { onClick() }) {
             Column(
                 Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -124,47 +95,45 @@ fun OverviewGridItem(
                     contentDescription = title
                 )
                 Spacer(modifier = Modifier.height(DIM_XXS))
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.h5,
-                    color = MaterialTheme.colors.onBackground
-                )
+                GridItemText(title)
                 Spacer(modifier = Modifier.height(DIM_XS))
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = false)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = false)
 @Composable
 fun PreviewSection() {
     MaintainerTheme {
-        OverviewGrid(
-            modifier = Modifier.fillMaxWidth(),
-            items = listOf(
-                GridItemData(
-                    1,
-                    "Kitchen",
-                    R.drawable.kitchen_48px
-                ),
-                GridItemData(
-                    2,
-                    "Car",
-                    R.drawable.question_mark_48px
-                ),
-                GridItemData(
-                    3,
-                    "Bike"
-                ),
-                GridItemData(
-                    4,
-                    "Computer"
-                ),
-                GridItemData(
-                    5,
-                    "Bathroom"
+        Column {
+            OverviewGrid(
+                items = listOf(
+                    GridItemData(
+                        1,
+                        "Kitchen",
+                        R.drawable.kitchen_48px
+                    ),
+                    GridItemData(
+                        2,
+                        "Car",
+                        R.drawable.question_mark_48px
+                    ),
+                    GridItemData(
+                        3,
+                        "Bike"
+                    ),
+                    GridItemData(
+                        4,
+                        "Computer"
+                    ),
+                    GridItemData(
+                        5,
+                        "Bathroom"
+                    )
                 )
             )
-        )
+        }
     }
 }

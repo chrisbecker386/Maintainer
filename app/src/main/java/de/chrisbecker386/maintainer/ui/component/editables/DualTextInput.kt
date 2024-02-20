@@ -20,15 +20,10 @@
 package de.chrisbecker386.maintainer.ui.component.editables
 
 import android.content.res.Configuration
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,11 +37,9 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.ui.component.TextInputField
-import de.chrisbecker386.maintainer.ui.theme.DIM_NO
+import de.chrisbecker386.maintainer.ui.component.UnevenCard
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
-import de.chrisbecker386.maintainer.ui.theme.DIM_S_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
-import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 /**
@@ -71,66 +64,50 @@ fun DualTextInput(
 
     val focusManager = LocalFocusManager.current
 
-    Card(
-        modifier = modifier
-            .fillMaxWidth(),
-        shape = RoundedCornerShape(
-            topStart = DIM_S,
-            topEnd = DIM_S,
-            bottomStart = DIM_S_PLUS,
-            bottomEnd = DIM_S_PLUS
-        ),
-        elevation = DIM_NO,
-        border = BorderStroke(
-            width = DIM_XXXXS,
-            color = MaterialTheme.colors.onBackground
-        )
+    UnevenCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = DIM_XS, bottom = DIM_S, start = DIM_XS, end = DIM_XS)
     ) {
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(top = DIM_XS, bottom = DIM_S, start = DIM_XS, end = DIM_XS)
-        ) {
-            TextInputField(
-                label = labels.first ?: "",
-                value = localField1 ?: "",
-                onValueChange = {
-                    localField1 = it
-                    onValueChange(it, localField2)
-                },
-                enabled = true,
-                sideIcon = null,
-                onSideIconClick = {},
-                keyboardOptions = KeyboardOptions(
-                    capitalization = KeyboardCapitalization.Words,
-                    autoCorrect = false,
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                ),
-                keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                )
+        TextInputField(
+            label = labels.first ?: "",
+            value = localField1 ?: "",
+            onValueChange = {
+                localField1 = it
+                onValueChange(it, localField2)
+            },
+            enabled = true,
+            sideIcon = null,
+            onSideIconClick = {},
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Words,
+                autoCorrect = false,
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Down) }
             )
-            TextInputField(
-                label = labels.second ?: "",
-                value = localField2 ?: "",
-                onValueChange = {
-                    localField2 = it
-                    onValueChange(localField1, it)
-                },
-                enabled = true,
-                sideIcon = null,
-                onSideIconClick = {},
-                keyboardOptions = KeyboardOptions(
-                    capitalization = KeyboardCapitalization.Words,
-                    autoCorrect = false,
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
-            )
-            content()
-        }
+        )
+        TextInputField(
+            label = labels.second ?: "",
+            value = localField2 ?: "",
+            onValueChange = {
+                localField2 = it
+                onValueChange(localField1, it)
+            },
+            enabled = true,
+            sideIcon = null,
+            onSideIconClick = {},
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Words,
+                autoCorrect = false,
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+        )
+        content()
     }
 }
 

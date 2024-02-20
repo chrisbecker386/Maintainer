@@ -27,9 +27,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.model.DataResourceState
-import de.chrisbecker386.maintainer.data.model.DataResourceState.Companion.idle
-import de.chrisbecker386.maintainer.data.model.DataResourceState.Companion.loading
-import de.chrisbecker386.maintainer.data.model.DataResourceState.Companion.success
 import de.chrisbecker386.maintainer.data.model.RepeatFrequency
 import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
 import de.chrisbecker386.maintainer.ui.theme.ICON_LIST
@@ -81,24 +78,33 @@ class TaskCreationViewModel @Inject constructor(
 
     private val _error = MutableStateFlow<Throwable?>(null)
     private val _isLoading = MutableStateFlow(true)
-    private val _isSuccess = MutableStateFlow(false)
+    private val _isFinished = MutableStateFlow(false)
 
     val taskEditState: StateFlow<DataResourceState<TaskEditData>> = combine(
         _taskEditData,
         _error,
         _isLoading,
-        _isSuccess
+        _isFinished
     ) { taskEditData,
         error,
         isLoading,
-        isSuccess ->
+        isFinished ->
         when {
-            isLoading -> loading(data = null)
-            error != null -> DataResourceState.error(error.message ?: "", error)
-            isSuccess -> success()
-            else -> idle(taskEditData)
+            isLoading -> DataResourceState.Loading(taskEditData, null)
+            error != null -> DataResourceState.Error(taskEditData, error.message ?: "", error)
+            isFinished -> DataResourceState.Finished(
+                taskEditData,
+                "Finished",
+                "Task was successful created"
+            )
+
+            else -> DataResourceState.Success(taskEditData)
         }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), loading(data = null))
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        DataResourceState.Loading(TaskEditData(id = _id, foreignId = _foreignId), null)
+    )
 
     init {
         if ((_id != null) && (_id > 0)) {
@@ -167,7 +173,7 @@ class TaskCreationViewModel @Inject constructor(
             async {
                 addSteps(_steps.value).onSuccess {
                     _isLoading.emit(false)
-                    _isSuccess.emit(true)
+                    _isFinished.emit(true)
                 }
             }.await().onFailure {
                 _error.emit(it)

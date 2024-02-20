@@ -20,6 +20,7 @@
 package de.chrisbecker386.maintainer.ui.screens.home.overview
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,7 +37,6 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 
 @Composable
 fun OverviewScreen(
-    modifier: Modifier = Modifier,
     onSectionClick: (Int) -> Unit = {},
     onMachineClick: (Int) -> Unit = {},
     onSectionCreationClick: (Int?) -> Unit = {}
@@ -60,18 +60,21 @@ private fun Overview(
     onMachineClick: (Int) -> Unit = {},
     onSectionCreationClick: (Int?) -> Unit = {}
 ) {
-    LazyColumn(Modifier.fillMaxWidth()) {
+    LazyColumn(
+        Modifier
+            .fillMaxWidth()
+            .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
+        verticalArrangement = Arrangement.spacedBy(DIM_XS)
+    ) {
         item {
             ShortStatus(
-                Modifier.padding(start = DIM_XS, end = DIM_XS, top = DIM_XS),
                 title = "Maintain Status",
                 state = state.shortStatus
             )
         }
         item {
             NextMaintains(
-                Modifier
-                    .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS)
+                modifier = Modifier
                     .clickable {
                         state.nextMachine?.id
                             ?.let { onMachineClick(it) }
@@ -87,13 +90,8 @@ private fun Overview(
 
             val finalList = modifiedList.toList()
             OverviewGrid(
-                modifier = Modifier.padding(
-                    start = DIM_XS,
-                    end = DIM_XS,
-                    top = DIM_XS
-                ),
                 items = finalList,
-                onItemClick = { it ->
+                onItemClick = {
                     when (it) {
                         0 -> onSectionCreationClick(null)
                         else -> onSectionClick(it)

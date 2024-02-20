@@ -27,8 +27,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
@@ -45,18 +43,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.data.model.RepeatFrequency
 import de.chrisbecker386.maintainer.data.utility.toRepeatFrequency
+import de.chrisbecker386.maintainer.ui.component.BaseButton
+import de.chrisbecker386.maintainer.ui.component.BodyText
+import de.chrisbecker386.maintainer.ui.component.BodyText2
+import de.chrisbecker386.maintainer.ui.component.HeadlineBoldMedium
 import de.chrisbecker386.maintainer.ui.component.IntervalPicker
 import de.chrisbecker386.maintainer.ui.component.MaintainerDatePickerDialog
 import de.chrisbecker386.maintainer.ui.component.MaintainerTimePickerDialog
 import de.chrisbecker386.maintainer.ui.component.basic.NumberPickerVertical
-import de.chrisbecker386.maintainer.ui.theme.BUTTON_CORNER_SHAPE
 import de.chrisbecker386.maintainer.ui.theme.BaseGray
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_S_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
-import de.chrisbecker386.maintainer.ui.theme.DisabledGray
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -141,7 +141,7 @@ fun RepeatFrequencyEditor(
         elevation = DIM_NO,
         border = BorderStroke(
             width = DIM_XXXXS,
-            color = MaterialTheme.colors.onBackground
+            color = colors.onBackground
         ),
         backgroundColor = if (enable) {
             colors.background
@@ -153,22 +153,12 @@ fun RepeatFrequencyEditor(
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(top = DIM_XS, bottom = DIM_S, start = DIM_XS, end = DIM_XS),
+                .padding(top = DIM_XS, bottom = DIM_XS, start = DIM_XS, end = DIM_XS),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = title,
-                style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.onBackground
-            )
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = "Starts on",
-                style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.onBackground
-            )
+            BodyText(modifier = Modifier.fillMaxWidth(), text = title)
+            BodyText2(modifier = Modifier.fillMaxWidth(), text = "Starts on")
 
             // Start date
             Row(
@@ -176,48 +166,24 @@ fun RepeatFrequencyEditor(
                 horizontalArrangement = Arrangement.Absolute.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = getFormattedDate(dateState),
-                    style = MaterialTheme.typography.h2,
-                    color = MaterialTheme.colors.onBackground
+                HeadlineBoldMedium(text = getFormattedDate(dateState))
+                BaseButton(
+                    text = "set",
+                    enable = enable,
+                    onClick = { showDatePicker = !showDatePicker }
                 )
-                Button(
-                    enabled = enable,
-                    onClick = { showDatePicker = !showDatePicker },
-                    shape = RoundedCornerShape(BUTTON_CORNER_SHAPE),
-                    colors = ButtonDefaults.buttonColors(disabledBackgroundColor = DisabledGray)
-                ) {
-                    Text(
-                        text = "set",
-                        style = MaterialTheme.typography.body1,
-                        color = MaterialTheme.colors.onBackground
-                    )
-                }
             }
 
             // interval
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = "every",
-                style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.onBackground
-            )
+            BodyText2(modifier = Modifier.fillMaxWidth(), text = "every")
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Absolute.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row {
-                    Text(
-                        text = if (repeatFrequencyCount > 1) "$repeatFrequencyCount." else "",
-                        style = MaterialTheme.typography.h2,
-                        color = MaterialTheme.colors.onBackground
-                    )
-                    Text(
-                        text = localRepeatFrequency.text,
-                        style = MaterialTheme.typography.h2,
-                        color = MaterialTheme.colors.onBackground
-                    )
+                    BodyText2(text = if (repeatFrequencyCount > 1) "$repeatFrequencyCount." else "")
+                    HeadlineBoldMedium(text = localRepeatFrequency.text)
                 }
                 NumberPickerVertical(
                     enable = enable,
@@ -248,30 +214,15 @@ fun RepeatFrequencyEditor(
                 modifier = Modifier.fillMaxWidth(),
                 text = "at",
                 style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.onBackground
+                color = colors.onBackground
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Absolute.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = getFormattedTime(timeState),
-                    style = MaterialTheme.typography.h2,
-                    color = MaterialTheme.colors.onBackground
-                )
-                Button(
-                    enabled = enable,
-                    onClick = { showTimePicker = !showTimePicker },
-                    shape = RoundedCornerShape(25),
-                    colors = ButtonDefaults.buttonColors(disabledBackgroundColor = DisabledGray)
-                ) {
-                    Text(
-                        text = "set",
-                        style = MaterialTheme.typography.body1,
-                        color = MaterialTheme.colors.onBackground
-                    )
-                }
+                HeadlineBoldMedium(text = getFormattedTime(timeState))
+                BaseButton(text = "set", onClick = { showTimePicker = !showTimePicker })
             }
             if (showDatePicker) {
                 MaintainerDatePickerDialog(
@@ -304,6 +255,6 @@ fun RepeatFrequencyEditor(
 @Composable
 fun PreviewRepeatFrequencyEditor() {
     MaintainerTheme {
-        RepeatFrequencyEditor(enable = false)
+        RepeatFrequencyEditor(enable = true)
     }
 }

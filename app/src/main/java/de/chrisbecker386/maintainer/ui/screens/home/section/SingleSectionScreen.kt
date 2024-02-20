@@ -19,10 +19,9 @@
 
 package de.chrisbecker386.maintainer.ui.screens.home.section
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -65,14 +64,13 @@ private fun SingleSection(
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(start = DIM_XS, end = DIM_XS, top = DIM_XXS, bottom = DIM_XXS)
+            .padding(start = DIM_XS, end = DIM_XS, top = DIM_XS, bottom = DIM_XXS),
+        verticalArrangement = Arrangement.spacedBy(DIM_XS)
     ) {
         ShortStatus(
             title = state.section.title,
             state = state.shortStatusState
         )
-        Spacer(modifier = Modifier.height(DIM_XS))
-
         OverviewGrid(
             items = modifiedList,
             onItemClick = {

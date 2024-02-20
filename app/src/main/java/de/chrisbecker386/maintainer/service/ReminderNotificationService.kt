@@ -56,9 +56,8 @@ class ReminderNotificationService(private val context: Context) :
     }
 
     private fun formatOpenTasks(data: List<TaskWithStepsCompletes>?): String {
-        if (data.isNullOrEmpty()) return ""
         var text = ""
-        data.forEach { task -> text += task.toString() }
+        data?.forEach { task -> text += task.getFormattedTask() }
         return text
     }
 }

@@ -42,17 +42,9 @@ data class TaskWithStepsCompletes(
 ) {
     fun isValid(): Boolean = this.task.getRepeatCycle().isValid(getLatestCompleteOrNull())
 
-    private fun getLatestCompleteOrNull(): Long? {
-        return if (this.completes.isEmpty()) {
-            null
-        } else {
-            this.completes.maxByOrNull { it.date }?.date
-        }
-    }
-
-    override fun toString(): String = "\n${this.task.title}, ${
-    this.completes.last().date.toFormatDateString(
-        SimpleDateType.FULL_DATE_EUROPE
-    )
+    fun getFormattedTask(): String = "\n${this.task.title}, ${
+    completes.last().date.toFormatDateString(SimpleDateType.FULL_DATE_EUROPE)
     }"
+
+    private fun getLatestCompleteOrNull() = completes.maxByOrNull { it.date }?.date
 }
