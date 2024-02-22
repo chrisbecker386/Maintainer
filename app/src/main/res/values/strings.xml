@@ -22,4 +22,5 @@
     <string name="back">back</string>
     <string name="menu">menu</string>
     <string name="settings">settings</string>
+    <string name="add">add</string>
 </resources>

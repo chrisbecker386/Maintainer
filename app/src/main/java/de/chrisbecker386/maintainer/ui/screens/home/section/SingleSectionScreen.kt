@@ -28,7 +28,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import de.chrisbecker386.maintainer.data.model.GridItemData
 import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
@@ -37,15 +36,13 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
 @Composable
 fun SingleSectionScreen(
     sectionType: Int?,
-    onMachineClick: (Int) -> Unit = {},
-    onMachineCreationClick: (Int?, Int) -> Unit = { _, _ -> }
+    onMachineClick: (Int) -> Unit = {}
 ) {
     val viewModel = hiltViewModel<SingleSectionViewModel>()
     val state by viewModel.state.collectAsState()
     SingleSection(
         state = state,
-        onMachineClick = onMachineClick,
-        onMachineCreationClick = onMachineCreationClick
+        onMachineClick = onMachineClick
     )
 }
 
@@ -53,14 +50,8 @@ fun SingleSectionScreen(
 private fun SingleSection(
     state: SingleSectionState,
     onEvent: (SingleSectionState) -> Unit = {},
-    onMachineClick: (Int) -> Unit = {},
-    onMachineCreationClick: (Int?, Int) -> Unit = { _, _ -> }
+    onMachineClick: (Int) -> Unit = {}
 ) {
-    val addMachineItem = GridItemData(id = 0, title = "add")
-    val modifiedList = mutableListOf<GridItemData>()
-
-    state.machines.map { it.toGridItemData() }.forEach { modifiedList.add(it) }
-    modifiedList.add(addMachineItem)
     Column(
         Modifier
             .fillMaxWidth()
@@ -72,14 +63,8 @@ private fun SingleSection(
             state = state.shortStatusState
         )
         OverviewGrid(
-            items = modifiedList,
-            onItemClick = {
-                if (it == 0) {
-                    onMachineCreationClick(null, state.section.id)
-                } else {
-                    onMachineClick(it)
-                }
-            }
+            items = state.machines.map { it.toGridItemData() },
+            onItemClick = { onMachineClick(it) }
         )
     }
 }

@@ -29,7 +29,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import de.chrisbecker386.maintainer.data.model.GridItemData
 import de.chrisbecker386.maintainer.ui.component.NextMaintains
 import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
@@ -38,8 +37,7 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 @Composable
 fun OverviewScreen(
     onSectionClick: (Int) -> Unit = {},
-    onMachineClick: (Int) -> Unit = {},
-    onSectionCreationClick: (Int?) -> Unit = {}
+    onMachineClick: (Int) -> Unit = {}
 ) {
     val viewModel = hiltViewModel<OverviewScreenViewModel>()
     val state by viewModel.state.collectAsState()
@@ -47,8 +45,7 @@ fun OverviewScreen(
     Overview(
         state = state,
         onSectionClick = onSectionClick,
-        onMachineClick = onMachineClick,
-        onSectionCreationClick = onSectionCreationClick
+        onMachineClick = onMachineClick
     )
 }
 
@@ -57,8 +54,7 @@ private fun Overview(
     state: OverviewState,
     onEvent: (OverviewEvent) -> Unit = {},
     onSectionClick: (Int) -> Unit = {},
-    onMachineClick: (Int) -> Unit = {},
-    onSectionCreationClick: (Int?) -> Unit = {}
+    onMachineClick: (Int) -> Unit = {}
 ) {
     LazyColumn(
         Modifier
@@ -84,19 +80,9 @@ private fun Overview(
             )
         }
         item {
-            val modifiedList = mutableListOf<GridItemData>()
-            state.sections.map { it.toGridItemData() }.forEach { modifiedList.add(it) }
-            modifiedList.add(GridItemData(0, "section", null))
-
-            val finalList = modifiedList.toList()
             OverviewGrid(
-                items = finalList,
-                onItemClick = {
-                    when (it) {
-                        0 -> onSectionCreationClick(null)
-                        else -> onSectionClick(it)
-                    }
-                }
+                items = state.sections.map { it.toGridItemData() },
+                onItemClick = { onSectionClick(it) }
             )
         }
     }

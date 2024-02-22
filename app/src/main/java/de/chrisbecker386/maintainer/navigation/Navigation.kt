@@ -50,9 +50,6 @@ fun MaintainerNavGraph(
                 onSectionClick = { careType -> navController.navigateToSingleSection(careType) },
                 onMachineClick = { machineType ->
                     navController.navigateToSingleMachine(machineType)
-                },
-                onSectionCreationClick = { id ->
-                    navController.navigateToSectionCreation(id)
                 }
             )
         }
@@ -71,10 +68,7 @@ fun MaintainerNavGraph(
 
             SingleSectionScreen(
                 sectionType = sectionType,
-                onMachineClick = { machineType -> navController.navigateToSingleMachine(machineType) },
-                onMachineCreationClick = { id, foreignId ->
-                    navController.navigateToMachineCreation(id, foreignId)
-                }
+                onMachineClick = { machineType -> navController.navigateToSingleMachine(machineType) }
             )
         }
 
@@ -86,10 +80,7 @@ fun MaintainerNavGraph(
             if (machineType != null) {
                 SingleMachineScreen(
                     machineType = machineType,
-                    onTaskClick = { taskType -> navController.navigateToSingleTask(taskType) },
-                    onTaskCreationClick = { id, foreignId ->
-                        navController.navigateToTaskCreation(id, foreignId)
-                    }
+                    onTaskClick = { taskType -> navController.navigateToSingleTask(taskType) }
                 )
             }
         }
@@ -179,14 +170,14 @@ private fun NavHostController.navigateToSingleSection(sectionType: Int) {
     this.navigate("${SingleSection.route}/$sectionType")
 }
 
-private fun NavHostController.navigateToSectionCreation(id: Int?) {
+fun NavHostController.navigateToSectionCreation(id: Int?) {
     this.navigate("${SectionCreation.route}?$id")
 }
 
-private fun NavHostController.navigateToMachineCreation(id: Int?, foreignId: Int) {
+fun NavHostController.navigateToMachineCreation(id: Int?, foreignId: Int) {
     this.navigate("${MachineCreation.route}?machine_id=$id&machine_foreign_id=$foreignId")
 }
 
-private fun NavHostController.navigateToTaskCreation(id: Int?, foreignId: Int) {
+fun NavHostController.navigateToTaskCreation(id: Int?, foreignId: Int) {
     this.navigate("${TaskCreation.route}?task_id=$id&task_foreign_id=$foreignId")
 }
