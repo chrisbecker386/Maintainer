@@ -141,3 +141,9 @@ val APP_SCREENS = listOf(
     MachineCreation,
     TaskCreation
 )
+
+val SCREENS_WITH_ADD = listOf(
+    SingleSection,
+    SingleMachine,
+    Overview
+)

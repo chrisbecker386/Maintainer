@@ -30,6 +30,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -44,9 +45,10 @@ import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 fun MaintainerAppBar(
     title: String,
     showBackButton: Boolean = false,
-    showContextMenu: Boolean = false,
-    onBackButtonClick: () -> Unit = {},
-    onContextMenuClick: () -> Unit = {},
+    showAddButton: Boolean = false,
+    onBackClick: () -> Unit = {},
+    onAddClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {},
     modifier: Modifier
 ) {
     TopAppBar(
@@ -63,7 +65,7 @@ fun MaintainerAppBar(
         backgroundColor = MaterialTheme.colors.primary,
         navigationIcon = {
             if (showBackButton) {
-                IconButton(onClick = onBackButtonClick) {
+                IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
                         contentDescription = stringResource(R.string.back)
@@ -72,8 +74,16 @@ fun MaintainerAppBar(
             }
         },
         actions = {
-            if (showContextMenu) {
-                IconButton(onClick = onContextMenuClick) {
+            if (showAddButton) {
+                IconButton(onClick = onAddClick) {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = stringResource(id = R.string.add)
+                    )
+                }
+            }
+            if (showBackButton) {
+                IconButton(onClick = onSettingsClick) {
                     Icon(
                         imageVector = Icons.Filled.Settings,
                         contentDescription = stringResource(R.string.settings)
@@ -90,8 +100,9 @@ private fun PreviewMaintainerAppBar() {
     MaintainerTheme {
         MaintainerAppBar(
             "Preview",
-            false,
             true,
+            true,
+            {},
             {},
             {},
             Modifier

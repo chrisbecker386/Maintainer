@@ -31,7 +31,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import de.chrisbecker386.maintainer.ui.component.BaseButton
 import de.chrisbecker386.maintainer.ui.component.HeadlineSlim
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
 import de.chrisbecker386.maintainer.ui.component.TaskContent
@@ -41,15 +40,14 @@ import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 @Composable
 fun SingleMachineScreen(
     machineType: Int,
-    onTaskClick: (Int) -> Unit = {},
-    onTaskCreationClick: (Int?, Int) -> Unit = { _, _ -> }
+    onTaskClick: (Int) -> Unit = {}
+
 ) {
     val viewModel = hiltViewModel<SingleMachineViewModel>()
     val state by viewModel.state.collectAsState()
     SingleMachine(
         state = state,
-        onTaskClick = onTaskClick,
-        onTaskCreationClick = onTaskCreationClick
+        onTaskClick = onTaskClick
     )
 }
 
@@ -57,8 +55,7 @@ fun SingleMachineScreen(
 private fun SingleMachine(
     state: SingleMachineState,
     onEvent: (SingleMachineEvent) -> Unit = {},
-    onTaskClick: (Int) -> Unit = {},
-    onTaskCreationClick: (Int?, Int) -> Unit = { _, _ -> }
+    onTaskClick: (Int) -> Unit = {}
 ) {
     LazyColumn(
         Modifier
@@ -71,9 +68,6 @@ private fun SingleMachine(
                 title = state.machine.title,
                 state = state.shortStatus
             )
-        }
-        item {
-            BaseButton(text = "add own", onClick = { onTaskCreationClick(null, state.machine.id) })
         }
         item { HeadlineSlim(text = "Open") }
         items(count = state.openTasks.size) { index ->

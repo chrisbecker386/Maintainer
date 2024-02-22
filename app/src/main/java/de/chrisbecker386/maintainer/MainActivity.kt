@@ -20,6 +20,7 @@
 package de.chrisbecker386.maintainer
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.height
@@ -27,7 +28,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -36,7 +36,13 @@ import de.chrisbecker386.maintainer.navigation.APP_SCREENS
 import de.chrisbecker386.maintainer.navigation.MaintainerAppBar
 import de.chrisbecker386.maintainer.navigation.MaintainerNavGraph
 import de.chrisbecker386.maintainer.navigation.Overview
+import de.chrisbecker386.maintainer.navigation.SCREENS_WITH_ADD
+import de.chrisbecker386.maintainer.navigation.SingleMachine
+import de.chrisbecker386.maintainer.navigation.SingleSection
+import de.chrisbecker386.maintainer.navigation.navigateToMachineCreation
+import de.chrisbecker386.maintainer.navigation.navigateToSectionCreation
 import de.chrisbecker386.maintainer.navigation.navigateToSettings
+import de.chrisbecker386.maintainer.navigation.navigateToTaskCreation
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXL
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
@@ -54,6 +60,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun MaintainersApp() {
         MaintainerTheme {
+            val tag = "MaintainersApp"
             val navController = rememberNavController()
             val currentBackStack by navController.currentBackStackEntryAsState()
             val currentDestination = currentBackStack?.destination
@@ -62,8 +69,34 @@ class MainActivity : ComponentActivity() {
                     // route without Args
                     (it.route == currentDestination?.route) ||
                         // route with Args
-                        (it.route == currentDestination?.route?.split("/")?.first())
+                        (it.route == currentDestination?.route?.split("/")?.first()) ||
+                        (it.route == currentDestination?.route?.split("?")?.first())
                 } ?: Overview
+
+            Log.d(tag, currentDestination?.route.toString())
+
+            val addScreen = SCREENS_WITH_ADD.firstOrNull { screen -> screen == currentScreen }
+
+            fun navigateToCreation() =
+                when (addScreen) {
+                    is Overview -> {
+                        navController.navigateToSectionCreation(null)
+                    }
+
+                    is SingleSection -> {
+                        currentDestination?.id?.let {
+                            navController.navigateToMachineCreation(null, it)
+                        }
+                    }
+
+                    is SingleMachine -> {
+                        currentDestination?.id?.let {
+                            navController.navigateToTaskCreation(null, it)
+                        }
+                    }
+
+                    else -> {}
+                }
 
             Scaffold(
                 topBar = {
@@ -71,9 +104,10 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.height(DIM_XXL),
                         title = currentScreen.title,
                         showBackButton = currentScreen.title != Overview.title,
-                        showContextMenu = true,
-                        onBackButtonClick = { navController.navigateUp() },
-                        onContextMenuClick = { navController.navigateToSettings() }
+                        showAddButton = addScreen != null,
+                        onBackClick = { navController.navigateUp() },
+                        onAddClick = { navigateToCreation() },
+                        onSettingsClick = { navController.navigateToSettings() }
                     )
                 }
             ) { innerPadding ->
