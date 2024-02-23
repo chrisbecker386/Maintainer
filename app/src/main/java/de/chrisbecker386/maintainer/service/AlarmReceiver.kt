@@ -23,16 +23,20 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
-import de.chrisbecker386.maintainer.data.entity.relation.TaskWithStepsCompletes
-import de.chrisbecker386.maintainer.data.model.dummy.devSteps
-import de.chrisbecker386.maintainer.data.model.dummy.devTasks
+import dagger.hilt.android.AndroidEntryPoint
+import de.chrisbecker386.maintainer.data.utility.goAsync
+import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
 import de.chrisbecker386.maintainer.ui.theme.ALARM_MESSAGE
 import de.chrisbecker386.maintainer.ui.theme.ALARM_TITLE
+import java.util.Calendar
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AlarmReceiver : BroadcastReceiver() {
+    private val tag = "AlarmReceiver"
 
-    companion object { const val TAG = "AlarmReceiver" }
+    @Inject
+    lateinit var repository: MaintainerRepository
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val service = ReminderNotificationService(context as Context)
@@ -40,16 +44,10 @@ class AlarmReceiver : BroadcastReceiver() {
         val title = intent?.getStringExtra(ALARM_TITLE) ?: return
         val message = intent.getStringExtra(ALARM_MESSAGE)
 
-        service.showOpenTasksNotification(
-            listOf(
-                TaskWithStepsCompletes(
-                    task = devTasks[0],
-                    steps = devSteps.filter { it.taskId == devTasks[0].id },
-                    completes = listOf(TaskCompletedDate(1, 12312312312L, devTasks[0].id))
-                )
-            )
-        )
-
-        Log.d(TAG, "Alarm triggered $title, $message")
+        goAsync {
+            val tasks = repository.getAllOpenTasks(Calendar.getInstance().timeInMillis)
+            service.showOpenTasksNotification(tasks)
+            Log.d(tag, "Alarm triggered $title, $message $tasks")
+        }
     }
 }

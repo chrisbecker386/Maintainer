@@ -29,19 +29,5 @@ val devMachines = listOf(
         subtitle = "best coffee",
         imageRes = R.drawable.coffee_maker_48px,
         section = 1
-    ),
-    Machine(
-        id = 2,
-        title = "tire",
-        subtitle = null,
-        imageRes = R.drawable.question_mark_48px,
-        section = 2
-    ),
-    Machine(
-        id = 3,
-        title = "washing machine",
-        subtitle = null,
-        imageRes = R.drawable.local_laundry_service_48px,
-        section = 3
     )
 )

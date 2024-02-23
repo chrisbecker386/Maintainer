@@ -19,6 +19,7 @@
 
 package de.chrisbecker386.maintainer.ui.component
 
+import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -78,7 +79,7 @@ fun StepWithDetails(modifier: Modifier = Modifier, step: Step, task: Task? = nul
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(Modifier.fillMaxWidth()) {
+                Box(Modifier.fillMaxWidth().padding(top = DIM_XS)) {
                     Row {
                         Box(
                             modifier = Modifier
@@ -167,11 +168,13 @@ private fun ExpandButton(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = false)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Composable
 fun PreviewStep() {
     MaintainerTheme {
         Column {
+            StepWithDetails(step = devSteps[0], task = devTasks[0])
             StepWithDetails(step = devSteps[1], task = devTasks[0])
         }
     }

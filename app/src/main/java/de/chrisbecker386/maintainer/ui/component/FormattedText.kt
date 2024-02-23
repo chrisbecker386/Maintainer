@@ -19,7 +19,8 @@
 
 package de.chrisbecker386.maintainer.ui.component
 
-import android.content.res.Configuration
+import OrientationPreviews
+import ThemePreviews
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,7 +31,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
@@ -113,7 +113,20 @@ fun GridItemText(text: String) {
     )
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Composable
+fun StatusText(text: String, modifier: Modifier = Modifier) {
+    Text(
+        text = text,
+        modifier = modifier,
+        style = MaterialTheme.typography.body1,
+        color = MaterialTheme.colors.onBackground,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis
+    )
+}
+
+@ThemePreviews
+@OrientationPreviews
 @Composable
 fun PreviewFormattedText() {
     MaintainerTheme {

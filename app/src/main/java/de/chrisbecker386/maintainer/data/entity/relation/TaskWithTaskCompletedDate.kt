@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 17/04/2023, 12:32
- * Copyright (c) 2023. All rights reserved.
- * Last modified 17/04/2023, 12:32
+ * Created by Christopher Becker on 23/02/2024, 20:24
+ * Copyright (c) 2024. All rights reserved.
+ * Last modified 23/02/2024, 20:24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,18 @@
  *
  */
 
-package de.chrisbecker386.maintainer.data.model.dummy
+package de.chrisbecker386.maintainer.data.entity.relation
 
-import de.chrisbecker386.maintainer.R
+import androidx.room.Embedded
+import androidx.room.Relation
 import de.chrisbecker386.maintainer.data.entity.Task
+import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
 
-val devTasks = listOf(
-    Task(
-        id = 1,
-        title = "clean water tank",
-        subtitle = null,
-        imageRes = R.drawable.kettle_48px,
-        machineId = 1
-    ),
-    Task(
-        id = 2,
-        title = "unclogging",
-        subtitle = null,
-        imageRes = R.drawable.coffee_maker_48px,
-        machineId = 1
+data class TaskWithTaskCompletedDate(
+    @Embedded val task: Task,
+    @Relation(
+        parentColumn = "task_id",
+        entityColumn = "task_completed_fk_task_id"
     )
+    val completes: List<TaskCompletedDate?>
 )

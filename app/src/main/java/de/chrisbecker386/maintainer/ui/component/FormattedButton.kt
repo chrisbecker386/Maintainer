@@ -19,12 +19,14 @@
 
 package de.chrisbecker386.maintainer.ui.component
 
-import android.content.res.Configuration
+import OrientationPreviews
+import TextPreviewProvider
+import ThemePreviews
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
@@ -48,11 +50,10 @@ fun BaseButton(
     )
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = false)
+@ThemePreviews
+@OrientationPreviews
 @Composable
-fun PreviewFormattedButton() {
+fun PreviewButton(@PreviewParameter(TextPreviewProvider::class) text: String) =
     MaintainerTheme {
-        BaseButton(text = "BaseButton")
+        BaseButton(text)
     }
-}
