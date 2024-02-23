@@ -26,11 +26,11 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import de.chrisbecker386.maintainer.MainActivity
 import de.chrisbecker386.maintainer.R
-import de.chrisbecker386.maintainer.data.entity.relation.TaskWithStepsCompletes
+import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.service.interfaces.NotificationService
 
 class ReminderNotificationService(private val context: Context) :
-    NotificationService<List<TaskWithStepsCompletes>?> {
+    NotificationService<List<Task>?> {
     companion object {
         const val REMINDER_CHANNEL_ID = "maintainer_reminder_channel"
         const val DISPLAYED_NAME = "Reminder"
@@ -42,7 +42,7 @@ class ReminderNotificationService(private val context: Context) :
     private val notificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-    override fun showOpenTasksNotification(data: List<TaskWithStepsCompletes>?) {
+    override fun showOpenTasksNotification(data: List<Task>?) {
         val activityIntent = Intent(context, MainActivity::class.java)
         val activityPendingIntent =
             PendingIntent.getActivity(context, 1, activityIntent, PendingIntent.FLAG_IMMUTABLE)
@@ -55,9 +55,10 @@ class ReminderNotificationService(private val context: Context) :
         notificationManager.notify(1, notification)
     }
 
-    private fun formatOpenTasks(data: List<TaskWithStepsCompletes>?): String {
+    private fun formatOpenTasks(data: List<Task>?): String {
         var text = ""
-        data?.forEach { task -> text += task.getFormattedTask() }
+        data?.forEach { task -> text += "${task.getFormattedTask()}\n" }
+        if (text.isEmpty()) text = "no open tasks"
         return text
     }
 }

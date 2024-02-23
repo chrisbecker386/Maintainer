@@ -51,10 +51,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContent {
-            MaintainersApp()
-        }
+        setContent { MaintainersApp() }
     }
 
     @Composable
@@ -68,9 +65,9 @@ class MainActivity : ComponentActivity() {
                 APP_SCREENS.find {
                     // route without Args
                     (it.route == currentDestination?.route) ||
-                        // route with Args
-                        (it.route == currentDestination?.route?.split("/")?.first()) ||
-                        (it.route == currentDestination?.route?.split("?")?.first())
+                            // route with Args
+                            (it.route == currentDestination?.route?.split("/")?.first()) ||
+                            (it.route == currentDestination?.route?.split("?")?.first())
                 } ?: Overview
 
             Log.d(tag, currentDestination?.route.toString())
@@ -79,23 +76,27 @@ class MainActivity : ComponentActivity() {
 
             fun navigateToCreation() =
                 when (addScreen) {
-                    is Overview -> {
-                        navController.navigateToSectionCreation(null)
-                    }
-
                     is SingleSection -> {
                         currentDestination?.id?.let {
-                            navController.navigateToMachineCreation(null, it)
+                            currentBackStack?.arguments?.getInt(SingleSection.sectionTypeArg)
+                                ?.let { sectionId ->
+                                    navController.navigateToMachineCreation(null, sectionId)
+                                }
                         }
                     }
 
                     is SingleMachine -> {
                         currentDestination?.id?.let {
-                            navController.navigateToTaskCreation(null, it)
+                            currentBackStack?.arguments?.getInt(SingleMachine.machineTypeArg)
+                                ?.let { machineId ->
+                                    navController.navigateToTaskCreation(null, machineId)
+                                }
                         }
                     }
 
-                    else -> {}
+                    else -> {
+                        navController.navigateToSectionCreation(null)
+                    }
                 }
 
             Scaffold(

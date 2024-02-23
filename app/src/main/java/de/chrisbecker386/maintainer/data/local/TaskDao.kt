@@ -28,6 +28,7 @@ import androidx.room.Upsert
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.entity.relation.TaskWithStepsCompletes
+import de.chrisbecker386.maintainer.data.entity.relation.TaskWithTaskCompletedDate
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -67,6 +68,30 @@ interface TaskDao {
     @Transaction
     @Query("SELECT * FROM tasks")
     fun getAllTaskWithStepsCompletes(): Flow<List<TaskWithStepsCompletes>>
+
+    @Transaction
+    @Query(
+        """SELECT * FROM tasks t 
+        LEFT JOIN tasks_completed_dates tcd  
+        ON t.task_id = tcd.task_completed_fk_task_id 
+        WHERE (tcd.task_completed_id IS NULL 
+        OR (tcd.task_completed_date IS NOT NULL 
+        AND tcd.task_completed_date < :moment - t.task_tact * t.task_repeat_frequency))
+        ORDER BY t.task_fk_machine_id"""
+    )
+    fun getAllOpenTasks(moment: Long): List<Task>
+
+    @Transaction
+    @Query(
+        """SELECT * FROM tasks t 
+        LEFT JOIN tasks_completed_dates tcd  
+        ON t.task_id = tcd.task_completed_fk_task_id 
+        WHERE (tcd.task_completed_id IS NULL 
+        OR (tcd.task_completed_date IS NOT NULL 
+        AND tcd.task_completed_date < :moment - t.task_tact * t.task_repeat_frequency))
+        ORDER BY t.task_fk_machine_id"""
+    )
+    fun getAllTasksFlow(moment: Long): Flow<List<Task>>
 
     @Transaction
     @Query("SELECT * FROM tasks WHERE task_id = :taskId")
@@ -123,4 +148,25 @@ interface TaskDao {
         AND tcd.task_completed_date < :moment - t.task_tact * t.task_repeat_frequency)))"""
     )
     fun getNumberOfAllOpenTasksBySection(sectionId: Int, moment: Long): Flow<Int>
+
+    //    @Transaction
+//    @Query("""SELECT t.*, max(tcd.task_completed_date) FROM tasks t
+//        JOIN tasks_completed_dates tcd ON tcd.task_completed_fk_task_id = t.task_id
+//        LEFT JOIN tasks_completed_dates tcd ON t.task_id = tcd.task_completed_fk_task_id
+//    """)
+    @Transaction
+    @Query(
+        """SELECT * FROM tasks t
+        JOIN tasks_completed_dates tcd ON tcd.task_completed_fk_task_id = t.task_id
+    """
+    )
+    fun getAllOpenTaskWithLastCompleteDate(): List<TaskWithTaskCompletedDate>
+
+    @Transaction
+    @Query(
+        """SELECT * FROM tasks t
+        JOIN tasks_completed_dates tcd ON tcd.task_completed_fk_task_id = t.task_id
+    """
+    )
+    fun getAllOpenTaskWithLastCompleteDateFlow(): Flow<List<TaskWithTaskCompletedDate>>
 }

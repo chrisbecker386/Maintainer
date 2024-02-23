@@ -19,9 +19,16 @@
 
 package de.chrisbecker386.maintainer.data.utility
 
+import android.content.BroadcastReceiver
 import android.icu.util.Calendar
 import de.chrisbecker386.maintainer.data.model.RepeatFrequency
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.lang.Math.abs
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 fun Long.toFormatDateString(format: SimpleDateType): String {
     val cal = Calendar.getInstance()
@@ -56,3 +63,18 @@ fun Float.sameValueAs(other: Float): Boolean {
 }
 
 fun Int.isEven(): Boolean = (this % 2) == 1
+
+fun BroadcastReceiver.goAsync(
+    context: CoroutineContext = EmptyCoroutineContext,
+    block: suspend CoroutineScope.() -> Unit
+) {
+    val pendingResult = goAsync()
+    @OptIn(DelicateCoroutinesApi::class) // Must run globally; there's no teardown callback.
+    GlobalScope.launch(context) {
+        try {
+            block()
+        } finally {
+            pendingResult.finish()
+        }
+    }
+}

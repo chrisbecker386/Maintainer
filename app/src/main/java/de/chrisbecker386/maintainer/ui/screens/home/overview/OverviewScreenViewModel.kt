@@ -70,7 +70,7 @@ class OverviewScreenViewModel @Inject constructor(
 
     private val _sections = repository.getAllSections()
 
-    private val _numberOpenTasks = repository.getNumberOfOpenTasks(getTime()).mapLatest { it }
+    private val _numberOpenTasks = repository.getNumberOfOpenTasksFlow(getTime()).mapLatest { it }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0)
 
     private val _numberOfAllTasks = repository.getNumberOfAllTasks().mapLatest { it }

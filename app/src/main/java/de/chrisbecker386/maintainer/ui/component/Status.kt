@@ -19,7 +19,8 @@
 
 package de.chrisbecker386.maintainer.ui.component
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import OrientationPreviews
+import ThemePreviews
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,7 +28,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
@@ -36,12 +36,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
-import de.chrisbecker386.maintainer.data.model.dummy.devTasks
 import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
+import de.chrisbecker386.maintainer.ui.theme.DIM_XXL
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
@@ -62,23 +61,16 @@ fun ShortStatus(
             Row {
                 ConstraintLayout(Modifier.fillMaxWidth()) {
                     val (leftTextRef, rightIcon, rightText) = createRefs()
-                    BodyText(
-                        modifier = Modifier.constrainAs(leftTextRef) {
-                            start.linkTo(parent.start)
+
+                    StatusText(
+                        modifier = Modifier.padding(end = DIM_XXL).constrainAs(leftTextRef) {
                             top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
+                            start.linkTo(parent.start)
                         },
                         text = title
+                    )
 
-                    )
-                    BodyText(
-                        modifier = Modifier.constrainAs(rightText) {
-                            end.linkTo(parent.end)
-                            top.linkTo(parent.top)
-                            bottom.linkTo(parent.bottom)
-                        },
-                        text = state.toString()
-                    )
                     Image(
                         modifier = Modifier
                             .constrainAs(rightIcon) {
@@ -90,6 +82,14 @@ fun ShortStatus(
                         imageVector = Icons.Default.Handyman,
                         contentDescription = "repair",
                         colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground)
+                    )
+                    BodyText(
+                        modifier = Modifier.constrainAs(rightText) {
+                            end.linkTo(parent.end)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                        },
+                        text = state.toString()
                     )
                 }
             }
@@ -106,23 +106,24 @@ fun ShortStatus(
     }
 }
 
-@Preview(uiMode = UI_MODE_NIGHT_YES)
+@ThemePreviews
+@OrientationPreviews
 @Composable
 fun PreviewMaintainObjectStatus() {
     MaintainerTheme {
         Column {
             ShortStatus(
-                title = "Maintain Status",
+                title = "Das Haus der  Frau von Kalus und Trinkt und sds undasdasdasdasd asd as d ",
                 state = ShortStatusState(
                     numerator = 2,
                     denominator = 7
                 )
             )
-            Spacer(modifier = Modifier.size(DIM_XS))
-            NextMaintains(
-                machineTitle = "machine",
-                tasks = devTasks
-            )
+//            Spacer(modifier = Modifier.size(DIM_XS))
+//            NextMaintains(
+//                machineTitle = "machine",
+//                tasks = devTasks
+//            )
         }
     }
 }

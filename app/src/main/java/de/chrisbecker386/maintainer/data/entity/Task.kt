@@ -62,4 +62,12 @@ data class Task(
     fun getRepeatCycle(): RepeatCycle {
         return RepeatCycle(this.repeatFrequency.toRepeatFrequency(), this.tact)
     }
+
+    fun getFormattedTask() = "$title (every${
+        if (tact == 1L) {
+            ""
+        } else {
+            "$tact."
+        }
+    } ${repeatFrequency.toRepeatFrequency().text})"
 }

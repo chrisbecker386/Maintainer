@@ -23,4 +23,6 @@
     <string name="menu">menu</string>
     <string name="settings">settings</string>
     <string name="add">add</string>
+    <string name="no_open_tasks">no open tasks</string>
+
 </resources>

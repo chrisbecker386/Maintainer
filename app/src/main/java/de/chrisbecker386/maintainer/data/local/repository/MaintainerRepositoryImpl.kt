@@ -25,6 +25,7 @@ import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
 import de.chrisbecker386.maintainer.data.entity.relation.TaskWithStepsCompletes
+import de.chrisbecker386.maintainer.data.entity.relation.TaskWithTaskCompletedDate
 import de.chrisbecker386.maintainer.data.local.MachineDao
 import de.chrisbecker386.maintainer.data.local.SectionDao
 import de.chrisbecker386.maintainer.data.local.StepDao
@@ -82,6 +83,17 @@ class MaintainerRepositoryImpl(
     override fun getTasksFlow(machineId: Int): Flow<List<Task>> =
         machineDao.getTasksForMachine(machineId)
 
+    override fun getAllOpenTasks(moment: Long): List<Task> = taskDao.getAllOpenTasks(moment)
+
+    override fun getAllOpenTasksFlow(moment: Long): Flow<List<Task>> =
+        taskDao.getAllTasksFlow(moment)
+
+    override fun getAllOpenTaskWithLastCompleteDate(): List<TaskWithTaskCompletedDate> =
+        taskDao.getAllOpenTaskWithLastCompleteDate()
+
+    override fun getAllOpenTaskWithLastCompleteDateFlow(): Flow<List<TaskWithTaskCompletedDate>> =
+        taskDao.getAllOpenTaskWithLastCompleteDateFlow()
+
     override suspend fun getLastTaskId(): Int = taskDao.getLastTaskId()
 
     override fun getTaskWithPreconditionsStepsCompletes(taskId: Int) =
@@ -97,7 +109,7 @@ class MaintainerRepositoryImpl(
     override fun getOpenTaskForMachine(machineId: Int, moment: Long): Flow<List<Task>> =
         taskDao.getOpenTaskForMachine(machineId, moment)
 
-    override fun getNumberOfOpenTasks(moment: Long): Flow<Int> =
+    override fun getNumberOfOpenTasksFlow(moment: Long): Flow<Int> =
         taskDao.getNumberOfOpenTasks(moment)
 
     override fun getNumberOfAllTasks(): Flow<Int> = taskDao.getNumberOfAllTasks()
