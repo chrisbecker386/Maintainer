@@ -65,9 +65,9 @@ class MainActivity : ComponentActivity() {
                 APP_SCREENS.find {
                     // route without Args
                     (it.route == currentDestination?.route) ||
-                            // route with Args
-                            (it.route == currentDestination?.route?.split("/")?.first()) ||
-                            (it.route == currentDestination?.route?.split("?")?.first())
+                        // route with Args
+                        (it.route == currentDestination?.route?.split("/")?.first()) ||
+                        (it.route == currentDestination?.route?.split("?")?.first())
                 } ?: Overview
 
             Log.d(tag, currentDestination?.route.toString())

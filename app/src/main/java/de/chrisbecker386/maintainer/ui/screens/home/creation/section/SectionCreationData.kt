@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 16/12/2023, 15:22
+ * Created by Christopher Becker on 16/12/2023, 15:25
  * Copyright (c) 2023. All rights reserved.
- * Last modified 16/12/2023, 15:22
+ * Last modified 16/12/2023, 15:25
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,18 +17,13 @@
  *
  */
 
-package de.chrisbecker386.maintainer.ui.screens.home.creation.machine
+package de.chrisbecker386.maintainer.ui.screens.home.creation.section
 
 import androidx.annotation.DrawableRes
 
-data class MachineCreationState(
+data class SectionCreationData(
     val id: Int? = null,
-    val foreignId: Int? = null,
     val title: String? = null,
-    val subtitle: String? = null,
     @DrawableRes
-    val imageRes: Int? = null,
-    val isNavigateUp: Boolean = false,
-    val isCreationComplete: Boolean = false
-
+    val imageRes: Int? = null
 )

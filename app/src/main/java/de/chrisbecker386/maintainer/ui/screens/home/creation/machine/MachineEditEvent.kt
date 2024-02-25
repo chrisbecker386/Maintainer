@@ -19,12 +19,18 @@
 
 package de.chrisbecker386.maintainer.ui.screens.home.creation.machine
 
-import androidx.annotation.DrawableRes
 import de.chrisbecker386.maintainer.data.entity.Machine
+import de.chrisbecker386.maintainer.ui.theme.ICON_LIST
 
-interface MachineCreationEvent {
-    data class TitleChange(val title: String?) : MachineCreationEvent
-    data class SubtitleChange(val subtitle: String?) : MachineCreationEvent
-    data class ImageChange(@DrawableRes val imageRes: Int?) : MachineCreationEvent
-    data class MachineConfirm(val machine: Machine) : MachineCreationEvent
+interface MachineEditEvent {
+    object AcceptError : MachineEditEvent
+    data class UpsertMachine(
+        val machine: Machine = Machine(
+            id = 0,
+            title = "",
+            subtitle = null,
+            imageRes = ICON_LIST.first(),
+            section = 0
+        )
+    ) : MachineEditEvent
 }

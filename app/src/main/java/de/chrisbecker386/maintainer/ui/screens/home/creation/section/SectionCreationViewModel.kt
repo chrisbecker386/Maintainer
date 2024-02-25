@@ -1,7 +1,7 @@
 /*
- * Created by Christopher Becker on 16/12/2023, 15:22
+ * Created by Christopher Becker on 16/12/2023, 15:24
  * Copyright (c) 2023. All rights reserved.
- * Last modified 16/12/2023, 15:22
+ * Last modified 16/12/2023, 15:24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
  *
  */
 
-package de.chrisbecker386.maintainer.ui.screens.home.creation.machine
+package de.chrisbecker386.maintainer.ui.screens.home.creation.section
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import de.chrisbecker386.maintainer.data.entity.Machine
+import de.chrisbecker386.maintainer.data.entity.Section
 import de.chrisbecker386.maintainer.data.model.DataResourceState
 import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
 import kotlinx.coroutines.Dispatchers
@@ -38,77 +38,72 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MachineCreationViewModel @Inject constructor(
+class SectionCreationViewModel @Inject constructor(
     private val repository: MaintainerRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _id = savedStateHandle.get<Int?>("machine_id")
-    private val _foreignId = checkNotNull(savedStateHandle.get<Int>("machine_foreign_id"))
+    private val _id = savedStateHandle.get<Int>("id")
 
     private val _title = MutableStateFlow<String?>(null)
-    private val _subtitle = MutableStateFlow<String?>(null)
     private val _imageRes = MutableStateFlow<Int?>(null)
+    private val _sectionEditDataDefault = MutableStateFlow(SectionCreationData(id = _id))
 
-    private val _machineEditDataDefault =
-        MutableStateFlow(MachineEditData(id = _id, foreignId = _foreignId))
-    private var _machineEditData = combine(
-        _machineEditDataDefault,
+    private val _sectionEditData = combine(
+        _sectionEditDataDefault,
         _title,
-        _subtitle,
         _imageRes
-    ) { machineDefault, title, subtitle, imageRes ->
-        machineDefault.copy(title = title, subtitle = subtitle, imageRes = imageRes)
+    ) { default, title, imageRes ->
+        default.copy(title = title, imageRes = imageRes)
     }
 
     private val _error = MutableStateFlow<Throwable?>(null)
     private val _isLoading = MutableStateFlow(true)
     private val _isFinished = MutableStateFlow(false)
 
-    val machineEditState: StateFlow<DataResourceState<MachineEditData>> = combine(
-        _machineEditData,
+    val sectionEditState: StateFlow<DataResourceState<SectionCreationData>> = combine(
+        _sectionEditData,
         _error,
         _isLoading,
         _isFinished
-    ) { machineData, error, isLaoding, isFinished ->
+    ) { sectionEditData, error, isLoading, isFinished ->
         when {
-            isLaoding -> DataResourceState.Loading(machineData, null)
-            error != null -> DataResourceState.Error(machineData, error.message ?: "", error)
+            isLoading -> DataResourceState.Loading(sectionEditData, null)
+            error != null -> DataResourceState.Error(sectionEditData, error.message ?: "", error)
             isFinished -> DataResourceState.Finished(
-                machineData,
+                sectionEditData,
                 "Finished",
-                "Machine was successful created"
+                "Section was successful created"
             )
 
-            else -> DataResourceState.Success(machineData)
+            else -> DataResourceState.Success(sectionEditData)
         }
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
-        DataResourceState.Loading(MachineEditData(id = _id, foreignId = _foreignId), null)
+        DataResourceState.Loading(SectionCreationData(id = _id), null)
     )
 
     init {
         if ((_id != null) && (_id > 0)) {
-            fetchMachineEditData(_id)
+            fetchSectionEditData(_id)
         } else {
             viewModelScope.launch { _isLoading.emit(false) }
         }
     }
 
-    fun onEvent(event: MachineEditEvent) {
+    fun onEvent(event: SectionCreationEvent) {
         when (event) {
-            is MachineEditEvent.UpsertMachine -> upsertMachine(event)
-            is MachineEditEvent.AcceptError -> acceptError()
+            is SectionCreationEvent.UpsertSection -> upsertSection(event)
+            is SectionCreationEvent.AcceptError -> acceptError()
         }
     }
 
-    private fun fetchMachineEditData(machineId: Int) {
+    private fun fetchSectionEditData(sectionId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             async {
-                with(repository.getMachine(machineId)) {
+                with(repository.getSection(sectionId)) {
                     _title.emit(this.title)
-                    _subtitle.emit(this.subtitle)
                     _imageRes.emit(this.imageRes)
                 }
             }.await()
@@ -116,11 +111,11 @@ class MachineCreationViewModel @Inject constructor(
         }
     }
 
-    private fun upsertMachine(event: MachineEditEvent.UpsertMachine) {
+    private fun upsertSection(event: SectionCreationEvent.UpsertSection) {
         viewModelScope.launch { _isLoading.emit(true) }
         viewModelScope.launch(Dispatchers.IO) {
             delay(350)
-            async { upsertMachineInDB(event.machine) }.await()
+            async { upsertSectionInDB(event.section) }.await()
                 .onSuccess {
                     _isLoading.emit(false)
                     _isFinished.emit(true)
@@ -130,12 +125,11 @@ class MachineCreationViewModel @Inject constructor(
         }
     }
 
-    private suspend fun upsertMachineInDB(machine: Machine) =
-        if (machine.id > 0) {
-            runCatching { repository.updateMachine(machine) }
-        } else {
-            runCatching { repository.addMachine(machine) }
-        }
-
     private fun acceptError() = viewModelScope.launch { _error.emit(null) }
+
+    private suspend fun upsertSectionInDB(section: Section) = if (section.id > 0) {
+        runCatching { repository.updateSection(section) }
+    } else {
+        runCatching { repository.addSection(section) }
+    }
 }

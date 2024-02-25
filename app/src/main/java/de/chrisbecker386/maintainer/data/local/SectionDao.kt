@@ -25,6 +25,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import androidx.room.Upsert
 import de.chrisbecker386.maintainer.data.entity.Machine
 import de.chrisbecker386.maintainer.data.entity.Section
@@ -35,6 +36,9 @@ interface SectionDao {
 
     @Upsert
     suspend fun addSection(section: Section)
+
+    @Update
+    suspend fun updateSection(section: Section)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addSections(sections: List<Section>)
@@ -52,7 +56,11 @@ interface SectionDao {
 
     @Transaction
     @Query("SELECT * FROM sections WHERE section_id = :sectionId")
-    fun getSection(sectionId: Int): Flow<Section>
+    suspend fun getSection(sectionId: Int): Section
+
+    @Transaction
+    @Query("SELECT * FROM sections WHERE section_id = :sectionId")
+    fun getSectionFlow(sectionId: Int): Flow<Section>
 
     @Query("SELECT * FROM sections")
     fun getAllSections(): Flow<List<Section>>
