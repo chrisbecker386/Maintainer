@@ -19,11 +19,17 @@
 
 package de.chrisbecker386.maintainer.ui.screens.home.creation.section
 
-import androidx.annotation.DrawableRes
 import de.chrisbecker386.maintainer.data.entity.Section
+import de.chrisbecker386.maintainer.ui.theme.ICON_LIST
 
 interface SectionCreationEvent {
-    data class TitleChange(val title: String?) : SectionCreationEvent
-    data class ImageChange(@DrawableRes val imageRes: Int?) : SectionCreationEvent
-    data class SectionConfirm(val section: Section) : SectionCreationEvent
+
+    object AcceptError : SectionCreationEvent
+    data class UpsertSection(
+        val section: Section = Section(
+            id = 0,
+            title = "",
+            imageRes = ICON_LIST.first()
+        )
+    ) : SectionCreationEvent
 }

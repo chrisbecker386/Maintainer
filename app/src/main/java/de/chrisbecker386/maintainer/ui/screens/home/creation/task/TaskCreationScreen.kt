@@ -26,7 +26,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -36,9 +35,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.chrisbecker386.maintainer.data.model.DataResourceState
 import de.chrisbecker386.maintainer.ui.component.BaseButton
-import de.chrisbecker386.maintainer.ui.component.HeadlineBold
 import de.chrisbecker386.maintainer.ui.component.ImagePickerWithPreview
 import de.chrisbecker386.maintainer.ui.component.basic.CircularLoadIndicator
 import de.chrisbecker386.maintainer.ui.component.basic.MessageFullScreen
@@ -58,25 +57,21 @@ fun TaskCreationScreen(
     navigateUp: () -> Unit = {}
 ) {
     val viewModel = hiltViewModel<TaskCreationViewModel>()
-    val state by viewModel.taskEditState.collectAsState()
+    val state by viewModel.taskEditState.collectAsStateWithLifecycle()
 
     when (state) {
-        is DataResourceState.Error -> {
+        is DataResourceState.Error ->
             MessageFullScreen(
                 title = "Error",
                 message = (state as DataResourceState.Error).message,
                 onClick = { viewModel.onEvent(TaskCreationEvent.AcceptError) }
             )
-        }
 
-        is DataResourceState.Loading -> {
-            CircularLoadIndicator()
-        }
+        is DataResourceState.Loading -> CircularLoadIndicator()
 
         is DataResourceState.Success -> TaskCreation(
             state = (state as DataResourceState.Success<TaskEditData>).data,
-            onEvent = viewModel::onEvent,
-            navigateUp = navigateUp
+            onEvent = viewModel::onEvent
         )
 
         is DataResourceState.Finished -> MessageFullScreen(
@@ -90,8 +85,7 @@ fun TaskCreationScreen(
 @Composable
 private fun TaskCreation(
     state: TaskEditData,
-    onEvent: (TaskCreationEvent) -> Unit = {},
-    navigateUp: () -> Unit = {}
+    onEvent: (TaskCreationEvent) -> Unit = {}
 ) {
     var task by remember { mutableStateOf(state.task) }
     var steps by rememberSaveable { mutableStateOf(state.steps) }
@@ -107,7 +101,6 @@ private fun TaskCreation(
             .fillMaxWidth()
             .padding(DIM_XS)
     ) {
-        HeadlineBold(text = "Create Task")
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(DIM_XS)

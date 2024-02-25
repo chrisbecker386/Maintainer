@@ -44,9 +44,13 @@ class MaintainerRepositoryImpl(
 
     override suspend fun addSection(section: Section) = sectionDao.addSection(section)
 
-    override suspend fun addSections(sections: List<Section>) = sectionDao.addSections(sections)
+    override suspend fun updateSection(section: Section) = sectionDao.updateSection(section)
 
-    override fun getSection(sectionId: Int): Flow<Section> = sectionDao.getSection(sectionId)
+    override suspend fun addSections(sections: List<Section>) = sectionDao.addSections(sections)
+    override suspend fun getSection(sectionId: Int): Section = sectionDao.getSection(sectionId)
+
+    override fun getSectionFlow(sectionId: Int): Flow<Section> =
+        sectionDao.getSectionFlow(sectionId)
 
     override fun getAllSections(): Flow<List<Section>> = sectionDao.getAllSections()
 
@@ -55,6 +59,8 @@ class MaintainerRepositoryImpl(
 
     override suspend fun addMachine(machine: Machine) = machineDao.addMachine(machine)
 
+    override suspend fun updateMachine(machine: Machine) = machineDao.updateMachine(machine)
+
     override suspend fun addMachines(machines: List<Machine>) =
         machineDao.addMachines(machines)
 
@@ -62,7 +68,10 @@ class MaintainerRepositoryImpl(
 
     override suspend fun removeAllMachines() = machineDao.removeAllMachines()
 
-    override fun getMachine(machineId: Int): Flow<Machine> = machineDao.getMachine(machineId)
+    override suspend fun getMachine(machineId: Int): Machine = machineDao.getMachine(machineId)
+
+    override fun getMachineFlow(machineId: Int): Flow<Machine> =
+        machineDao.getMachineFlow(machineId)
 
     override fun getNextMachine(moment: Long): Flow<Machine?> =
         machineDao.getNextMachine(moment)

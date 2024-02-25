@@ -64,10 +64,10 @@ data class Task(
     }
 
     fun getFormattedTask() = "$title (every${
-        if (tact == 1L) {
-            ""
-        } else {
-            "$tact."
-        }
+    if (tact == 1L) {
+        ""
+    } else {
+        "$tact."
+    }
     } ${repeatFrequency.toRepeatFrequency().text})"
 }

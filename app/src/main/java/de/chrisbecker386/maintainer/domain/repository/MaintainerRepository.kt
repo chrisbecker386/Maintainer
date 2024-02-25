@@ -30,15 +30,19 @@ import kotlinx.coroutines.flow.Flow
 
 interface MaintainerRepository {
     suspend fun addSection(section: Section)
+    suspend fun updateSection(section: Section)
     suspend fun addSections(sections: List<Section>)
-    fun getSection(sectionId: Int): Flow<Section>
+    suspend fun getSection(sectionId: Int): Section
+    fun getSectionFlow(sectionId: Int): Flow<Section>
     fun getAllSections(): Flow<List<Section>>
     fun getMachines(sectionId: Int): Flow<List<Machine>>
     suspend fun addMachine(machine: Machine)
+    suspend fun updateMachine(machine: Machine)
     suspend fun addMachines(machines: List<Machine>)
     suspend fun removeMachine(machine: Machine)
     suspend fun removeAllMachines()
-    fun getMachine(machineId: Int): Flow<Machine>
+    suspend fun getMachine(machineId: Int): Machine
+    fun getMachineFlow(machineId: Int): Flow<Machine>
     fun getNextMachine(moment: Long): Flow<Machine?>
     suspend fun addTask(task: Task)
     suspend fun addTasks(tasks: List<Task>)

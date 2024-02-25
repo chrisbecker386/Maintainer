@@ -27,20 +27,24 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
-import de.chrisbecker386.maintainer.R
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.chrisbecker386.maintainer.data.entity.Section
+import de.chrisbecker386.maintainer.data.model.DataResourceState
 import de.chrisbecker386.maintainer.ui.component.BaseButton
-import de.chrisbecker386.maintainer.ui.component.HeadlineBold
 import de.chrisbecker386.maintainer.ui.component.ImagePickerWithPreview
 import de.chrisbecker386.maintainer.ui.component.TextInputField
+import de.chrisbecker386.maintainer.ui.component.basic.CircularLoadIndicator
+import de.chrisbecker386.maintainer.ui.component.basic.MessageFullScreen
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.ICON_LIST
@@ -50,31 +54,54 @@ fun SectionCreationScreen(
     id: Int? = null,
     navigateUp: () -> Unit
 ) {
-    val viewModel = hiltViewModel<CreationScreenViewModel>()
-    val state by viewModel.state.collectAsState()
-    SectionCreation(state = state, onEvent = viewModel::onEvent, navigateUp = navigateUp)
+    val viewModel = hiltViewModel<SectionCreationViewModel>()
+    val state by viewModel.sectionEditState.collectAsStateWithLifecycle()
+
+    when (state) {
+        is DataResourceState.Error ->
+            MessageFullScreen(
+                title = "Error",
+                message = (state as DataResourceState.Error).message,
+                onClick = { viewModel.onEvent(SectionCreationEvent.AcceptError) }
+            )
+
+        is DataResourceState.Loading -> CircularLoadIndicator()
+
+        is DataResourceState.Success -> SectionCreation(
+            state = (state as DataResourceState.Success).data,
+            onEvent = viewModel::onEvent
+        )
+        is DataResourceState.Finished -> MessageFullScreen(
+            title = (state as DataResourceState.Finished).title ?: "success title",
+            message = (state as DataResourceState.Finished).text ?: "success text",
+            onClick = { navigateUp() }
+        )
+    }
 }
 
 @Composable
 private fun SectionCreation(
-    state: SectionCreationState,
-    onEvent: (SectionCreationEvent) -> Unit = {},
-    navigateUp: () -> Unit
+    state: SectionCreationData,
+    onEvent: (SectionCreationEvent) -> Unit = {}
 ) {
-    if (state.isNavigateUp) navigateUp()
+    var section: Section by remember {
+        mutableStateOf(
+            Section(
+                state.id ?: 0,
+                state.title ?: "",
+                state.imageRes ?: ICON_LIST.first()
+            )
+        )
+    }
+
     val focusManager = LocalFocusManager.current
 
-    LazyColumn(
-        Modifier
-            .fillMaxWidth()
-            .padding(DIM_XS)
-    ) {
-        item { HeadlineBold(text = "Create Section") }
+    LazyColumn(Modifier.fillMaxWidth().padding(DIM_XS)) {
         item {
             TextInputField(
                 label = "Section Name",
-                value = "",
-                onValueChange = { onEvent(SectionCreationEvent.TitleChange(title = it)) },
+                value = section.title,
+                onValueChange = { section = section.copy(title = it) },
                 enabled = true,
                 sideIcon = null,
                 onSideIconClick = {},
@@ -86,29 +113,17 @@ private fun SectionCreation(
                 ),
                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
             )
-
             ImagePickerWithPreview(
                 title = "Select a Icon",
                 images = ICON_LIST,
-                onImageChange = { onEvent(SectionCreationEvent.ImageChange(imageRes = it)) }
+                onImageChange = { section = section.copy(imageRes = it) }
             )
-
-            if (state.isCreationComplete) {
-                Spacer(modifier = Modifier.height(DIM_S))
-                BaseButton(
-                    text = "confirm",
-                    onClick = {
-                        onEvent(
-                            SectionCreationEvent.SectionConfirm(
-                                Section(
-                                    title = state.title ?: "",
-                                    imageRes = state.imageRes ?: R.drawable.question_mark_48px
-                                )
-                            )
-                        )
-                    }
-                )
-            }
+            Spacer(modifier = Modifier.height(DIM_S))
+            BaseButton(
+                enable = section.title.isNotEmpty(),
+                text = "confirm",
+                onClick = { onEvent(SectionCreationEvent.UpsertSection(section)) }
+            )
         }
     }
 }

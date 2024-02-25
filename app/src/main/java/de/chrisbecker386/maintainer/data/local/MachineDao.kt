@@ -35,11 +35,11 @@ interface MachineDao {
     @Upsert
     suspend fun addMachine(machine: Machine)
 
-    @Upsert
-    suspend fun addMachines(machines: List<Machine>)
-
     @Update
     suspend fun updateMachine(machine: Machine)
+
+    @Upsert
+    suspend fun addMachines(machines: List<Machine>)
 
     @Delete
     suspend fun removeMachine(machine: Machine)
@@ -54,7 +54,11 @@ interface MachineDao {
 
     @Transaction
     @Query("SELECT * FROM machines WHERE machine_id = :machineId")
-    fun getMachine(machineId: Int): Flow<Machine>
+    suspend fun getMachine(machineId: Int): Machine
+
+    @Transaction
+    @Query("SELECT * FROM machines WHERE machine_id = :machineId")
+    fun getMachineFlow(machineId: Int): Flow<Machine>
 
     @Transaction
     @Query(

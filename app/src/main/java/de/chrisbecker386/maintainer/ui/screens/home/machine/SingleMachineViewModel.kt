@@ -40,7 +40,7 @@ class SingleMachineViewModel @Inject constructor(
 ) :
     ViewModel() {
     private val _machine =
-        repository.getMachine(checkNotNull(savedStateHandle.get<Int>("machine_type")))
+        repository.getMachineFlow(checkNotNull(savedStateHandle.get<Int>("machine_type")))
 
     private val _tasks = _machine.flatMapLatest { machine ->
         repository.getTasksForMachineWithPreconditionsStepsCompletes(machine.id)

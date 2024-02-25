@@ -41,7 +41,7 @@ class SingleSectionViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _section =
-        repository.getSection(checkNotNull(savedStateHandle.get<Int>("section_type")))
+        repository.getSectionFlow(checkNotNull(savedStateHandle.get<Int>("section_type")))
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val _machines = _section.flatMapLatest { section ->
