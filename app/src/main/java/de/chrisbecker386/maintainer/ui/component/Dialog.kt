@@ -78,7 +78,7 @@ import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
-import java.time.ZoneId
+import java.time.ZoneId.systemDefault
 import java.time.ZoneOffset
 
 @Composable
@@ -198,7 +198,7 @@ fun MaintainerDatePickerDialog(
     )
 
     fun getLocalDate(): LocalDate = Instant.ofEpochMilli(dateState.selectedDateMillis!!)
-        .atZone(ZoneId.of("Europe/Berlin")).toLocalDate()
+        .atZone(systemDefault()).toLocalDate()
 
     DatePickerDialog(
         onDismissRequest = { onDismissRequest(localDate) },

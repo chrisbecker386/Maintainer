@@ -63,6 +63,13 @@ data class Task(
         return RepeatCycle(this.repeatFrequency.toRepeatFrequency(), this.tact)
     }
 
+    fun nextFulfillmentDate(lastCompletedDate: Long?): Long {
+        val currentTime = System.currentTimeMillis()
+
+        val repeatsNeeded = ((currentTime - (lastCompletedDate ?: currentTime)) / repeatFrequency).coerceAtLeast(0)
+        return (lastCompletedDate ?: currentTime) + (repeatsNeeded * repeatFrequency)
+    }
+
     fun getFormattedTask() = "$title (every${
     if (tact == 1L) {
         ""

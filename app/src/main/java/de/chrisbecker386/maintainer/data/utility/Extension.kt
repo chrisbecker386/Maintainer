@@ -20,7 +20,11 @@
 package de.chrisbecker386.maintainer.data.utility
 
 import android.content.BroadcastReceiver
+import android.content.Context
 import android.icu.util.Calendar
+import android.text.format.DateUtils
+import androidx.core.content.ContextCompat.getString
+import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.model.RepeatFrequency
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -30,10 +34,33 @@ import java.lang.Math.abs
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
-fun Long.toFormatDateString(format: SimpleDateType): String {
+fun Long.toFormatDateString(format: SimpleDateType = SimpleDateType.FULL_DATE_EUROPE): String {
     val cal = Calendar.getInstance()
     cal.timeInMillis = this
     return format.getSimpleDateFormat().format(cal).toString()
+}
+
+fun Long.toTimeIndicationOrFormat(
+    context: Context,
+    format: SimpleDateType = SimpleDateType.FULL_DATE_EUROPE
+
+): String {
+    return when {
+        DateUtils.isToday(this) -> getString(context, R.string.today)
+        DateUtils.isToday(this + DateUtils.DAY_IN_MILLIS) -> getString(context, R.string.yesterday)
+        DateUtils.isToday(this + (2 * DateUtils.DAY_IN_MILLIS)) -> getString(
+            context,
+            R.string.day_before_yesterday
+        )
+
+        DateUtils.isToday(this - DateUtils.DAY_IN_MILLIS) -> getString(context, R.string.tomorrow)
+        DateUtils.isToday(this - (2 * DateUtils.DAY_IN_MILLIS)) -> getString(
+            context,
+            R.string.day_after_tomorrow
+        )
+
+        else -> this.toFormatDateString(format)
+    }
 }
 
 fun Long.toRepeatFrequency(): RepeatFrequency {

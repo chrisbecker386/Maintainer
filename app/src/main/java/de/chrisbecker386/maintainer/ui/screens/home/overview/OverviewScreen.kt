@@ -19,16 +19,16 @@
 
 package de.chrisbecker386.maintainer.ui.screens.home.overview
 
-import androidx.compose.foundation.clickable
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.chrisbecker386.maintainer.ui.component.NextMaintains
 import de.chrisbecker386.maintainer.ui.component.OverviewGrid
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
@@ -37,25 +37,28 @@ import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 @Composable
 fun OverviewScreen(
     onSectionClick: (Int) -> Unit = {},
-    onMachineClick: (Int) -> Unit = {}
+    onMachineClick: (Int) -> Unit = {},
+    onTaskClick: (Int) -> Unit = {}
 ) {
     val viewModel = hiltViewModel<OverviewScreenViewModel>()
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.overviewData.collectAsStateWithLifecycle()
 
     Overview(
         state = state,
         onSectionClick = onSectionClick,
-        onMachineClick = onMachineClick
+        onTaskClick = onTaskClick
+
     )
 }
 
 @Composable
 private fun Overview(
-    state: OverviewState,
+    state: OverviewData,
     onEvent: (OverviewEvent) -> Unit = {},
     onSectionClick: (Int) -> Unit = {},
-    onMachineClick: (Int) -> Unit = {}
+    onTaskClick: (Int) -> Unit = {}
 ) {
+    Log.d("OverviewScreen", state.toString())
     LazyColumn(
         Modifier
             .fillMaxWidth()
@@ -70,13 +73,9 @@ private fun Overview(
         }
         item {
             NextMaintains(
-                modifier = Modifier
-                    .clickable {
-                        state.nextMachine?.id
-                            ?.let { onMachineClick(it) }
-                    },
-                machineTitle = state.nextMachine.let { it?.title } ?: "",
-                tasks = state.nextTasks ?: emptyList()
+                modifier = Modifier,
+                tasksWithDetails = state.nextTasks,
+                onTaskClick = onTaskClick
             )
         }
         item {

@@ -50,7 +50,8 @@ fun MaintainerNavGraph(
                 onSectionClick = { careType -> navController.navigateToSingleSection(careType) },
                 onMachineClick = { machineType ->
                     navController.navigateToSingleMachine(machineType)
-                }
+                },
+                onTaskClick = { taskType -> navController.navigateToSingleTask(taskType) }
             )
         }
         composable(route = Info.route) {

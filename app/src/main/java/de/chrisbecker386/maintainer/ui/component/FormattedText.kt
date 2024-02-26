@@ -91,6 +91,16 @@ fun BodyText2(text: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
+fun CaptionText(text: String, modifier: Modifier = Modifier) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MaterialTheme.typography.caption,
+        color = MaterialTheme.colors.onBackground
+    )
+}
+
+@Composable
 fun SubtitleText(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,

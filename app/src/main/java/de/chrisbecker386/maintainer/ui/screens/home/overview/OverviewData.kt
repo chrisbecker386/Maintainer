@@ -19,14 +19,13 @@
 
 package de.chrisbecker386.maintainer.ui.screens.home.overview
 
-import de.chrisbecker386.maintainer.data.entity.Machine
 import de.chrisbecker386.maintainer.data.entity.Section
-import de.chrisbecker386.maintainer.data.entity.Task
+import de.chrisbecker386.maintainer.data.entity.relation.TaskWithDetails
 import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 
-data class OverviewState(
+data class OverviewData(
     val shortStatus: ShortStatusState = ShortStatusState(0, 1),
-    val nextMachine: Machine? = null,
-    val nextTasks: List<Task>? = emptyList(),
+
+    val nextTasks: List<TaskWithDetails> = emptyList(),
     val sections: List<Section> = emptyList()
 )

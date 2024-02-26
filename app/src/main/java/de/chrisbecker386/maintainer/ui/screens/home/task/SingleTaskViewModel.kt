@@ -29,6 +29,7 @@ import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
 import de.chrisbecker386.maintainer.ui.model.ShortStatusState
 import de.chrisbecker386.maintainer.ui.screens.home.task.SingleTaskEvent.StepDone
 import de.chrisbecker386.maintainer.ui.screens.home.task.SingleTaskEvent.TaskDone
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -49,6 +50,7 @@ constructor(
 
     private val _task = repository.getTaskFlow(checkNotNull(savedStateHandle.get<Int>("task_type")))
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val _steps = _task.flatMapLatest { task -> repository.getStepsFlow(task.id) }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(),

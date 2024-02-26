@@ -24,6 +24,7 @@ import de.chrisbecker386.maintainer.data.entity.Section
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
+import de.chrisbecker386.maintainer.data.entity.relation.TaskWithDetails
 import de.chrisbecker386.maintainer.data.entity.relation.TaskWithStepsCompletes
 import de.chrisbecker386.maintainer.data.entity.relation.TaskWithTaskCompletedDate
 import kotlinx.coroutines.flow.Flow
@@ -52,7 +53,7 @@ interface MaintainerRepository {
     suspend fun getTask(taskId: Int): Task
     fun getAllTasks(): Flow<List<Task>>
     fun getTasksFlow(machineId: Int): Flow<List<Task>>
-    fun getAllOpenTasks(moment: Long): List<Task>
+    suspend fun getAllOpenTasks(moment: Long): List<Task>
     fun getAllOpenTasksFlow(moment: Long): Flow<List<Task>>
     fun getAllOpenTaskWithLastCompleteDate(): List<TaskWithTaskCompletedDate>
     fun getAllOpenTaskWithLastCompleteDateFlow(): Flow<List<TaskWithTaskCompletedDate>>
@@ -66,6 +67,8 @@ interface MaintainerRepository {
     fun getNumberOfAllTasks(): Flow<Int>
     fun getNumberOfAllTasksBySection(sectionId: Int): Flow<Int>
     fun getNumberOfAllOpenTasksBySection(sectionId: Int, moment: Long): Flow<Int>
+    suspend fun getTaskWithDetails(taskId: Int): TaskWithDetails?
+    fun getTaskWithDetailsFlow(taskId: Int): Flow<TaskWithDetails?>
     suspend fun addTaskComplete(taskCompletedDate: TaskCompletedDate)
     suspend fun updateTaskCompleted(taskCompletedDate: TaskCompletedDate)
     suspend fun deleteTaskCompleted(taskCompletedDate: TaskCompletedDate)
