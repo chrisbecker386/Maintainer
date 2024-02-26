@@ -79,7 +79,7 @@ interface TaskDao {
         AND tcd.task_completed_date < :moment - t.task_tact * t.task_repeat_frequency))
         ORDER BY t.task_fk_machine_id"""
     )
-    fun getAllOpenTasks(moment: Long): List<Task>
+    suspend fun getAllOpenTasks(moment: Long): List<Task>
 
     @Transaction
     @Query(

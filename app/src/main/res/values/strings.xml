@@ -24,5 +24,10 @@
     <string name="settings">settings</string>
     <string name="add">add</string>
     <string name="no_open_tasks">no open tasks</string>
-
+    <string name="your_open_tasks">your open tasks</string>
+    <string name="today">today</string>
+    <string name="yesterday">yesterday</string>
+    <string name="tomorrow">tomorrow</string>
+    <string name="day_after_tomorrow">day after tomorrow</string>
+    <string name="day_before_yesterday">day before yesterday</string>
 </resources>

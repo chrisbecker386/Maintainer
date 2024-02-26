@@ -24,6 +24,7 @@ import de.chrisbecker386.maintainer.data.entity.Section
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
+import de.chrisbecker386.maintainer.data.entity.relation.TaskWithDetails
 import de.chrisbecker386.maintainer.data.entity.relation.TaskWithStepsCompletes
 import de.chrisbecker386.maintainer.data.entity.relation.TaskWithTaskCompletedDate
 import de.chrisbecker386.maintainer.data.local.MachineDao
@@ -33,6 +34,7 @@ import de.chrisbecker386.maintainer.data.local.TaskCompletedDao
 import de.chrisbecker386.maintainer.data.local.TaskDao
 import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class MaintainerRepositoryImpl(
     private val sectionDao: SectionDao,
@@ -92,7 +94,7 @@ class MaintainerRepositoryImpl(
     override fun getTasksFlow(machineId: Int): Flow<List<Task>> =
         machineDao.getTasksForMachine(machineId)
 
-    override fun getAllOpenTasks(moment: Long): List<Task> = taskDao.getAllOpenTasks(moment)
+    override suspend fun getAllOpenTasks(moment: Long): List<Task> = taskDao.getAllOpenTasks(moment)
 
     override fun getAllOpenTasksFlow(moment: Long): Flow<List<Task>> =
         taskDao.getAllTasksFlow(moment)
@@ -127,6 +129,23 @@ class MaintainerRepositoryImpl(
 
     override fun getNumberOfAllOpenTasksBySection(sectionId: Int, moment: Long): Flow<Int> =
         taskDao.getNumberOfAllOpenTasksBySection(sectionId, moment)
+
+    override suspend fun getTaskWithDetails(taskId: Int): TaskWithDetails? {
+        val task = taskDao.getTask(taskId)
+        val machine = machineDao.getMachine(task.machineId)
+        val section = machine.section?.let { sectionDao.getSection(it) }
+        val completedDates = taskCompletedDao.getCompletedTask(taskId)
+
+        return section?.let { TaskWithDetails(task, machine, it, completedDates) }
+    }
+
+    override fun getTaskWithDetailsFlow(taskId: Int): Flow<TaskWithDetails?> = flow {
+        val task = taskDao.getTask(taskId)
+        val machine = machineDao.getMachine(task.machineId)
+        val section = machine.section?.let { sectionDao.getSection(it) }
+        val completedDates = taskCompletedDao.getCompletedTask(taskId)
+        emit(section?.let { TaskWithDetails(task, machine, it, completedDates) })
+    }
 
     override suspend fun addTaskComplete(taskCompletedDate: TaskCompletedDate) =
         taskCompletedDao.addTaskCompleted(taskCompletedDate)

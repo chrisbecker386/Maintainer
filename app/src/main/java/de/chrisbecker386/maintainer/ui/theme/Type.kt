@@ -147,6 +147,7 @@ val typo = Typography(
     caption = TextStyle(
         fontFamily = nunitoSansFont,
         fontWeight = FontWeight.Normal,
+        fontStyle = FontStyle.Italic,
         fontSize = 13.sp,
         lineHeight = 17.sp,
         letterSpacing = 0.4.sp
