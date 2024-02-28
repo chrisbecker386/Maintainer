@@ -82,8 +82,6 @@ private fun SingleMachine(
         item { HeadlineSlim(text = "Closed") }
         items(count = state.closedTasks.size) { index ->
             TaskContent(
-                modifier = Modifier
-                    .clickable { onTaskClick(state.closedTasks[index].task.id) },
                 title = state.closedTasks[index].task.title,
                 subtitle = state.closedTasks[index].task.subtitle ?: "",
                 numberOfSteps = state.closedTasks[index].steps.size

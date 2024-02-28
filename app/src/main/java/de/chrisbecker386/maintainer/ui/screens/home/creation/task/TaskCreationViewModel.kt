@@ -72,8 +72,8 @@ class TaskCreationViewModel @Inject constructor(
         _task,
         _steps,
         _initStartDateTime
-    ) { taskEditState, task, steps, initStartDateTime ->
-        taskEditState.copy(task = task, steps = steps, startDateTime = initStartDateTime)
+    ) { taskEditData, task, steps, initStartDateTime ->
+        taskEditData.copy(task = task, steps = steps, startDateTime = initStartDateTime)
     }
 
     private val _error = MutableStateFlow<Throwable?>(null)

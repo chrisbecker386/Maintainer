@@ -24,31 +24,46 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import de.chrisbecker386.maintainer.data.entity.Task
 import de.chrisbecker386.maintainer.data.entity.TaskCompletedDate
+import de.chrisbecker386.maintainer.data.model.DataResourceState
+import de.chrisbecker386.maintainer.data.model.RepeatFrequency
 import de.chrisbecker386.maintainer.domain.repository.MaintainerRepository
 import de.chrisbecker386.maintainer.ui.model.ShortStatusState
-import de.chrisbecker386.maintainer.ui.screens.home.task.SingleTaskEvent.StepDone
-import de.chrisbecker386.maintainer.ui.screens.home.task.SingleTaskEvent.TaskDone
+import de.chrisbecker386.maintainer.ui.screens.home.task.SingleTaskEvent.UpsertStep
+import de.chrisbecker386.maintainer.ui.screens.home.task.SingleTaskEvent.UpsertTask
+import de.chrisbecker386.maintainer.ui.theme.ICON_LIST
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SingleTaskViewModel
 @Inject
-constructor(
-    private val repository: MaintainerRepository,
-    savedStateHandle: SavedStateHandle
-) :
+constructor(private val repository: MaintainerRepository, savedStateHandle: SavedStateHandle) :
     ViewModel() {
+    private val _taskId = checkNotNull(savedStateHandle.get<Int>("task_type"))
 
-    private val _task = repository.getTaskFlow(checkNotNull(savedStateHandle.get<Int>("task_type")))
+    private val _task = MutableStateFlow(
+        Task(
+            id = _taskId,
+            title = "",
+            subtitle = null,
+            imageRes = ICON_LIST.first(),
+            repeatFrequency = RepeatFrequency.WEEKLY.value,
+            tact = 1,
+            machineId = 0
+        )
+    )
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val _steps = _task.flatMapLatest { task -> repository.getStepsFlow(task.id) }.stateIn(
@@ -57,56 +72,100 @@ constructor(
         emptyList()
     )
 
-    private val _state = MutableStateFlow(SingleTaskState())
-
     private val _shortStatus = combine(_steps, _task) { steps, task ->
         val numerator = steps.filter { it.isValid(task.getRepeatCycle()) }.size
         val denominator = steps.size
         ShortStatusState(numerator, denominator)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), ShortStatusState(0, 0))
 
-    private val _isTaskDone = combine(_task, _steps) { task, steps ->
-        if (steps.isEmpty()) {
-            false
-        } else {
-            steps.filter { step -> step.isValid(task.getRepeatCycle()) }.size == steps.size
-        }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
+    private val _singleTaskDataDefault = MutableStateFlow(SingleTaskData())
 
-    val state = combine(
-        _state,
+    private val _singleTaskData = combine(
+        _singleTaskDataDefault,
         _task,
         _shortStatus,
-        _steps,
-        _isTaskDone
-    ) { state, task, shortStatus, steps, isTaskDone ->
-        state.copy(
+        _steps
+    ) { singleTaskData, task, shortStatus, steps ->
+        singleTaskData.copy(
             task = task,
             shortStatus = shortStatus,
-            steps = steps,
-            isTaskDone = isTaskDone
+            steps = steps
         )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SingleTaskState())
+    }
+
+    private val _error = MutableStateFlow<Throwable?>(null)
+    private val _isLoading = MutableStateFlow(true)
+    private val _isFinished = MutableStateFlow(false)
+
+    val state: StateFlow<DataResourceState<SingleTaskData>> = combine(
+        _singleTaskData,
+        _error,
+        _isLoading,
+        _isFinished
+    ) { singleTaskState,
+        error,
+        isLoading,
+        isFinished ->
+        when {
+            isLoading -> DataResourceState.Loading(singleTaskState, null)
+            error != null -> DataResourceState.Error(singleTaskState, error.message ?: "", error)
+            isFinished -> DataResourceState.Finished(
+                singleTaskState,
+                "Finished",
+                "Task was successful maintained"
+            )
+
+            else -> DataResourceState.Success(singleTaskState)
+        }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        DataResourceState.Loading(SingleTaskData(task = _task.value, steps = _steps.value), null)
+    )
+
+    init {
+        fetchSingleTaskData()
+    }
 
     fun onEvent(event: SingleTaskEvent) {
         when (event) {
-            is StepDone -> {
-                viewModelScope.launch {
-                    val step = event.step.copy(completedDate = Calendar.getInstance().timeInMillis)
-                    repository.updateStep(step)
-                }
-            }
+            SingleTaskEvent.AcceptError -> acceptError()
+            is UpsertStep -> upsertStep(event)
+            is UpsertTask -> upsertTask(event)
+        }
+    }
 
-            is TaskDone -> {
-                viewModelScope.launch {
-                    val taskComplete = TaskCompletedDate(
-                        date = Calendar.getInstance().timeInMillis,
-                        taskId = event.task.id
-                    )
-                    repository.addTaskComplete(taskComplete)
-                }
-                _state.update { it.copy(showDialog = true) }
-            }
+    private fun fetchSingleTaskData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            async { _task.emit(repository.getTask(_taskId)) }.await()
+            async { _isLoading.emit(false) }.await()
+        }
+    }
+
+    private fun acceptError() = viewModelScope.launch { _error.emit(null) }
+
+    private fun upsertStep(event: SingleTaskEvent.UpsertStep) {
+        viewModelScope.launch(Dispatchers.IO) {
+            async {
+                val step = event.step.copy(completedDate = Calendar.getInstance().timeInMillis)
+                repository.updateStep(step)
+            }.await()
+        }
+    }
+
+    private fun upsertTask(event: SingleTaskEvent.UpsertTask) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val taskComplete = TaskCompletedDate(
+                date = Calendar.getInstance().timeInMillis,
+                taskId = _taskId
+            )
+            async {
+                _isLoading.emit(true)
+                delay(350)
+            }.await()
+            async { repository.addTaskComplete(taskComplete) }.await()
+            async { _isLoading.emit(false) }.await()
+            async { _isFinished.emit(true) }.await()
         }
     }
 }
