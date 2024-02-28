@@ -50,7 +50,9 @@ fun TaskContent(
     Box(modifier = modifier) {
         EvenCard {
             HeadlineBold(title)
-            BodyText(subtitle)
+            if (subtitle.isNotEmpty()) {
+                BodyText(subtitle)
+            }
             RowWithIconText(icon = Icons.Default.Ballot, text = "$numberOfSteps steps")
             Spacer(modifier = Modifier.height(DIM_XXS))
         }
@@ -81,6 +83,6 @@ fun RowWithIconText(
 @Composable
 fun PreviewTaskContent() {
     MaintainerTheme {
-        TaskContent(title = "task_title", subtitle = "task_sub_title", numberOfSteps = 4)
+        TaskContent(title = "task_title", subtitle = "", numberOfSteps = 4)
     }
 }

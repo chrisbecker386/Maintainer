@@ -23,6 +23,7 @@ import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.data.entity.Task
 
 sealed interface SingleTaskEvent {
-    data class StepDone(val step: Step) : SingleTaskEvent
-    data class TaskDone(val task: Task) : SingleTaskEvent
+    object AcceptError : SingleTaskEvent
+    data class UpsertStep(val step: Step) : SingleTaskEvent
+    data class UpsertTask(val task: Task) : SingleTaskEvent
 }

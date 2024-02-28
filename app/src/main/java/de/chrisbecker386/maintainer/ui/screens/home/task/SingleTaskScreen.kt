@@ -26,14 +26,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import de.chrisbecker386.maintainer.ui.component.ConfirmDialog
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import de.chrisbecker386.maintainer.data.model.DataResourceState
 import de.chrisbecker386.maintainer.ui.component.ShortStatus
 import de.chrisbecker386.maintainer.ui.component.StepWithDetails
+import de.chrisbecker386.maintainer.ui.component.basic.CircularLoadIndicator
+import de.chrisbecker386.maintainer.ui.component.basic.MessageFullScreen
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
@@ -43,28 +45,38 @@ fun SingleTaskScreen(
     navigateUp: () -> Unit = {}
 ) {
     val viewModel = hiltViewModel<SingleTaskViewModel>()
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
-    SingleTask(
-        state = state,
-        onEvent = viewModel::onEvent,
-        navigateUp = navigateUp
-    )
+    when (state) {
+        is DataResourceState.Error ->
+            MessageFullScreen(
+                title = "Error",
+                message = (state as DataResourceState.Error).message,
+                onClick = { viewModel.onEvent(SingleTaskEvent.AcceptError) }
+            )
+
+        is DataResourceState.Loading -> CircularLoadIndicator()
+
+        is DataResourceState.Success -> SingleTask(
+            state = (state as DataResourceState.Success<SingleTaskData>).data,
+            onEvent = viewModel::onEvent
+        )
+
+        is DataResourceState.Finished -> MessageFullScreen(
+            title = (state as DataResourceState.Finished).title ?: "success title",
+            message = (state as DataResourceState.Finished).text ?: "success text",
+            onClick = { navigateUp() }
+        )
+    }
 }
 
 @Composable
 private fun SingleTask(
-    state: SingleTaskState,
-    onEvent: (SingleTaskEvent) -> Unit = {},
-    navigateUp: () -> Unit
+    state: SingleTaskData,
+    onEvent: (SingleTaskEvent) -> Unit = {}
 ) {
-    if (state.isTaskDone) onEvent(SingleTaskEvent.TaskDone(state.task))
-    if (state.showDialog) {
-        ConfirmDialog(
-            onConfirm = navigateUp,
-            title = "Task Completed",
-            text = "You have completed this task! \uD83D\uDCAA"
-        )
+    if ((state.shortStatus.denominator > 0) && (state.shortStatus.denominator == state.shortStatus.numerator)) {
+        onEvent(SingleTaskEvent.UpsertTask(state.task))
     }
 
     LazyColumn(
@@ -81,7 +93,7 @@ private fun SingleTask(
         }
         items(count = state.steps.size) { index ->
             StepWithDetails(
-                Modifier.clickable { onEvent(SingleTaskEvent.StepDone(state.steps[index])) },
+                Modifier.clickable { onEvent(SingleTaskEvent.UpsertStep(state.steps[index])) },
                 step = state.steps[index],
                 task = state.task
             )
