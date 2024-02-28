@@ -19,10 +19,11 @@
 
 package de.chrisbecker386.maintainer.ui.component
 
+import ThemePreviews
 import android.annotation.SuppressLint
-import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,12 +36,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme.colors
-import androidx.compose.material.MaterialTheme.typography
-import androidx.compose.material.Text
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
@@ -64,16 +61,17 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import de.chrisbecker386.maintainer.data.entity.Step
 import de.chrisbecker386.maintainer.ui.screens.settings.MaintainerPermission
-import de.chrisbecker386.maintainer.ui.theme.DEFAULT_STEP
+import de.chrisbecker386.maintainer.ui.theme.BUTTON_CORNER_SHAPE
 import de.chrisbecker386.maintainer.ui.theme.DIM_NO
 import de.chrisbecker386.maintainer.ui.theme.DIM_S
+import de.chrisbecker386.maintainer.ui.theme.DIM_S_PLUS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.DIM_XXS
+import de.chrisbecker386.maintainer.ui.theme.DIM_XXXXS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 import java.time.Instant
 import java.time.LocalDate
@@ -101,16 +99,19 @@ fun ConfirmDialog(
         }
     ) {
         EvenCard(horizontalAlignment = Alignment.CenterHorizontally) {
-            HeadlineBoldMedium(title)
-            BodyText(text = text)
-            Spacer(modifier = Modifier.height(DIM_XS))
-            Row(horizontalArrangement = Arrangement.End) {
-                BaseButton(text = confirmText, onClick = {
-                    if (isConfirmClickable) {
-                        isConfirmClickable = false
-                        onConfirm()
-                    }
-                })
+            Column(Modifier.padding(DIM_XS), horizontalAlignment = Alignment.CenterHorizontally) {
+                HeadlineBoldMedium(title)
+                Spacer(modifier = Modifier.size(DIM_XS))
+                BodyText(text = text, textAlign = TextAlign.Center)
+                Spacer(modifier = Modifier.height(DIM_S_PLUS))
+                Row(horizontalArrangement = Arrangement.End) {
+                    BaseButton(text = confirmText, onClick = {
+                        if (isConfirmClickable) {
+                            isConfirmClickable = false
+                            onConfirm()
+                        }
+                    })
+                }
             }
         }
     }
@@ -140,7 +141,12 @@ fun MaintainerTimePickerDialog(
             modifier = Modifier.fillMaxWidth(1f),
             shape = RoundedCornerShape(12),
             backgroundColor = colors.background,
-            elevation = DIM_NO
+            elevation = DIM_NO,
+            border = BorderStroke(
+                width = DIM_XXXXS,
+                color = colors.onBackground
+            )
+
         ) {
             Column(
                 modifier = Modifier.padding(
@@ -201,6 +207,11 @@ fun MaintainerDatePickerDialog(
         .atZone(systemDefault()).toLocalDate()
 
     DatePickerDialog(
+        modifier = Modifier.border(
+            DIM_XXXXS,
+            colors.onBackground,
+            RoundedCornerShape(BUTTON_CORNER_SHAPE.dp)
+        ),
         onDismissRequest = { onDismissRequest(localDate) },
         confirmButton = {},
         dismissButton = {}
@@ -210,6 +221,7 @@ fun MaintainerDatePickerDialog(
                 .fillMaxSize()
                 .background(colors.background),
             horizontalAlignment = Alignment.CenterHorizontally
+
         ) {
             DatePicker(
                 showModeToggle = false,
@@ -231,6 +243,7 @@ fun MaintainerDatePickerDialog(
                     dayContentColor = colors.onBackground,
                     disabledDayContentColor = colors.primary,
                     disabledSelectedDayContentColor = colors.onBackground
+
                 )
             )
             BaseButton(text = confirmText, onClick = { onConfirm(getLocalDate()) })
@@ -297,60 +310,41 @@ fun PermissionDialog(
     isPermanentlyDeclined: Boolean,
     onDismiss: () -> Unit,
     onAccept: () -> Unit,
-    onGoToAppSettingsClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onGoToAppSettingsClick: () -> Unit
 ) {
-    AlertDialog(
+    ConfirmDialog(
+        title = "Permission required",
+        text = if (isPermanentlyDeclined) {
+            permission.permanentDeclinedText
+        } else {
+            permission.description
+        },
         onDismissRequest = onDismiss,
-        shape = RoundedCornerShape(12),
-        buttons = {
-            Column(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Divider()
-                Text(
-                    text = if (isPermanentlyDeclined) {
-                        "Grant permission"
-                    } else {
-                        "OK"
-                    },
-                    style = typography.h6,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            if (isPermanentlyDeclined) {
-                                onGoToAppSettingsClick()
-                            } else {
-                                onAccept()
-                            }
-                        }
-                        .padding(16.dp)
-                )
-            }
+        confirmText = if (isPermanentlyDeclined) {
+            "Grant permission"
+        } else {
+            "OK"
         },
-        title = {
-            HeadlineSlim(text = "Permission required")
-        },
-        text = {
-            BodyText(
-                text = if (isPermanentlyDeclined) {
-                    permission.permanentDeclinedText
-                } else {
-                    permission.description
-                }
-            )
-        },
-        modifier = modifier
+        onConfirm = if (isPermanentlyDeclined) {
+            { onGoToAppSettingsClick() }
+        } else {
+            { onAccept() }
+        }
+
     )
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = false)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = false)
+@ThemePreviews
 @Composable
 fun PreviewDialog() {
     MaintainerTheme {
-//        ConfirmDialog()
-        AddStepDialog(step = DEFAULT_STEP)
+        MaintainerDatePickerDialog(
+            title = "",
+            text = "",
+            confirmText = "",
+            localDate = LocalDate.now(),
+            onConfirm = {},
+            onDismissRequest = {}
+        )
     }
 }

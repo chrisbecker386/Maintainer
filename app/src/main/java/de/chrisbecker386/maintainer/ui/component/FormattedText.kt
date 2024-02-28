@@ -71,12 +71,13 @@ fun HeadlineSlimMedium(text: String) {
 }
 
 @Composable
-fun BodyText(text: String, modifier: Modifier = Modifier) {
+fun BodyText(text: String, modifier: Modifier = Modifier, textAlign: TextAlign = TextAlign.Start) {
     Text(
         text = text,
         modifier = modifier,
         style = MaterialTheme.typography.body1,
-        color = MaterialTheme.colors.onBackground
+        color = MaterialTheme.colors.onBackground,
+        textAlign = textAlign
     )
 }
 
