@@ -23,6 +23,7 @@
     <string name="menu">menu</string>
     <string name="settings">settings</string>
     <string name="add">add</string>
+    <string name="update">update</string>
     <string name="no_open_tasks">no open tasks</string>
     <string name="your_open_tasks">your open tasks</string>
     <string name="today">today</string>

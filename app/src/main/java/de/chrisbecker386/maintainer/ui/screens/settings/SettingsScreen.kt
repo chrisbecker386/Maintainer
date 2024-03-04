@@ -26,6 +26,7 @@ import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -132,7 +133,7 @@ fun SettingsInternal(
     Column(
         Modifier
             .fillMaxSize()
-            .padding(start = DIM_XS, end = DIM_XS)
+            .padding(DIM_XS)
     ) {
         RepeatFrequencyEditor(
             modifier = Modifier
@@ -151,15 +152,17 @@ fun SettingsInternal(
             onRepeatFrequencyAndTactChange = { repeatFrequency = it }
         ) {
             Spacer(modifier = Modifier.size(DIM_XS))
-            Row(Modifier.fillMaxWidth()) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Absolute.Right) {
                 BaseButton(
-                    text = "start",
-                    onClick = { getCurrentAlarmItem().let(scheduler::schedule) }
+                    enable = state.isPermissionQueueEmpty,
+                    text = "cancel",
+                    onClick = { getCurrentAlarmItem().let(scheduler::cancel) }
                 )
                 Spacer(modifier = Modifier.size(DIM_M))
                 BaseButton(
-                    text = "cancel",
-                    onClick = { getCurrentAlarmItem().let(scheduler::cancel) }
+                    enable = state.isPermissionQueueEmpty,
+                    text = "start",
+                    onClick = { getCurrentAlarmItem().let(scheduler::schedule) }
                 )
             }
         }

@@ -22,6 +22,7 @@ package de.chrisbecker386.maintainer.ui.screens.home.creation.task
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,9 +34,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.model.DataResourceState
 import de.chrisbecker386.maintainer.ui.component.BaseButton
 import de.chrisbecker386.maintainer.ui.component.ImagePickerWithPreview
@@ -144,23 +148,25 @@ private fun TaskCreation(
             }
             // add/update Button
             item {
-                BaseButton(
-                    text = if ((state.id == null) || (state.id == 0)) {
-                        "add"
-                    } else {
-                        "update"
-                    },
-                    enable = task.title.isNotEmpty() && steps.isNotEmpty(),
-                    onClick = {
-                        onEvent(
-                            TaskCreationEvent.UpsertTask(
-                                task = task,
-                                startDateTime = startDateTime,
-                                steps = steps
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Absolute.Right) {
+                    BaseButton(
+                        text = if ((state.id == null) || (state.id == 0)) {
+                            ContextCompat.getString(LocalContext.current, R.string.add)
+                        } else {
+                            ContextCompat.getString(LocalContext.current, R.string.update)
+                        },
+                        enable = task.title.isNotEmpty() && steps.isNotEmpty(),
+                        onClick = {
+                            onEvent(
+                                TaskCreationEvent.UpsertTask(
+                                    task = task,
+                                    startDateTime = startDateTime,
+                                    steps = steps
+                                )
                             )
-                        )
-                    }
-                )
+                        }
+                    )
+                }
             }
         }
     }

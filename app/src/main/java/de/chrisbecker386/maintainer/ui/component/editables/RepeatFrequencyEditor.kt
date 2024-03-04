@@ -222,7 +222,11 @@ fun RepeatFrequencyEditor(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 HeadlineBoldMedium(text = getFormattedTime(timeState))
-                BaseButton(text = "set", onClick = { showTimePicker = !showTimePicker })
+                BaseButton(
+                    text = "set",
+                    enable = enable,
+                    onClick = { showTimePicker = !showTimePicker }
+                )
             }
             if (showDatePicker) {
                 MaintainerDatePickerDialog(

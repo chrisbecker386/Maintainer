@@ -20,6 +20,8 @@
 package de.chrisbecker386.maintainer.ui.screens.home.creation.machine
 
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -34,12 +36,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.entity.Machine
 import de.chrisbecker386.maintainer.data.model.DataResourceState
 import de.chrisbecker386.maintainer.ui.component.BaseButton
@@ -153,12 +158,13 @@ private fun MachineCreation(
 
         item {
             Spacer(modifier = Modifier.height(DIM_S))
-            BaseButton(
-                enable = machine.title.isNotEmpty(),
-                modifier = Modifier.fillMaxWidth(),
-                text = "confirm",
-                onClick = { onEvent(MachineEditEvent.UpsertMachine(machine)) }
-            )
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Absolute.Right) {
+                BaseButton(
+                    enable = machine.title.isNotEmpty(),
+                    text = ContextCompat.getString(LocalContext.current, R.string.add),
+                    onClick = { onEvent(MachineEditEvent.UpsertMachine(machine)) }
+                )
+            }
         }
     }
 }
