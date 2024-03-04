@@ -44,7 +44,7 @@ import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 @Composable
 fun MaintainerAppBar(
     title: String,
-    showBackButton: Boolean = false,
+    isOverviewScreen: Boolean = false,
     showAddButton: Boolean = false,
     onBackClick: () -> Unit = {},
     onAddClick: () -> Unit = {},
@@ -64,7 +64,7 @@ fun MaintainerAppBar(
         },
         backgroundColor = MaterialTheme.colors.primary,
         navigationIcon = {
-            if (showBackButton) {
+            if (!isOverviewScreen) {
                 IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
@@ -82,11 +82,13 @@ fun MaintainerAppBar(
                     )
                 }
             }
-            IconButton(onClick = onSettingsClick) {
-                Icon(
-                    imageVector = Icons.Filled.Settings,
-                    contentDescription = stringResource(R.string.settings)
-                )
+            if (isOverviewScreen) {
+                IconButton(onClick = onSettingsClick) {
+                    Icon(
+                        imageVector = Icons.Filled.Settings,
+                        contentDescription = stringResource(R.string.settings)
+                    )
+                }
             }
         }
     )

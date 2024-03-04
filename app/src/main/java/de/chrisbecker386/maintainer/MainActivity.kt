@@ -104,7 +104,7 @@ class MainActivity : ComponentActivity() {
                     MaintainerAppBar(
                         modifier = Modifier.height(DIM_XXL),
                         title = currentScreen.title,
-                        showBackButton = currentScreen.title != Overview.title,
+                        isOverviewScreen = currentScreen.title == Overview.title,
                         showAddButton = addScreen != null,
                         onBackClick = { navController.navigateUp() },
                         onAddClick = { navigateToCreation() },

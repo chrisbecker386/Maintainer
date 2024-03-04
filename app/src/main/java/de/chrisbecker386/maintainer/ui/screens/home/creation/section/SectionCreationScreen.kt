@@ -19,6 +19,8 @@
 
 package de.chrisbecker386.maintainer.ui.screens.home.creation.section
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,12 +34,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.core.content.ContextCompat.getString
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.entity.Section
 import de.chrisbecker386.maintainer.data.model.DataResourceState
 import de.chrisbecker386.maintainer.ui.component.BaseButton
@@ -71,6 +76,7 @@ fun SectionCreationScreen(
             state = (state as DataResourceState.Success).data,
             onEvent = viewModel::onEvent
         )
+
         is DataResourceState.Finished -> MessageFullScreen(
             title = (state as DataResourceState.Finished).title ?: "success title",
             message = (state as DataResourceState.Finished).text ?: "success text",
@@ -96,7 +102,11 @@ private fun SectionCreation(
 
     val focusManager = LocalFocusManager.current
 
-    LazyColumn(Modifier.fillMaxWidth().padding(DIM_XS)) {
+    LazyColumn(
+        Modifier
+            .fillMaxWidth()
+            .padding(DIM_XS)
+    ) {
         item {
             TextInputField(
                 label = "Section Name",
@@ -119,11 +129,13 @@ private fun SectionCreation(
                 onImageChange = { section = section.copy(imageRes = it) }
             )
             Spacer(modifier = Modifier.height(DIM_S))
-            BaseButton(
-                enable = section.title.isNotEmpty(),
-                text = "confirm",
-                onClick = { onEvent(SectionCreationEvent.UpsertSection(section)) }
-            )
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Absolute.Right) {
+                BaseButton(
+                    enable = section.title.isNotEmpty(),
+                    text = getString(LocalContext.current, R.string.add),
+                    onClick = { onEvent(SectionCreationEvent.UpsertSection(section)) }
+                )
+            }
         }
     }
 }

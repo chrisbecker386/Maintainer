@@ -19,9 +19,9 @@
 
 package de.chrisbecker386.maintainer.ui.component.editables
 
-import android.content.res.Configuration
+import ThemePreviews
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
@@ -35,11 +35,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import de.chrisbecker386.maintainer.ui.component.TextInputField
-import de.chrisbecker386.maintainer.ui.component.UnevenCard
-import de.chrisbecker386.maintainer.ui.theme.DIM_S
-import de.chrisbecker386.maintainer.ui.theme.DIM_XS
 import de.chrisbecker386.maintainer.ui.theme.MaintainerTheme
 
 /**
@@ -64,11 +60,7 @@ fun DualTextInput(
 
     val focusManager = LocalFocusManager.current
 
-    UnevenCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = DIM_XS, bottom = DIM_S, start = DIM_XS, end = DIM_XS)
-    ) {
+    Column(modifier = Modifier.fillMaxWidth()) {
         TextInputField(
             label = labels.first ?: "",
             value = localField1 ?: "",
@@ -111,7 +103,7 @@ fun DualTextInput(
     }
 }
 
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@ThemePreviews
 @Composable
 fun PreviewDualTextInput() {
     MaintainerTheme {
