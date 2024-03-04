@@ -27,25 +27,20 @@ val devSections = listOf(
         id = 1,
         title = "Kitchen",
         imageRes = R.drawable.kitchen_48px
+    ),
+    Section(
+        id = 2,
+        title = "Garage",
+        imageRes = R.drawable.garage_home_48px
+    ),
+    Section(
+        id = 3,
+        title = "Utility room",
+        imageRes = R.drawable.utility_room_48px
+    ),
+    Section(
+        id = 4,
+        title = "Computer",
+        imageRes = R.drawable.computer_48px
     )
-//    ,Section(
-//        id = 2,
-//        title = "Car",
-//        imageRes = R.drawable.directions_car_48px
-//    ),
-//    Section(
-//        id = 3,
-//        title = "Bathroom",
-//        imageRes = R.drawable.bathtub_48px
-//    ),
-//    Section(
-//        id = 4,
-//        title = "Bike",
-//        imageRes = R.drawable.pedal_bike_48px
-//    ),
-//    Section(
-//        id = 5,
-//        title = "Computer",
-//        imageRes = R.drawable.computer_48px
-//    )
 )

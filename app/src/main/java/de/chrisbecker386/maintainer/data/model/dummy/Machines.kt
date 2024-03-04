@@ -29,5 +29,61 @@ val devMachines = listOf(
         subtitle = "best coffee",
         imageRes = R.drawable.coffee_maker_48px,
         section = 1
+    ),
+    Machine(
+        id = 2,
+        title = "Refrigerator",
+        subtitle = null,
+        imageRes = R.drawable.kitchen_48px,
+        section = 1
+    ),
+    Machine(
+        id = 3,
+        title = "Washing Machine",
+        subtitle = null,
+        imageRes = R.drawable.dishwasher_gen_48px,
+        section = 3
+    ),
+    Machine(
+        id = 4,
+        title = "Dryer",
+        subtitle = null,
+        imageRes = R.drawable.local_laundry_service_48px,
+        section = 3
+    ),
+    Machine(
+        id = 5,
+        title = "Dishwasher",
+        subtitle = null,
+        imageRes = R.drawable.dishwasher_48px,
+        section = 1
+    ),
+    Machine(
+        id = 6,
+        title = "Vacuum Cleaner",
+        subtitle = null,
+        imageRes = R.drawable.vacuum_48px,
+        section = 3
+    ),
+    Machine(
+        id = 7,
+        title = "Car",
+        subtitle = null,
+        imageRes = R.drawable.directions_car_48px,
+        section = 2
+    ),
+    Machine(
+        id = 8,
+        title = "Bicycle",
+        subtitle = null,
+        imageRes = R.drawable.pedal_bike_48px,
+        section = 2
+    ),
+    Machine(
+        id = 9,
+        title = "Laptop",
+        subtitle = null,
+        imageRes = R.drawable.computer_48px,
+        section = 4
     )
 )
