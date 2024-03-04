@@ -21,6 +21,7 @@ package de.chrisbecker386.maintainer.data.model.dummy
 
 import de.chrisbecker386.maintainer.R
 import de.chrisbecker386.maintainer.data.entity.Task
+import de.chrisbecker386.maintainer.data.model.RepeatFrequency
 
 val devTasks = listOf(
     Task(
@@ -36,5 +37,113 @@ val devTasks = listOf(
         subtitle = null,
         imageRes = R.drawable.coffee_maker_48px,
         machineId = 1
+    ),
+    Task(
+        id = 3,
+        title = "defrosting",
+        subtitle = null,
+        imageRes = R.drawable.kitchen_48px,
+        repeatFrequency = RepeatFrequency.MONTHLY.value,
+        tact = 6,
+        machineId = 2
+    ),
+    Task(
+        id = 4,
+        title = "cleaning the lint trap",
+        subtitle = null,
+        imageRes = R.drawable.dishwasher_gen_48px,
+        repeatFrequency = RepeatFrequency.MONTHLY.value,
+        tact = 1,
+        machineId = 3
+    ),
+    Task(
+        id = 5,
+        title = "check and clean the vent hose",
+        subtitle = null,
+        imageRes = R.drawable.local_laundry_service_48px,
+        repeatFrequency = RepeatFrequency.MONTHLY.value,
+        tact = 1,
+        machineId = 4
+    ),
+    Task(
+        id = 6,
+        title = "cleaning the filter",
+        subtitle = null,
+        imageRes = R.drawable.blur_circular_48px,
+        repeatFrequency = RepeatFrequency.WEEKLY.value,
+        tact = 1,
+        machineId = 5
+    ),
+    Task(
+        id = 7,
+        title = "special salt",
+        subtitle = null,
+        imageRes = R.drawable.snowing_48px,
+        repeatFrequency = RepeatFrequency.MONTHLY.value,
+        tact = 2,
+        machineId = 5
+    ),
+    Task(
+        id = 8,
+        title = "clear rinse",
+        subtitle = null,
+        imageRes = R.drawable.water_drop_48px,
+        repeatFrequency = RepeatFrequency.WEEKLY.value,
+        tact = 2,
+        machineId = 5
+    ),
+    Task(
+        id = 9,
+        title = "cleaning the filter",
+        subtitle = null,
+        imageRes = R.drawable.blur_circular_48px,
+        repeatFrequency = RepeatFrequency.WEEKLY.value,
+        tact = 1,
+        machineId = 6
+    ),
+    Task(
+        id = 10,
+        title = "Backup",
+        subtitle = null,
+        imageRes = R.drawable.backup_48px,
+        repeatFrequency = RepeatFrequency.MONTHLY.value,
+        tact = 1,
+        machineId = 9
+    ),
+    Task(
+        id = 11,
+        title = "check engine oil",
+        subtitle = null,
+        imageRes = R.drawable.car_engine_48px,
+        repeatFrequency = RepeatFrequency.MONTHLY.value,
+        tact = 1,
+        machineId = 7
+    ),
+    Task(
+        id = 12,
+        title = "check tire pressure",
+        subtitle = null,
+        imageRes = R.drawable.tire_repair_48px,
+        repeatFrequency = RepeatFrequency.MONTHLY.value,
+        tact = 1,
+        machineId = 7
+    ),
+    Task(
+        id = 13,
+        title = "check tire pressure",
+        subtitle = null,
+        imageRes = R.drawable.tire_repair_48px,
+        repeatFrequency = RepeatFrequency.MONTHLY.value,
+        tact = 1,
+        machineId = 8
+    ),
+    Task(
+        id = 14,
+        title = "check brakes",
+        subtitle = null,
+        imageRes = R.drawable.question_mark_48px,
+        repeatFrequency = RepeatFrequency.MONTHLY.value,
+        tact = 1,
+        machineId = 8
     )
 )
